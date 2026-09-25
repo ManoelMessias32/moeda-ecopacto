@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-// Block representa cada elo da corrente
 type Block struct {
 	Index     int    `json:"index"`
 	Timestamp string `json:"timestamp"`
@@ -20,13 +19,11 @@ type Block struct {
 	Nonce     int    `json:"nonce"`
 }
 
-// Blockchain guarda a lista de blocos da moeda
 type Blockchain struct {
 	Chain      []Block `json:"chain"`
 	Difficulty int     `json:"difficulty"`
 }
 
-// Tokenomics gerencia o suprimento fixo (12 Trilhões ECO)
 type Tokenomics struct {
 	TotalSupply    uint64 `json:"total_supply"`
 	GameRewards    uint64 `json:"game_rewards"`
@@ -43,7 +40,6 @@ type Wallet struct {
 	Balance uint64 `json:"balance"`
 }
 
-// Estrutura para requisição de transferência
 type TransferRequest struct {
 	From   string `json:"from"`
 	To     string `json:"to"`
@@ -54,8 +50,9 @@ var ecoPacto Blockchain
 var ecopactoTokenomics Tokenomics
 var wallets = make(map[string]*Wallet)
 
-// Recompensa aumentada para 100 ECO por bloco conforme solicitado
-const MiningReward = 100
+// Configurações de Mineração e Halving
+const InitialMiningReward = 10
+const HalvingIntervalBlocks = 2628000 // Aproximadamente 5 anos (considerando 1 bloco/minuto)
 
 func calculateHash(b Block) string {
 	record := fmt.Sprintf("%d%s%s%s%d", b.Index, b.Timestamp, b.Data, b.PrevHash, b.Nonce)
@@ -64,17 +61,32 @@ func calculateHash(b Block) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// Handler de Mineração (Recompensa: 100 ECO)
+// Calcula a recompensa atual baseada no Halving (a cada 5 anos)
+func getCurrentReward() uint64 {
+	currentBlock := len(ecoPacto.Chain)
+	halvings := currentBlock / HalvingIntervalBlocks
+	reward := uint64(InitialMiningReward)
+
+	for i := 0; i < halvings; i++ {
+		reward = reward / 2
+	}
+
+	if reward < 1 { return 1 } // Recompensa mínima de 1 ECO
+	return reward
+}
+
 func mineHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	minerAddress := r.URL.Query().Get("address")
 
 	if _, exists := wallets[minerAddress]; !exists {
-		http.Error(w, "Carteira do minerador não encontrada", http.StatusNotFound)
+		http.Error(w, "Carteira não encontrada", http.StatusNotFound)
 		return
 	}
 
-	if ecopactoTokenomics.NodeMining < MiningReward {
+	reward := getCurrentReward()
+
+	if ecopactoTokenomics.NodeMining < reward {
 		http.Error(w, "Reserva de mineração esgotada", http.StatusBadRequest)
 		return
 	}
@@ -83,14 +95,12 @@ func mineHandler(w http.ResponseWriter, r *http.Request) {
 	newBlock := Block{
 		Index:     prevBlock.Index + 1,
 		Timestamp: time.Now().String(),
-		Data:      fmt.Sprintf("Recompensa de Mineração para %s", minerAddress),
+		Data:      fmt.Sprintf("Reward: %d ECO to %s", reward, minerAddress),
 		PrevHash:  prevBlock.Hash,
 		Nonce:     0,
 	}
 
 	target := strings.Repeat("0", ecoPacto.Difficulty) + "7"
-	fmt.Printf("⛏️  Node iniciando mineração para: %s\n", minerAddress)
-
 	for {
 		newBlock.Hash = calculateHash(newBlock)
 		if strings.HasPrefix(newBlock.Hash, target) {
@@ -100,74 +110,47 @@ func mineHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ecoPacto.Chain = append(ecoPacto.Chain, newBlock)
-	wallets[minerAddress].Balance += MiningReward
-	ecopactoTokenomics.NodeMining -= MiningReward
+	wallets[minerAddress].Balance += reward
+	ecopactoTokenomics.NodeMining -= reward
 
-	fmt.Printf("✅ Bloco %d Minerado! Recompensa de %d ECO entregue.\n", newBlock.Index, MiningReward)
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message": "Mineração concluída!",
-		"block":   newBlock,
-		"reward":  MiningReward,
+		"message": "Minerado!",
+		"reward":  reward,
 		"balance": wallets[minerAddress].Balance,
 	})
 }
 
-// Handler de Transferência com Taxa de 20% em ECO que retorna para o Tesouro da moeda
 func transferHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if r.Method != http.MethodPost {
-		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		return
-	}
-
 	var req TransferRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Requisição inválida", http.StatusBadRequest)
+	json.NewDecoder(r.Body).Decode(&req)
+
+	fromWallet := wallets[req.From]
+	toWallet := wallets[req.To]
+
+	if fromWallet == nil || toWallet == nil {
+		http.Error(w, "Carteira inválida", http.StatusNotFound)
 		return
 	}
 
-	fromWallet, existsFrom := wallets[req.From]
-	toWallet, existsTo := wallets[req.To]
+	// NOVA TAXA DE 1%
+	fee := uint64(float64(req.Amount) * 0.01)
+	if fee < 1 && req.Amount > 0 { fee = 1 } // Mínimo 1 ECO de taxa se o valor for > 0
 
-	if !existsFrom || !existsTo {
-		http.Error(w, "Carteira de origem ou destino não encontrada", http.StatusNotFound)
+	total := req.Amount + fee
+
+	if fromWallet.Balance < total {
+		http.Error(w, "Saldo insuficiente (Valor + 1% taxa)", http.StatusBadRequest)
 		return
 	}
 
-	// Cálculo da Taxa de 20%
-	fee := uint64(float64(req.Amount) * 0.20)
-	totalRequired := req.Amount + fee
-
-	if fromWallet.Balance < totalRequired {
-		http.Error(w, "Saldo insuficiente para cobrir o valor + taxa de 20%", http.StatusBadRequest)
-		return
-	}
-
-	// Executa a transação deduzindo o valor e a taxa da origem
-	fromWallet.Balance -= totalRequired
+	fromWallet.Balance -= total
 	toWallet.Balance += req.Amount
+	ecopactoTokenomics.Treasury += fee // Taxa vai para o tesouro de 150Bi
 
-	// A taxa retorna para o Tesouro do ecossistema, mantendo o suprimento total estável em 12T
-	ecopactoTokenomics.Treasury += fee
-
-	// Registra a transação em um novo bloco da Blockchain
-	prevBlock := ecoPacto.Chain[len(ecoPacto.Chain)-1]
-	txBlock := Block{
-		Index:     prevBlock.Index + 1,
-		Timestamp: time.Now().String(),
-		Data:      fmt.Sprintf("Tx: %s enviou %d ECO para %s (Taxa: %d ECO enviada ao Tesouro)", req.From, req.Amount, req.To, fee),
-		PrevHash:  prevBlock.Hash,
-		Hash:      "",
-		Nonce:     0,
-	}
-	txBlock.Hash = calculateHash(txBlock)
-	ecoPacto.Chain = append(ecoPacto.Chain, txBlock)
-
-	fmt.Printf("💸 Transação efetuada: %s -> %s (%d ECO + %d Taxa)\n", req.From, req.To, req.Amount, fee)
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":      "Sucesso",
-		"amount_sent": req.Amount,
-		"fee_charged": fee,
+		"status": "Sucesso",
+		"fee": fee,
 		"new_balance": fromWallet.Balance,
 	})
 }
@@ -178,29 +161,12 @@ func createWalletHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&request)
 
 	username := request["username"]
-	if username == "" {
-		http.Error(w, "Nome de usuário é obrigatório", http.StatusBadRequest)
-		return
-	}
-
 	hash := sha256.Sum256([]byte(username + time.Now().String()))
 	address := "ECO_" + hex.EncodeToString(hash[:])[:24]
 
 	newWallet := &Wallet{Address: address, Balance: 0}
 	wallets[address] = newWallet
-
 	json.NewEncoder(w).Encode(newWallet)
-}
-
-func getBalanceHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	address := r.URL.Query().Get("address")
-	wallet, exists := wallets[address]
-	if !exists {
-		http.Error(w, "Carteira não encontrada", http.StatusNotFound)
-		return
-	}
-	json.NewEncoder(w).Encode(wallet)
 }
 
 func getBlockchain(w http.ResponseWriter, r *http.Request) {
@@ -214,38 +180,33 @@ func getTokenomics(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// NOVO TOKENOMICS: 1.2 Trilhões
 	ecopactoTokenomics = Tokenomics{
-		TotalSupply:    12_000_000_000_000,
-		GameRewards:    4_000_000_000_000,
-		NodeMining:     3_000_000_000_000,
-		DevEmergency:   1_000_000_000_000,
-		GeneralReserve: 1_000_000_000_000,
-		Treasury:       1_500_000_000_000,
-		Liquidity:      1_000_000_000_000,
+		TotalSupply:    1_200_000_000_000,
+		GameRewards:    300_000_000_000,
+		NodeMining:     300_000_000_000,
+		DevEmergency:   200_000_000_000,
+		Treasury:       150_000_000_000,
+		GeneralReserve: 150_000_000_000,
+		Liquidity:      100_000_000_000,
 		Symbol:         "ECO",
 	}
 
 	ecoPacto = Blockchain{Difficulty: 4}
-	genesis := Block{
-		Index: 0, Timestamp: time.Now().String(), Data: "Ecopacto Genesis", PrevHash: "0",
-	}
+	genesis := Block{Index: 0, Timestamp: time.Now().String(), Data: "Ecopacto 1.2T Launch", PrevHash: "0"}
 	genesis.Hash = calculateHash(genesis)
 	ecoPacto.Chain = append(ecoPacto.Chain, genesis)
 
-	wallets["ECO_DEV_MASTER"] = &Wallet{Address: "ECO_DEV_MASTER", Balance: ecopactoTokenomics.DevEmergency}
+	// Carteira Fundadora (Seus 200 Bi)
+	wallets["ECO_FOUNDER_RESERVE"] = &Wallet{Address: "ECO_FOUNDER_RESERVE", Balance: ecopactoTokenomics.DevEmergency}
 
 	http.HandleFunc("/blockchain", getBlockchain)
 	http.HandleFunc("/tokenomics", getTokenomics)
 	http.HandleFunc("/wallet/create", createWalletHandler)
-	http.HandleFunc("/wallet/balance", getBalanceHandler)
 	http.HandleFunc("/mine", mineHandler)
-	http.HandleFunc("/transfer", transferHandler) // Novo endpoint de transferências
+	http.HandleFunc("/transfer", transferHandler)
 
-	fmt.Println("🚀 Rede ECOPACTO Atualizada com Sucesso!")
-	fmt.Println("Regras de Consenso Aplicadas:")
-	fmt.Println("  - Recompensa por Bloco: 100 ECO")
-	fmt.Println("  - Taxa de Transferência: 20% (Destinada ao Tesouro)")
-	fmt.Println("  - Limite de Suprimento: 12 Trilhões Imutáveis")
-
+	fmt.Println("🚀 Rede ECOPACTO v2 (1.2 Trilhões) Online!")
+	fmt.Println("Taxa de 1% e Halving de 5 anos ativado.")
 	http.ListenAndServe(":8080", nil)
 }

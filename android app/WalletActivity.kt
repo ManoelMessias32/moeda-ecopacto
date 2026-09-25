@@ -39,7 +39,6 @@ fun WalletScreen() {
     var isMining by remember { mutableStateOf(false) }
     var miningLog by remember { mutableStateOf(listOf<String>()) }
 
-    // Estados para o formulário de transferência
     var destAddress by remember { mutableStateOf("") }
     var transferAmount by remember { mutableStateOf("") }
     var txStatus by remember { mutableStateOf("") }
@@ -91,10 +90,12 @@ fun WalletScreen() {
                     if (walletAddress.startsWith("ECO_")) {
                         isMining = true
                         scope.launch {
-                            val success = requestMining(walletAddress)
-                            if (success != null) {
-                                miningLog = listOf("Bloco Minerado com Sucesso! Recompensa: +100 ECO") + miningLog
-                                balance = "$success ECO"
+                            val response = requestMining(walletAddress)
+                            if (response != null) {
+                                val reward = response.substringAfter("\"reward\":").substringBefore(",").trim()
+                                val newBalance = response.substringAfter("\"balance\":").substringBefore("}").trim()
+                                miningLog = listOf("Bloco Minerado! Recompensa: +$reward ECO") + miningLog
+                                balance = "$newBalance ECO"
                             } else {
                                 miningLog = listOf("Falha na comunicação com o Nó.") + miningLog
                             }
@@ -111,14 +112,13 @@ fun WalletScreen() {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Nó Executando Proof of Work...")
                 } else {
-                    Text("Solicitar Mineração de Bloco (+100 ECO)")
+                    Text("Solicitar Mineração de Bloco")
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Seção de Transferência com Taxa de 20%
-            Text("Enviar Moedas ECO (Taxa de 20%)", style = MaterialTheme.typography.titleMedium, color = Color(0xFF2196F3))
+            Text("Enviar Moedas ECO (Taxa de 1%)", style = MaterialTheme.typography.titleMedium, color = Color(0xFF2196F3))
             Spacer(modifier = Modifier.height(8.dp))
 
             TextField(
@@ -150,7 +150,7 @@ fun WalletScreen() {
                                 transferAmount = ""
                                 destAddress = ""
                             } else {
-                                txStatus = "Erro: Verifique o saldo (Valor + 20% de Taxa) ou o endereço."
+                                txStatus = "Erro: Verifique o saldo (Valor + 1% de Taxa) ou o endereço."
                             }
                         }
                     } else {
@@ -201,9 +201,9 @@ suspend fun requestMining(address: String): String? = withContext(Dispatchers.IO
         val url = URL("http://10.0.2.2:8080/mine?address=$address")
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
-
-        val response = conn.inputStream.bufferedReader().readText()
-        response.substringAfter("\"balance\":").substringBefore("}")
+        if (conn.responseCode == 200) {
+            conn.inputStream.bufferedReader().readText()
+        } else null
     } catch (e: Exception) {
         null
     }
@@ -222,7 +222,7 @@ suspend fun executeTransfer(from: String, to: String, amount: Long): String? = w
 
         if (conn.responseCode == 200) {
             val response = conn.inputStream.bufferedReader().readText()
-            response.substringAfter("\"new_balance\":").substringBefore("}")
+            response.substringAfter("\"new_balance\":").substringBefore(",")
         } else {
             null
         }
