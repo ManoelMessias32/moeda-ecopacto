@@ -178,9 +178,12 @@ fun WalletScreen() {
     }
 }
 
+// Produção Railway URL
+const val PROD_URL = "https://ecopacto-api-production.up.railway.app"
+
 suspend fun createWalletOnServer(user: String): String? = withContext(Dispatchers.IO) {
     try {
-        val url = URL("http://10.0.2.2:8080/wallet/create")
+        val url = URL("$PROD_URL/wallet/create")
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "POST"
         conn.doOutput = true
@@ -198,7 +201,7 @@ suspend fun createWalletOnServer(user: String): String? = withContext(Dispatcher
 
 suspend fun requestMining(address: String): String? = withContext(Dispatchers.IO) {
     try {
-        val url = URL("http://10.0.2.2:8080/mine?address=$address")
+        val url = URL("$PROD_URL/mine?address=$address")
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
         if (conn.responseCode == 200) {
@@ -211,7 +214,7 @@ suspend fun requestMining(address: String): String? = withContext(Dispatchers.IO
 
 suspend fun executeTransfer(from: String, to: String, amount: Long): String? = withContext(Dispatchers.IO) {
     try {
-        val url = URL("http://10.0.2.2:8080/transfer")
+        val url = URL("$PROD_URL/transfer")
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "POST"
         conn.doOutput = true

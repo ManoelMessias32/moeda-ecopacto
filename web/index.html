@@ -48,7 +48,7 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:8080"; // Mude para o link do Google Cloud depois
+        const API_URL = "https://ecopacto-api-production.up.railway.app";
         let userWallet = null;
 
         // Decodifica o Token do Google para pegar o e-mail
@@ -73,7 +73,7 @@
                 userWallet = await res.json();
                 updateUI();
             } catch (err) {
-                alert("Erro ao conectar com o servidor da moeda. Certifique-se que o main.go está rodando!");
+                alert("Erro ao conectar com o servidor da moeda. Certifique-se que a API no Railway está online!");
             }
         }
 
