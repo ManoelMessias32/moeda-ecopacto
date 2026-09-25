@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecopacto Web Wallet</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .btn { background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .eco-address { font-size: 0.8rem; color: #94a3b8; word-break: break-all; margin: 10px 0; }
+        .balance { font-size: 2rem; color: #4ade80; text-align: center; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>ECOPACTO <span style="font-size: 0.5em;">v2</span></h1>
+
+    <div class="card" id="login-card">
+        <h3>Bem-vindo à Rede</h3>
+        <div id="g_id_onload"
+             data-client_id="SEU_ID_DO_GOOGLE.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
+    <div class="card" id="wallet-card" style="display:none;">
+        <div class="balance" id="eco-balance">0 ECO</div>
+        <div class="eco-address" id="eco-addr">ECO_...</div>
+        <button class="btn" onclick="mine()">⛏️ Minerar Bloco</button>
+        <hr style="border: 0.5px solid #334155; margin: 20px 0;">
+        <input type="text" placeholder="Endereço de Destino" id="dest" style="width: 90%; padding: 8px; margin-bottom: 5px;">
+        <input type="number" placeholder="Quantidade" id="amount" style="width: 90%; padding: 8px;">
+        <button class="btn" style="background: #3b82f6;" onclick="transfer()">Enviar (Taxa 1%)</button>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Logado com sucesso!");
+            document.getElementById('login-card').style.display = 'none';
+            document.getElementById('wallet-card').style.display = 'block';
+            // Aqui você chamaria o seu servidor Go para vincular o e-mail à carteira
+        }
+
+        async function mine() {
+            alert("Minerando no servidor...");
+            // Exemplo: fetch('https://seu-servidor.com/mine?address=...')
+        }
+    </script>
+</body>
+</html>
