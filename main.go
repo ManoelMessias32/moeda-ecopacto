@@ -50,7 +50,6 @@ type AppState struct {
 }
 
 var state AppState
-
 const DB_FILE = "blockchain.db"
 
 func saveState() {
@@ -62,6 +61,7 @@ func loadState() {
 	file, err := os.ReadFile(DB_FILE)
 	if err == nil {
 		json.Unmarshal(file, &state)
+		fmt.Println("📦 Banco de dados carregado.")
 	} else {
 		initNewBlockchain()
 	}
@@ -78,17 +78,11 @@ func initNewBlockchain() {
 		},
 		Blockchain: Blockchain{Difficulty: 4},
 	}
-	genesis := Block{Index: 0, Timestamp: time.Now().String(), Data: "Ecopacto 1.2T Genesis", PrevHash: "0"}
+	genesis := Block{Index: 0, Timestamp: time.Now().String(), Data: "Ecopacto Genesis", PrevHash: "0"}
 	genesis.Hash = calculateHash(genesis)
 	state.Blockchain.Chain = append(state.Blockchain.Chain, genesis)
 	state.Wallets["ECO_FOUNDER_RESERVE"] = &Wallet{Address: "ECO_FOUNDER_RESERVE", Balance: state.Tokenomics.DevEmergency}
 	saveState()
-}
-
-func enableCORS(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 }
 
 func calculateHash(b Block) string {
@@ -98,22 +92,33 @@ func calculateHash(b Block) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	enableCORS(&w)
-	if r.Method == "OPTIONS" { w.WriteHeader(http.StatusOK); return }
+// Middleware de segurança para permitir conexão da Vercel
+func commonMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
 
+func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email string `json:"email"` }
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Erro na requisição", 400)
+		http.Error(w, "Invalid JSON", 400)
 		return
 	}
-
 	email := strings.ToLower(req.Email)
+	fmt.Printf("👤 Tentativa de login: %s\n", email)
+
 	if addr, exists := state.Emails[email]; exists {
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 		return
 	}
-
 	hash := sha256.Sum256([]byte(email + time.Now().String()))
 	address := "ECO_" + hex.EncodeToString(hash[:])[:24]
 	newWallet := &Wallet{Address: address, Balance: 0, Email: email}
@@ -124,17 +129,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func transferHandler(w http.ResponseWriter, r *http.Request) {
-	enableCORS(&w)
-	if r.Method == "OPTIONS" { w.WriteHeader(http.StatusOK); return }
-
 	var req struct{ From string `json:"from"`; To string `json:"to"`; Amount uint64 `json:"amount"` }
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Erro", 400)
-		return
-	}
-
-	from := state.Wallets[req.From]
-	to := state.Wallets[req.To]
+	json.NewDecoder(r.Body).Decode(&req)
+	from := state.Wallets[req.From]; to := state.Wallets[req.To]
 	if from == nil || to == nil { http.Error(w, "Carteira não encontrada", 404); return }
 
 	fee := uint64(float64(req.Amount) * 0.01)
@@ -150,19 +147,15 @@ func transferHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	loadState()
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/transfer", transferHandler)
-	http.HandleFunc("/tokenomics", func(w http.ResponseWriter, r *http.Request) {
-		enableCORS(&w)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/transfer", transferHandler)
+	mux.HandleFunc("/tokenomics", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(state.Tokenomics)
-	})
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		enableCORS(&w)
-		fmt.Fprintf(w, "ECOPACTO API ONLINE")
 	})
 
 	port := os.Getenv("PORT")
 	if port == "" { port = "8080" }
-	fmt.Printf("🚀 Node rodando em 0.0.0.0:%s\n", port)
-	http.ListenAndServe("0.0.0.0:"+port, nil)
+	fmt.Printf("🚀 ECOPACTO ONLINE EM 0.0.0.0:%s\n", port)
+	http.ListenAndServe("0.0.0.0:"+port, commonMiddleware(mux))
 }
