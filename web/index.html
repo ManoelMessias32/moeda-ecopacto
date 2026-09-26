@@ -3,132 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecopacto Web Wallet</title>
+    <title>Ecopacto Wallet | Gestão de Ativos</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .btn { background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
-        .btn:disabled { background: #334155; cursor: not-allowed; }
-        .eco-address { font-size: 0.8rem; color: #94a3b8; word-break: break-all; margin: 10px 0; background: #0f172a; padding: 8px; border-radius: 4px; }
-        .balance { font-size: 2.5rem; color: #4ade80; text-align: center; margin: 20px 0; font-weight: bold; }
-        input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        .status { font-size: 0.8rem; text-align: center; margin-top: 10px; }
+        :root {
+            --bg: #0b0e14;
+            --card: #151921;
+            --primary: #22c55e;
+            --secondary: #3b82f6;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+            border: 1px solid #ffffff0d;
+        }
+        h1 { font-weight: 800; text-align: center; letter-spacing: -1px; margin-bottom: 30px; }
+        .balance-label { color: var(--muted); text-align: center; font-size: 0.9rem; }
+        .balance-value { font-size: 3.5rem; color: var(--primary); text-align: center; margin: 10px 0 30px 0; font-weight: 800; text-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
+
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-receive { background: #ffffff0d; color: var(--text); border: 1px solid #ffffff1a; }
+        .btn-receive:hover { background: #ffffff1a; }
+        .btn-send { background: var(--primary); color: #000; }
+        .btn-send:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .form-group { background: #0b0e14; padding: 20px; border-radius: 16px; margin-top: 20px; display: none; }
+        .form-group.active { display: block; animation: fadeIn 0.3s ease; }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #334155;
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+        .addr-display {
+            background: #0b0e14;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--secondary);
+            word-break: break-all;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .addr-display:hover { background: #1e293b; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #login-card { text-align: center; }
     </style>
 </head>
 <body>
-    <h1>ECOPACTO <span style="font-size: 0.5em; color: #22c55e;">v2</span></h1>
+
+<div class="container">
+    <h1>ECOPACTO <span style="color: var(--primary)">v2</span></h1>
 
     <!-- TELA DE LOGIN -->
-    <div class="card" id="login-card">
-        <h3 style="text-align:center;">Acesse sua Carteira</h3>
-        <p style="color: #94a3b8; text-align:center; font-size: 0.9rem;">Use sua conta Google para gerenciar seus ECOs.</p>
+    <div id="login-card">
+        <p style="color: var(--muted); margin-bottom: 40px;">Acesse sua carteira para gerenciar seus ativos digitais.</p>
         <div id="g_id_onload"
              data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com"
              data-callback="handleCredentialResponse">
         </div>
-        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
     </div>
 
     <!-- TELA DA CARTEIRA -->
-    <div class="card" id="wallet-card" style="display:none;">
-        <div class="balance" id="eco-balance">0 ECO</div>
-        <div style="text-align: center; color: #94a3b8; font-size: 0.8rem;">Endereço da Carteira:</div>
-        <div class="eco-address" id="eco-addr">ECO_...</div>
+    <div id="wallet-card" style="display:none;">
+        <div class="balance-label">Saldo Disponível</div>
+        <div class="balance-value" id="eco-balance">0 ECO</div>
 
-        <button class="btn" id="mine-btn" onclick="mine()">⛏️ Minerar Bloco (Teste)</button>
-
-        <div style="margin: 20px 0; border-top: 1px solid #334155; padding-top: 20px;">
-            <label style="font-size: 0.9rem;">Enviar ECO</label>
-            <input type="text" placeholder="Endereço de Destino (ECO_...)" id="dest">
-            <input type="number" placeholder="Quantidade" id="amount">
-            <button class="btn" style="background: #3b82f6;" onclick="transfer()">Transferir (Taxa 1%)</button>
+        <div class="action-btns">
+            <button class="btn btn-receive" onclick="toggleForm('receive')">📥 Receber</button>
+            <button class="btn btn-send" onclick="toggleForm('send')">💸 Enviar</button>
         </div>
-        <div class="status" id="tx-status"></div>
+
+        <!-- FORM RECEBER -->
+        <div id="form-receive" class="form-group">
+            <label style="font-size: 0.8rem; color: var(--muted)">Seu endereço (Toque para copiar):</label>
+            <div class="addr-display" id="eco-addr" onclick="copyAddr()">ECO_...</div>
+        </div>
+
+        <!-- FORM ENVIAR -->
+        <div id="form-send" class="form-group">
+            <input type="text" placeholder="Endereço de Destino" id="dest">
+            <input type="number" placeholder="Quantidade de ECO" id="amount">
+            <button class="btn btn-send" style="width: 100%" onclick="transfer()">Confirmar Envio</button>
+            <p style="font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 10px;">Taxa da rede: 1%</p>
+        </div>
+
+        <p id="status-msg" style="font-size: 0.8rem; text-align: center; margin-top: 15px; color: var(--secondary)"></p>
     </div>
+</div>
 
-    <script>
-        const API_URL = "https://ecopacto-api-production.up.railway.app";
-        let userWallet = null;
+<script>
+    const API_URL = "https://ecopacto-api-production.up.railway.app";
+    let userWallet = null;
 
-        // Decodifica o Token do Google para pegar o e-mail
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(window.atob(base64));
+    function parseJwt(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(window.atob(base64));
+    }
+
+    async function handleCredentialResponse(response) {
+        const payload = parseJwt(response.credential);
+        try {
+            const res = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: payload.email })
+            });
+            userWallet = await res.json();
+            showWallet();
+        } catch (err) {
+            alert("Erro ao conectar com a rede ECOPACTO.");
         }
+    }
 
-        async function handleCredentialResponse(response) {
-            const responsePayload = parseJwt(response.credential);
-            const email = responsePayload.email;
+    function showWallet() {
+        document.getElementById('login-card').style.display = 'none';
+        document.getElementById('wallet-card').style.display = 'block';
+        document.getElementById('eco-balance').innerText = `${userWallet.balance} ECO`;
+        document.getElementById('eco-addr').innerText = userWallet.address;
+    }
 
-            document.getElementById('tx-status').innerText = "Conectando à Blockchain...";
+    function toggleForm(type) {
+        document.getElementById('form-receive').classList.remove('active');
+        document.getElementById('form-send').classList.remove('active');
+        document.getElementById(`form-${type}`).classList.add('active');
+    }
 
-            try {
-                const res = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email })
-                });
-                userWallet = await res.json();
-                updateUI();
-            } catch (err) {
-                alert("Erro ao conectar com o servidor da moeda. Certifique-se que a API no Railway está online!");
+    function copyAddr() {
+        navigator.clipboard.writeText(userWallet.address);
+        document.getElementById('status-msg').innerText = "Endereço copiado!";
+        setTimeout(() => document.getElementById('status-msg').innerText = "", 2000);
+    }
+
+    async function transfer() {
+        const dest = document.getElementById('dest').value;
+        const amount = document.getElementById('amount').value;
+        const msg = document.getElementById('status-msg');
+
+        if(!dest || !amount) return;
+        msg.innerText = "Processando transação...";
+
+        try {
+            const res = await fetch(`${API_URL}/transfer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ from: userWallet.address, to: dest, amount: parseInt(amount) })
+            });
+            const data = await res.json();
+            if(data.status === "Success") {
+                userWallet.balance = data.new_balance;
+                showWallet();
+                msg.innerText = "💸 Enviado com sucesso!";
+                document.getElementById('amount').value = "";
+            } else {
+                msg.innerText = "❌ Saldo insuficiente ou erro.";
             }
+        } catch (err) {
+            msg.innerText = "❌ Erro na rede.";
         }
-
-        function updateUI() {
-            document.getElementById('login-card').style.display = 'none';
-            document.getElementById('wallet-card').style.display = 'block';
-            document.getElementById('eco-balance').innerText = `${userWallet.balance} ECO`;
-            document.getElementById('eco-addr').innerText = userWallet.address;
-            document.getElementById('tx-status').innerText = "";
-        }
-
-        async function mine() {
-            if (!userWallet) return;
-            const btn = document.getElementById('mine-btn');
-            btn.disabled = true;
-            btn.innerText = "Minerando...";
-
-            try {
-                const res = await fetch(`${API_URL}/mine?address=${userWallet.address}`);
-                const data = await res.json();
-                userWallet.balance = data.balance;
-                updateUI();
-                alert("Bloco Minerado com Sucesso!");
-            } catch (err) {
-                alert("Erro na mineração.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "⛏️ Minerar Bloco (Teste)";
-            }
-        }
-
-        async function transfer() {
-            const dest = document.getElementById('dest').value;
-            const amount = document.getElementById('amount').value;
-
-            if (!dest || !amount) return alert("Preencha todos os campos");
-
-            try {
-                const res = await fetch(`${API_URL}/transfer`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ from: userWallet.address, to: dest, amount: parseInt(amount) })
-                });
-                const data = await res.json();
-                if (data.status === "Success") {
-                    userWallet.balance = data.new_balance;
-                    updateUI();
-                    alert(`Sucesso! Taxa paga: ${data.fee} ECO`);
-                } else {
-                    alert("Falha na transferência: verifique o saldo e o endereço.");
-                }
-            } catch (err) {
-                alert("Erro ao processar transferência.");
-            }
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
