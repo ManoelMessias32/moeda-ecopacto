@@ -3,95 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecopacto Wallet | Gestão de Ativos</title>
+    <title>Ecopacto Wallet | Official</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0e14;
-            --card: #151921;
-            --primary: #22c55e;
+            --bg: #05070a;
+            --card: #0f121a;
+            --accent: #22c55e;
             --secondary: #3b82f6;
-            --text: #f8fafc;
-            --muted: #94a3b8;
+            --text: #ffffff;
+            --muted: #64748b;
         }
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
             color: var(--text);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
-        .container {
+        .wallet-card {
             background: var(--card);
-            padding: 40px;
-            border-radius: 24px;
             width: 100%;
-            max-width: 440px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
-            border: 1px solid #ffffff0d;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 32px;
+            border: 1px solid #ffffff10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            backdrop-filter: blur(10px);
         }
-        h1 { font-weight: 800; text-align: center; letter-spacing: -1px; margin-bottom: 30px; }
-        .balance-label { color: var(--muted); text-align: center; font-size: 0.9rem; }
-        .balance-value { font-size: 3.5rem; color: var(--primary); text-align: center; margin: 10px 0 30px 0; font-weight: 800; text-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .version { color: var(--accent); font-size: 0.7rem; vertical-align: super; font-weight: 800; }
 
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .btn {
-            padding: 12px;
-            border-radius: 12px;
+        .balance-section { margin: 40px 0; }
+        .balance-label { color: var(--muted); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; }
+        .balance-amount { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin: 10px 0; text-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+
+        .nav-actions { display: flex; gap: 12px; margin-bottom: 30px; }
+        .nav-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 16px;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-receive { background: #ffffff0d; color: var(--text); border: 1px solid #ffffff1a; }
-        .btn-receive:hover { background: #ffffff1a; }
-        .btn-send { background: var(--primary); color: #000; }
-        .btn-send:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid #ffffff10; }
+        .btn-send { background: var(--accent); color: #000; }
+        .nav-btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        .form-group { background: #0b0e14; padding: 20px; border-radius: 16px; margin-top: 20px; display: none; }
-        .form-group.active { display: block; animation: fadeIn 0.3s ease; }
+        .view-panel { background: #00000040; padding: 20px; border-radius: 20px; margin-top: 20px; display: none; text-align: left; border: 1px solid #ffffff05; }
+        .view-panel.active { display: block; animation: slideUp 0.3s ease-out; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         input {
             width: 100%;
-            background: transparent;
-            border: 1px solid #334155;
-            padding: 12px;
+            background: #00000080;
+            border: 1px solid #ffffff10;
+            padding: 14px;
+            border-radius: 14px;
             color: white;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            margin: 8px 0;
             box-sizing: border-box;
+            font-size: 0.9rem;
         }
-        .addr-display {
-            background: #0b0e14;
+        input:focus { border-color: var(--accent); outline: none; }
+
+        .address-box {
+            background: #000;
             padding: 15px;
-            border-radius: 12px;
-            font-family: monospace;
-            font-size: 0.75rem;
+            border-radius: 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
             color: var(--secondary);
             word-break: break-all;
-            margin-top: 10px;
             cursor: pointer;
+            border: 1px dashed #3b82f650;
+            margin-top: 10px;
+            transition: 0.2s;
         }
-        .addr-display:hover { background: #1e293b; }
+        .address-box:hover { background: #0a0a0a; border-color: var(--secondary); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        #login-card { text-align: center; }
+        #status-bar { font-size: 0.75rem; margin-top: 25px; color: var(--muted); font-weight: 600; }
+        .loader { width: 16px; height: 16px; border: 2px solid var(--muted); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: none; margin: 0 auto 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>ECOPACTO <span style="color: var(--primary)">v2</span></h1>
+<div class="wallet-card">
+    <h1>ECOPACTO <span class="version">V2</span></h1>
 
-    <!-- TELA DE LOGIN -->
-    <div id="login-card">
-        <p style="color: var(--muted); margin-bottom: 40px;">Acesse sua carteira para gerenciar seus ativos digitais.</p>
+    <!-- LOGIN VIEW -->
+    <div id="login-view">
+        <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 30px;">Gerencie seus ativos na rede ECOPACTO com segurança.</p>
         <div id="g_id_onload"
              data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com"
              data-callback="handleCredentialResponse">
@@ -99,104 +115,123 @@
         <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
     </div>
 
-    <!-- TELA DA CARTEIRA -->
-    <div id="wallet-card" style="display:none;">
-        <div class="balance-label">Saldo Disponível</div>
-        <div class="balance-value" id="eco-balance">0 ECO</div>
-
-        <div class="action-btns">
-            <button class="btn btn-receive" onclick="toggleForm('receive')">📥 Receber</button>
-            <button class="btn btn-send" onclick="toggleForm('send')">💸 Enviar</button>
+    <!-- WALLET VIEW -->
+    <div id="wallet-view" style="display: none;">
+        <div class="balance-section">
+            <div class="balance-label">DISPONÍVEL</div>
+            <div class="balance-amount" id="disp-balance">0</div>
+            <div style="font-size: 0.75rem; color: var(--muted); font-weight: 800; letter-spacing: 2px;">ECO TOKENS</div>
         </div>
 
-        <!-- FORM RECEBER -->
-        <div id="form-receive" class="form-group">
-            <label style="font-size: 0.8rem; color: var(--muted)">Seu endereço (Toque para copiar):</label>
-            <div class="addr-display" id="eco-addr" onclick="copyAddr()">ECO_...</div>
+        <div class="nav-actions">
+            <button class="nav-btn btn-receive" onclick="showPanel('receive')">📥 Receber</button>
+            <button class="nav-btn btn-send" onclick="showPanel('send')">💸 Enviar</button>
         </div>
 
-        <!-- FORM ENVIAR -->
-        <div id="form-send" class="form-group">
-            <input type="text" placeholder="Endereço de Destino" id="dest">
-            <input type="number" placeholder="Quantidade de ECO" id="amount">
-            <button class="btn btn-send" style="width: 100%" onclick="transfer()">Confirmar Envio</button>
-            <p style="font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 10px;">Taxa da rede: 1%</p>
+        <!-- PANEL RECEIVE -->
+        <div id="panel-receive" class="view-panel">
+            <p style="font-size: 0.8rem; margin: 0 0 10px 0; color: var(--muted);">Toque abaixo para copiar seu endereço:</p>
+            <div class="address-box" id="disp-addr" onclick="copyAddress()">Sincronizando...</div>
         </div>
 
-        <p id="status-msg" style="font-size: 0.8rem; text-align: center; margin-top: 15px; color: var(--secondary)"></p>
+        <!-- PANEL SEND -->
+        <div id="panel-send" class="view-panel">
+            <input type="text" id="send-to" placeholder="Endereço de destino (ECO_...)">
+            <input type="number" id="send-amount" placeholder="Quantidade ECO">
+            <button class="nav-btn btn-send" style="width: 100%; margin-top: 10px;" onclick="doTransfer()">Confirmar Envio</button>
+            <p style="font-size: 0.65rem; color: var(--muted); text-align: center; margin-top: 10px;">Taxa de rede: 1%</p>
+        </div>
+
+        <div class="loader" id="main-loader"></div>
+        <div id="status-bar">Rede Ecopacto Online</div>
     </div>
 </div>
 
 <script>
     const API_URL = "https://ecopacto-api-production.up.railway.app";
-    let userWallet = null;
+    let walletData = null;
 
     function parseJwt(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        return JSON.parse(window.atob(base64));
+        try {
+            return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+        } catch (e) { return null; }
     }
 
     async function handleCredentialResponse(response) {
-        const payload = parseJwt(response.credential);
+        const user = parseJwt(response.credential);
+        setLoading(true);
+        setStatus("Autenticando...");
+
         try {
             const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: payload.email })
+                body: JSON.stringify({ email: user.email })
             });
-            userWallet = await res.json();
-            showWallet();
+
+            if (!res.ok) throw new Error("Erro no servidor");
+
+            walletData = await res.json();
+            renderWallet();
         } catch (err) {
-            alert("Erro ao conectar com a rede ECOPACTO.");
+            console.error(err);
+            alert("Erro de conexão com a rede.");
+            setStatus("Erro ao conectar.");
+        } finally {
+            setLoading(false);
         }
     }
 
-    function showWallet() {
-        document.getElementById('login-card').style.display = 'none';
-        document.getElementById('wallet-card').style.display = 'block';
-        document.getElementById('eco-balance').innerText = `${userWallet.balance} ECO`;
-        document.getElementById('eco-addr').innerText = userWallet.address;
+    function renderWallet() {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('wallet-view').style.display = 'block';
+        document.getElementById('disp-balance').innerText = walletData.balance.toLocaleString();
+        document.getElementById('disp-addr').innerText = walletData.address;
+        setStatus("Conectado: " + walletData.email);
     }
 
-    function toggleForm(type) {
-        document.getElementById('form-receive').classList.remove('active');
-        document.getElementById('form-send').classList.remove('active');
-        document.getElementById(`form-${type}`).classList.add('active');
+    function showPanel(type) {
+        document.getElementById('panel-receive').classList.remove('active');
+        document.getElementById('panel-send').classList.remove('active');
+        document.getElementById(`panel-${type}`).classList.add('active');
     }
 
-    function copyAddr() {
-        navigator.clipboard.writeText(userWallet.address);
-        document.getElementById('status-msg').innerText = "Endereço copiado!";
-        setTimeout(() => document.getElementById('status-msg').innerText = "", 2000);
+    function setStatus(txt) { document.getElementById('status-bar').innerText = txt; }
+    function setLoading(show) { document.getElementById('main-loader').style.display = show ? 'block' : 'none'; }
+
+    function copyAddress() {
+        navigator.clipboard.writeText(walletData.address);
+        const oldStatus = document.getElementById('status-bar').innerText;
+        setStatus("✅ Endereço copiado!");
+        setTimeout(() => setStatus(oldStatus), 2000);
     }
 
-    async function transfer() {
-        const dest = document.getElementById('dest').value;
-        const amount = document.getElementById('amount').value;
-        const msg = document.getElementById('status-msg');
+    async function doTransfer() {
+        const to = document.getElementById('send-to').value;
+        const amount = parseInt(document.getElementById('send-amount').value);
+        if (!to || !amount) return alert("Preencha todos os campos.");
 
-        if(!dest || !amount) return;
-        msg.innerText = "Processando transação...";
+        setLoading(true);
+        setStatus("Processando transação...");
 
         try {
             const res = await fetch(`${API_URL}/transfer`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ from: userWallet.address, to: dest, amount: parseInt(amount) })
+                body: JSON.stringify({ from: walletData.address, to: to, amount: amount })
             });
             const data = await res.json();
-            if(data.status === "Success") {
-                userWallet.balance = data.new_balance;
-                showWallet();
-                msg.innerText = "💸 Enviado com sucesso!";
-                document.getElementById('amount').value = "";
+            if (data.status === "Success") {
+                walletData.balance = data.new_balance;
+                renderWallet();
+                alert("💸 Transação enviada com sucesso!");
+                document.getElementById('send-amount').value = "";
+                showPanel('none'); // fecha painel
             } else {
-                msg.innerText = "❌ Saldo insuficiente ou erro.";
+                alert("❌ Erro: Verifique o saldo e o endereço.");
             }
-        } catch (err) {
-            msg.innerText = "❌ Erro na rede.";
-        }
+        } catch (e) { alert("Erro ao processar transferência."); }
+        finally { setLoading(false); }
     }
 </script>
 </body>
