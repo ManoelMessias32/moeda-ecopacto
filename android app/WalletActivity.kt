@@ -3,214 +3,185 @@ package com.ecopacto.moeda
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
+// Paleta de cores Ecopacto v2
+val EcopactoBg = Color(0xFF0B0E14)
+val EcopactoCard = Color(0xFF151921)
+val EcopactoPrimary = Color(0xFF22C55E)
+val EcopactoSecondary = Color(0xFF3B82F6)
+val EcopactoText = Color(0xFFF8FAFC)
+val EcopactoMuted = Color(0xFF94A3B8)
+
 class WalletActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            EcopactoWalletTheme {
+            EcopactoTheme {
                 WalletScreen()
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WalletScreen() {
     val scope = rememberCoroutineScope()
-    var username by remember { mutableStateOf("") }
-    var walletAddress by remember { mutableStateOf("Nenhuma carteira criada") }
-    var balance by remember { mutableStateOf("0 ECO") }
-    var isMining by remember { mutableStateOf(false) }
-    var miningLog by remember { mutableStateOf(listOf<String>()) }
-
+    var walletAddress by remember { mutableStateOf("ECO_...") }
+    var balance by remember { mutableStateOf("0") }
     var destAddress by remember { mutableStateOf("") }
-    var transferAmount by remember { mutableStateOf("") }
-    var txStatus by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf("") }
+    var statusMsg by remember { mutableStateOf("") }
+    var showSendForm by remember { mutableStateOf(false) }
 
-    LazyColumn(modifier = Modifier.padding(16.dp).fillMaxSize()) {
-        item {
-            Text("Carteira & Mineração Ecopacto", style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Nome de Usuário") },
-                modifier = Modifier.fillMaxWidth()
+    Surface(modifier = Modifier.fillMaxSize(), color = EcopactoBg) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            // Header
+            Text(
+                text = "ECOPACTO v2",
+                color = EcopactoText,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Button(
-                onClick = {
-                    scope.launch {
-                        val result = createWalletOnServer(username)
-                        walletAddress = result ?: "Erro ao criar"
-                    }
-                },
-                modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
+            Spacer(modifier = Modifier.height(40.dp))
+
+            // Balance Card
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Gerar Endereço na Blockchain")
+                Text("Saldo Disponível", color = EcopactoMuted, fontSize = 14.sp)
+                Text(
+                    text = "$balance ECO",
+                    color = EcopactoPrimary,
+                    fontSize = 48.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Endereço ECO:", color = Color.Gray)
-                    Text(walletAddress, style = MaterialTheme.typography.bodySmall)
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Text("Saldo Atual:", color = Color.Gray)
-                    Text(balance, style = MaterialTheme.typography.headlineSmall, color = Color(0xFF4CAF50))
+            // Actions
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Button(
+                    onClick = { /* Lógica de copiar endereço */ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = EcopactoCard),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("📥 Receber", color = EcopactoText)
                 }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text("Módulo de Mineração (Nó)", style = MaterialTheme.typography.titleMedium)
-            
-            Button(
-                onClick = {
-                    if (walletAddress.startsWith("ECO_")) {
-                        isMining = true
-                        scope.launch {
-                            val response = requestMining(walletAddress)
-                            if (response != null) {
-                                val reward = response.substringAfter("\"reward\":").substringBefore(",").trim()
-                                val newBalance = response.substringAfter("\"balance\":").substringBefore("}").trim()
-                                miningLog = listOf("Bloco Minerado! Recompensa: +$reward ECO") + miningLog
-                                balance = "$newBalance ECO"
-                            } else {
-                                miningLog = listOf("Falha na comunicação com o Nó.") + miningLog
-                            }
-                            isMining = false
-                        }
-                    }
-                },
-                enabled = walletAddress.startsWith("ECO_") && !isMining,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9800)),
-                modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
-            ) {
-                if (isMining) {
-                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(20.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Nó Executando Proof of Work...")
-                } else {
-                    Text("Solicitar Mineração de Bloco")
+                Button(
+                    onClick = { showSendForm = !showSendForm },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = EcopactoPrimary),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("💸 Enviar", color = Color.Black, fontWeight = FontWeight.Bold)
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text("Enviar Moedas ECO (Taxa de 1%)", style = MaterialTheme.typography.titleMedium, color = Color(0xFF2196F3))
-            Spacer(modifier = Modifier.height(8.dp))
-
-            TextField(
-                value = destAddress,
-                onValueChange = { destAddress = it },
-                label = { Text("Endereço de Destino (ECO_...)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-
-            TextField(
-                value = transferAmount,
-                onValueChange = { transferAmount = it },
-                label = { Text("Quantidade de ECO") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Button(
-                onClick = {
-                    val amountLong = transferAmount.toLongOrNull()
-                    if (amountLong != null && walletAddress.startsWith("ECO_") && destAddress.isNotEmpty()) {
-                        scope.launch {
-                            txStatus = "Processando transferência..."
-                            val newBal = executeTransfer(walletAddress, destAddress, amountLong)
-                            if (newBal != null) {
-                                txStatus = "Sucesso! Transação gravada na Blockchain."
-                                balance = "$newBal ECO"
-                                transferAmount = ""
-                                destAddress = ""
-                            } else {
-                                txStatus = "Erro: Verifique o saldo (Valor + 1% de Taxa) ou o endereço."
-                            }
-                        }
-                    } else {
-                        txStatus = "Preencha todos os campos corretamente."
-                    }
-                },
-                enabled = walletAddress.startsWith("ECO_"),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3)),
-                modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
+            // Address Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(EcopactoCard, RoundedCornerShape(16.dp))
+                    .padding(16.dp)
             ) {
-                Text("Transferir ECO")
+                Column {
+                    Text("Endereço da Carteira:", color = EcopactoMuted, fontSize = 12.sp)
+                    Text(
+                        text = walletAddress,
+                        color = EcopactoSecondary,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
             }
 
-            if (txStatus.isNotEmpty()) {
-                Text(txStatus, style = MaterialTheme.typography.bodySmall, color = if(txStatus.startsWith("Sucesso")) Color(0xFF4CAF50) else Color.Red, modifier = Modifier.padding(top = 8.dp))
+            if (showSendForm) {
+                Spacer(modifier = Modifier.height(24.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(EcopactoCard, RoundedCornerShape(16.dp))
+                        .padding(16.dp)
+                ) {
+                    TextField(
+                        value = destAddress,
+                        onValueChange = { destAddress = it },
+                        placeholder = { Text("Destino ECO_...", color = EcopactoMuted) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedIndicatorColor = EcopactoMuted,
+                            focusedIndicatorColor = EcopactoPrimary
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = amount,
+                        onValueChange = { amount = it },
+                        placeholder = { Text("Quantidade", color = EcopactoMuted) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent
+                        )
+                    )
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                val newBal = executeTransfer(walletAddress, destAddress, amount.toLongOrNull() ?: 0L)
+                                if (newBal != null) {
+                                    balance = newBal
+                                    statusMsg = "💸 Enviado com sucesso!"
+                                } else {
+                                    statusMsg = "❌ Erro na transação"
+                                }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = EcopactoPrimary)
+                    ) {
+                        Text("Confirmar Envio (Taxa 1%)", color = Color.Black)
+                    }
+                }
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-            Text("Histórico do Nó Local:", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
-        }
-
-        items(miningLog) { log ->
-            Text("• $log", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 2.dp))
+            
+            Text(
+                text = statusMsg,
+                color = EcopactoSecondary,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
+            )
         }
     }
 }
 
-// Produção Railway URL
 const val PROD_URL = "https://ecopacto-api-production.up.railway.app"
-
-suspend fun createWalletOnServer(user: String): String? = withContext(Dispatchers.IO) {
-    try {
-        val url = URL("$PROD_URL/wallet/create")
-        val conn = url.openConnection() as HttpURLConnection
-        conn.requestMethod = "POST"
-        conn.doOutput = true
-        conn.setRequestProperty("Content-Type", "application/json")
-
-        val jsonInputString = "{\"username\": \"$user\"}"
-        conn.outputStream.use { it.write(jsonInputString.toByteArray()) }
-
-        val response = conn.inputStream.bufferedReader().readText()
-        response.substringAfter("\"address\":\"").substringBefore("\"")
-    } catch (e: Exception) {
-        null
-    }
-}
-
-suspend fun requestMining(address: String): String? = withContext(Dispatchers.IO) {
-    try {
-        val url = URL("$PROD_URL/mine?address=$address")
-        val conn = url.openConnection() as HttpURLConnection
-        conn.requestMethod = "GET"
-        if (conn.responseCode == 200) {
-            conn.inputStream.bufferedReader().readText()
-        } else null
-    } catch (e: Exception) {
-        null
-    }
-}
 
 suspend fun executeTransfer(from: String, to: String, amount: Long): String? = withContext(Dispatchers.IO) {
     try {
@@ -219,22 +190,23 @@ suspend fun executeTransfer(from: String, to: String, amount: Long): String? = w
         conn.requestMethod = "POST"
         conn.doOutput = true
         conn.setRequestProperty("Content-Type", "application/json")
-
         val jsonInputString = "{\"from\": \"$from\", \"to\": \"$to\", \"amount\": $amount}"
         conn.outputStream.use { it.write(jsonInputString.toByteArray()) }
-
         if (conn.responseCode == 200) {
             val response = conn.inputStream.bufferedReader().readText()
             response.substringAfter("\"new_balance\":").substringBefore(",")
-        } else {
-            null
-        }
-    } catch (e: Exception) {
-        null
-    }
+        } else null
+    } catch (e: Exception) { null }
 }
 
 @Composable
-fun EcopactoWalletTheme(content: @Composable () -> Unit) {
-    MaterialTheme(content = content)
+fun EcopactoTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = darkColorScheme(
+            primary = EcopactoPrimary,
+            background = EcopactoBg,
+            surface = EcopactoCard
+        ),
+        content = content
+    )
 }
