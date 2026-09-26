@@ -53,7 +53,6 @@ var state AppState
 
 const DB_FILE = "blockchain.db"
 const InitialMiningReward = 10
-const HalvingIntervalBlocks = 2628000 // 5 anos (1 bloco/min)
 
 func saveState() {
 	data, _ := json.MarshalIndent(state, "", "  ")
@@ -106,16 +105,6 @@ func calculateHash(b Block) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func getCurrentReward() uint64 {
-	halvings := len(state.Blockchain.Chain) / HalvingIntervalBlocks
-	reward := uint64(InitialMiningReward)
-	for i := 0; i < halvings; i++ {
-		reward = reward / 2
-	}
-	if reward < 1 { return 1 }
-	return reward
-}
-
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	enableCORS(&w)
 	if r.Method == "OPTIONS" { return }
@@ -135,69 +124,24 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newWallet)
 }
 
-func mineHandler(w http.ResponseWriter, r *http.Request) {
-	enableCORS(&w)
-	addr := r.URL.Query().Get("address")
-	wallet := state.Wallets[addr]
-	if wallet == nil {
-		http.Error(w, "Wallet not found", 404)
-		return
-	}
-	reward := getCurrentReward()
-	if state.Tokenomics.NodeMining < reward {
-		http.Error(w, "Reserve empty", 400)
-		return
-	}
-	prev := state.Blockchain.Chain[len(state.Blockchain.Chain)-1]
-	newB := Block{Index: prev.Index + 1, Timestamp: time.Now().String(), Data: "Reward", PrevHash: prev.Hash}
-	target := strings.Repeat("0", state.Blockchain.Difficulty) + "7"
-	for {
-		newB.Hash = calculateHash(newB)
-		if strings.HasPrefix(newB.Hash, target) { break }
-		newB.Nonce++
-	}
-	state.Blockchain.Chain = append(state.Blockchain.Chain, newB)
-	wallet.Balance += reward
-	state.Tokenomics.NodeMining -= reward
-	saveState()
-	json.NewEncoder(w).Encode(map[string]interface{}{"reward": reward, "balance": wallet.Balance})
-}
-
-func transferHandler(w http.ResponseWriter, r *http.Request) {
-	enableCORS(&w)
-	if r.Method == "OPTIONS" { return }
-	var req struct{ From string `json:"from"`; To string `json:"to"`; Amount uint64 `json:"amount"` }
-	json.NewDecoder(r.Body).Decode(&req)
-	from := state.Wallets[req.From]; to := state.Wallets[req.To]
-	if from == nil || to == nil { http.Error(w, "Invalid wallet", 404); return }
-
-	fee := uint64(float64(req.Amount) * 0.01)
-	if fee < 1 && req.Amount > 0 { fee = 1 }
-	if from.Balance < req.Amount + fee { http.Error(w, "Insufficient balance", 400); return }
-
-	from.Balance -= (req.Amount + fee)
-	to.Balance += req.Amount
-	state.Tokenomics.Treasury += fee
-	saveState()
-	json.NewEncoder(w).Encode(map[string]interface{}{"status": "Success", "new_balance": from.Balance, "fee": fee})
-}
-
 func main() {
 	loadState()
 	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/mine", mineHandler)
-	http.HandleFunc("/transfer", transferHandler)
 	http.HandleFunc("/tokenomics", func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(&w)
 		json.NewEncoder(w).Encode(state.Tokenomics)
 	})
 
-	// Pega a porta do ambiente (necessário para Railway/Render)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	fmt.Printf("🚀 Servidor Ecopacto v2 Online na porta %s!\n", port)
-	http.ListenAndServe(":"+port, nil)
+	// MUDANÇA CRUCIAL: Ouvir em 0.0.0.0 em vez de apenas a porta
+	addr := "0.0.0.0:" + port
+	fmt.Printf("🚀 Servidor ECOPACTO Ativo em %s\n", addr)
+
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		fmt.Printf("Erro ao iniciar servidor: %v\n", err)
+	}
 }

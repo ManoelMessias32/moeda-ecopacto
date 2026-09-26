@@ -6,6 +6,6 @@
   },
   "deploy": {
     "startCommand": "./ecopacto",
-    "restartPolicyType": "ON_FAILURE"
+    "healthcheckPath": "/tokenomics"
   }
 }
