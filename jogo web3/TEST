@@ -1,0 +1,419 @@
+recicly city
+🏚️ Barraco de Triagem
+
+↓
+
+🏠 Centro de Coleta
+
+↓
+
+🏭 Galpão de Reciclagem
+
+↓
+
+🌆 Recicly City
+
+↓
+
+🌎 Ecopacto City
+
+🏭 Pátio de Coleta
+
+🛒 Loja & Upgrades
+
+👤 Perfil & Convites
+
+🏆 Ranking
+
+Sede: Barraco de Triagem
+
+Nível: 5
+
+Energia: 100/100
+
+ECP: 1250
+
+🦊 Conectar Carteira
+
+👤 PERFIL
+
+Nome:
+CatadorDaFavela
+
+Nível:
+25
+
+Saldo:
+15.500 ECP
+
+Materiais Coletados:
+58.000
+
+Ranking:
+#14
+
+Indicações:
+8 amigos
+
+Carteira:
+0x1234...89AB
+
+Data de Cadastro:
+
+indiicaçoes
+
+CONVIDE AMIGOS
+
+Seu código:
+
+RECICLY123
+
+Seu link:
+
+recicly.com/ref/RECICLY123
+
+recompensas
+
+1 amigo = 100 ECP
+
+5 amigos = 1.000 ECP
+
+10 amigos = Robô Básico
+
+50 amigos = Esteira Especial
+
+materiais
+
+Comuns
+
+🧴 Plástico
+📦 Papelão
+🥫 Alumínio
+
+Raros
+
+🔌 Cobre
+
+Épicos
+
+🔋 Lítio
+
+Lendários
+
+💻 Peças Eletrônicas
+📱 Smartphone
+🖥️ Placa-Mãe
+
+porcentagem por itens
+
+Plástico: 60%
+
+Papelão: 20%
+
+Alumínio: 12%
+
+Cobre: 5%
+
+Lítio: 2%
+
+Peças Eletrônicas: 0,8%
+
+Smartphone: 0,15%
+
+Placa-Mãe: 0,05%
+
+Chip: 0,01%
+
+Nível 1
+🏚️ Barraco de Triagem
+
+Nível 10
+🏠 Centro de Coleta
+
+Nível 25
+🏭 Galpão de Reciclagem
+
+Nível 50
+🌆 Recicly City
+
+Nível 100
+🌎 Ecopacto City
+
+abas da loja
+
+🏭 Melhorias
+👷 Catador Adicional
+
+100 ECP
+ou
+0,00005 BNB
+
+⚡ Energia
+⚡ +50 Energia
+
+⚡ +100 Energia
+
+⚡ Energia Infinita 1h
+
+🚀 Turbo 2x Produção
+
+30 minutos
+
+0,00005 BNB
+
+🤖 Automação
+🤖 Robô Superior
+
+400 ECP
+ou
+0,00015 BNB
+
+💎 Premium
+🎨 Skin da Esteira
+
+🏭 Skin Industrial
+
+🚚 Caminhão Especial
+
+🤖 Robô Dourado
+
+sistema da esteira
+
+fluxo
+GERADOR DE ITENS
+      ↓
+ESTEIRA
+      ↓
+TRIAGEM
+      ↓
+ARMAZÉM
+
+animaçao
+
+╔════════════════════════════╗
+║ 🧴                         ║
+║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
+╚════════════════════════════╝
+╔════════════════════════════╗
+║          🧴                ║
+║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
+╚════════════════════════════╝
+╔════════════════════════════╗
+║                     🧴     ║
+║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
+╚════════════════════════════╝
+itens comuns
+🧴 Plástico
+📦 Papelão
+🥫 Alumínio
+2 segundos para atravessar
+
+raros
+🔌 Cobre
+🔋 Lítio
+4 segundos para atravessar
+
+sistema de itens raros
+a tela escurece levemente
+✨ ITEM RARO DETECTADO ✨
+
+esterira continua
+╔════════════════════════════╗
+║            🔋              ║
+║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
+╚════════════════════════════╝
+* brilho *
+
+sistema de peças eletronicas
+💻
+chances
+0,8%
+6 segundos
+
+📱 smartphone
+chances
+0,15%
+
+🖥️ placa mae
+chances
+0,05%
+
+itens lendarios
+⚡ CHIP
+chances
+0,01%
+quando aparecer
+🚨 ALERTA DE ITEM LENDÁRIO 🚨
+a esteira desacelera
+⚡
+efeito viiisual
+✨✨✨✨✨✨✨✨
+
+⚡ CHIP ENCONTRADO
+
++100 ECP
+
+✨✨✨✨✨✨✨✨
+
+controle de geraçao
+nunca gerar dois intens
+Item atual termina
+↓
+Processa
+↓
+Gera próximo item
+exemplo
+🧴
+↓
+Processado
+
+🥫
+↓
+Processado
+
+🧴
+↓
+Processado
+
+🔋
+↓
+Processado
+
+📦
+↓
+Processado
+
+nivel 1
+1 item por vez
+nivel 10
+visual mais rápida
+nivel 25
+esteira industrial
+nivel 50
+robôs aparecem trabalhando
+nivel 100
+cidade automatizada
+
+melhorias esteira
+┌────────────────────────────────────┐
+│                                    │
+│  🧴                               │
+│  ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶     │
+│                                    │
+│                              📦    │
+└────────────────────────────────────┘
+quando o iten chegar no final
+🧴
+      ↓
+📦
+ e entao
+ +1 Plástico
+
+ para itens raros
+ ele corre na esteira normalmente
+ ✨ CAIXA DE TRIAGEM ✨
+
+ 🔋 Lítio armazenado
+
+ +1 Lítio
+
+ animaçao da caixa
+ normal
+ 📦
+ recebendo itens
+ 📦💨
+
+ itens lendarios
+ ⚡ chip
+ quando chegar na caiixa
+ ✨✨✨✨✨
+
+ 📦 recebeu item lendário
+
+ ⚡ CHIP
+
+ ✨✨✨✨✨
+ evoluçao da caixa
+
+ Nível 1
+ 📦 Caixa de madeira
+
+ Nível 20
+ ♻️ Centro de Triagem
+
+ Nível 50
+ 🏭 Prensa Industrial
+
+ Nível 100
+ 🤖 Sistema Automatizado
+
+ recompensas
+
+ 1 amigo = 50 ECP
+
+ 5 amigos = 500 ECP
+
+ 10 amigos = Catador Especial
+
+ 25 amigos = Robô Básico
+
+ 50 amigos = Skin Exclusiva
+
+ ranking
+ Maior ECP
+
+ Mais Materiais
+
+ Mais Convites
+
+ Maior Nível
+
+ Maior Produção
+
+ pagina perfil
+
+ 👤 João
+
+ ID: ECO_3048c16df4c51e70ff5ff2e4
+
+ 💰 ECP: 1250
+
+ ⚡ Energia: 85/100
+
+ 🦊 MetaMask: Conectada
+
+ 💰 ECP: 1250
+
+ 💼 Wallet
+
+ 🦊 MetaMask
+
+ login
+Recicly City
+       ↕
+Ecopacto Wallet
+
+eu teria que criar um botao na wallet ecopacto para o jogo web3
+e para vc logar no jogo um botao que ja te manda para a wallet
+o botao na wallet eu colocaria no roda pe em baixo
+
+pagina tap on
+
+0 convites
+0,05 ECP/h
+
+5 convites
+0,10 ECP/h
+
+10 convites
+0,20 ECP/h
+
+25 convites
+0,50 ECP/h
+
+50 convites
+1,00 ECP/h
+
+
+
+
