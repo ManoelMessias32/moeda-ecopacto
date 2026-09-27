@@ -501,7 +501,7 @@ Nível 25
 Nível 50
 200 Energia
 
-preço dos iten da loja
+preço dos iten da loja com abas separando
 Energia
 
 Energia
@@ -1020,5 +1020,119 @@ Saldo: 1250 ECO
 
 🦊 MetaMask
 Não conectada
+
+botoes eco / metasmask
+<div class="shop-item">
+
+    <h4>🤖 Robô Básico</h4>
+
+    <p>+5 materiais/s</p>
+
+    <button class="eco-btn">
+        💰 5000 ECO
+    </button>
+
+    <button class="bnb-btn">
+        🦊 0.001 BNB
+    </button>
+
+</div>
+comprar com eco
+function buyRobotEco(){
+
+    if(state.eco < 5000){
+        alert("ECO insuficiente");
+        return;
+    }
+
+    state.eco -= 5000;
+
+    state.robot++;
+}
+
+comprar com bnb
+function buyRobotBNB(){
+    // abre MetaMask
+    // envia BNB
+    // libera item
+}
+
+energia
+⚡ +50 Energia
+
+💰 100 ECO
+🦊 0.00002 BNB
+
+catador
+👷 Catador
+
+💰 500 ECO
+🦊 0.0001 BNB
+
+robo
+🤖 Robô Superior
+
+💰 5000 ECO
+🦊 0.001 BNB
+
+esteira
+⚙️ Esteira Industrial
+
+💰 20000 ECO
+🦊 0.004 BNB
+
+cor diferente
+💰 ECO = Verde
+
+🦊 BNB = Laranja
+
+
+<div class="shop-item">
+
+    <h4>🤖 Robô Básico</h4>
+
+    <p>+5 materiais/s</p>
+
+    <button class="eco-btn">
+        💰 5000 ECO
+    </button>
+
+    <button class="bnb-btn">
+        🦊 0.001 BNB
+    </button>
+
+</div>
+reço dos iten da loja com abas separando
+Energia
+
+Energia
+Item	ECO  	BNB
++50 Energia	    100 ECO  	0,00002 BNB
++100 Energia	180 ECO	 0,00004 BNB
++500 Energia	800 ECO	 0,00015 BNB
+
+Funcionários
+Item	ECO	    BNB
+Catador Adicional	500 ECO 	0,00010 BNB
+Catador Profissional	2.500 ECO	 0,00050 BNB
+Supervisor	10.000 ECO	0,00200 BNB
+
+Robôs
+Item	ECO	BNB
+Robô Básico	5.000 ECO	0,00100 BNB
+Robô Superior	15.000 ECO	0,00300 BNB
+Robô Industrial	50.000 ECO	0,01000 BNB
+
+Esteiras
+Item	ECO	BNB
+Esteira Nível 2	1.000 ECO	0,00020 BNB
+Esteira Nível 3	5.000 ECO	0,00100 BNB
+Esteira Industrial	20.000 ECO	0,00400 BNB
+
+Boosters
+Item	ECO	BNB
+Produção 2x (30 min)	300 ECO	0,00006 BNB
+Produção 2x (1h)	500 ECO	0,00010 BNB
+Produção 3x (1h)	1.500 ECO	0,00030 BNB
 
 
