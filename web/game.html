@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recicly City | Operações Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0b0e14; --panel: #151921; --header: #1c222d;
-            --accent: #238636; --rare: #3b82f6; --legendary: #f59e0b;
+            --accent: #22c55e; --rare: #3b82f6; --legendary: #f59e0b;
             --text: #f8fafc; --muted: #64748b; --border: #ffffff10;
         }
 
@@ -18,18 +18,19 @@
             overflow: hidden;
         }
 
-        /* TELA DE BLOQUEIO */
+        /* TELA DE LOGIN EXIGIDO */
         #lock-screen {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
         }
-        .btn-auth {
-            background: #f97316; color: white; border: none; padding: 12px 24px;
-            border-radius: 8px; font-weight: 800; cursor: pointer; text-decoration: none;
-            margin-top: 20px; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        .lock-logo { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: -2px; }
+        .btn-auth-trigger {
+            background: #f97316; color: white; border: none; padding: 14px 28px;
+            border-radius: 10px; font-weight: 800; cursor: pointer; text-decoration: none;
+            margin-top: 30px; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
         }
 
-        /* TABS COMPACTAS */
+        /* TABS SUPERIORES SLIM */
         .tabs { display: flex; gap: 4px; height: 35px; }
         .tab {
             flex: 1; padding: 0; text-align: center; font-size: 0.65rem; font-weight: 700;
@@ -39,26 +40,26 @@
         .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
         /* DASHBOARD AREA */
-        .dashboard {
+        .main-card {
             background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
             display: flex; flex-direction: column; flex: 1; overflow: hidden;
         }
-        .dashboard-header { background: var(--header); padding: 6px 12px; font-size: 0.7rem; font-weight: 800; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
+        .card-header { background: var(--header); padding: 5px 12px; font-size: 0.65rem; font-weight: 800; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
 
-        /* ESTEIRA SLIM */
+        /* ESTEIRA COMPACTA */
         .belt-area {
-            padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;
             background: linear-gradient(180deg, #111827 0%, #0d1117 100%);
         }
         .belt-container {
-            width: 100%; height: 60px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
+            width: 100%; height: 50px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
             position: relative; overflow: hidden; display: flex; align-items: center;
         }
-        #active-item { position: absolute; font-size: 2rem; left: -50px; z-index: 10; }
+        #item-active { position: absolute; font-size: 1.8rem; left: -50px; z-index: 10; }
         .belt-label { position: absolute; top: 2px; font-size: 0.5rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
 
         .btn-process {
-            width: 100%; background: var(--accent); color: white; border: none; padding: 10px;
+            width: 100%; background: var(--accent); color: #000; border: none; padding: 10px;
             border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer;
         }
 
@@ -83,17 +84,18 @@
         }
         .inv-icon { font-size: 1rem; }
         .inv-count { font-size: 0.7rem; font-weight: 800; color: #fff; }
-        .inv-name { font-size: 0.35rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+        .inv-name { font-size: 0.3rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
 
-        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; margin: 5px 10px; cursor: pointer; }
+        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; margin: 4px 10px; cursor: pointer; }
 
-        /* LOGS */
+        /* TERMINAL LOGS */
         .terminal {
             background: #000; margin: 0 10px 5px 10px; padding: 8px; border-radius: 6px;
-            font-family: monospace; font-size: 0.55rem; color: #64748b; height: 50px; overflow-y: auto;
-            border: 1px solid var(--border); line-height: 1.2;
+            font-family: monospace; font-size: 0.55rem; color: #64748b; height: 45px; overflow-y: auto;
+            border: 1px solid var(--border); line-height: 1.1;
         }
         .log-g { color: var(--accent); }
+        .log-o { color: var(--orange); }
 
         @media (max-width: 600px) { .inventory-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
@@ -102,12 +104,12 @@
 
     <!-- LOCK SCREEN -->
     <div id="lock-screen">
-        <h1 style="margin:0; letter-spacing:-2px; color:#fff">RECICLY CITY</h1>
-        <p style="color:var(--muted); font-size:0.8rem;">Dashboard de Operações Industriais</p>
-        <a href="index.html" class="btn-auth">🔓 CONECTAR CARTEIRA ECOPACTO</a>
+        <div class="lock-title">RECICLY CITY</div>
+        <p style="color:var(--muted); font-size:0.8rem; margin-top:5px;">Acesso restrito à rede operacional.</p>
+        <a href="index.html" class="btn-auth-trigger">🔓 CONECTAR VIA HUB WALLET</a>
     </div>
 
-    <!-- UI -->
+    <!-- DASHBOARD -->
     <div class="tabs">
         <div class="tab active">🏭 Pátio</div>
         <div class="tab">🛒 Loja</div>
@@ -116,14 +118,14 @@
     </div>
 
     <div class="main-card">
-        <div class="dashboard-header">
+        <div class="card-header">
             <span>🏗️ Triagem de Lote</span>
-            <span style="color:var(--muted); font-size:0.55rem;">AUTO: 0/S</span>
+            <span style="color:var(--muted); font-size:0.5rem;">AUTOMÁTICO: 0/S</span>
         </div>
 
         <div class="belt-area">
             <div class="belt-container">
-                <div id="active-item"></div>
+                <div id="item-active"></div>
                 <div class="belt-label" id="belt-info">AGUARDANDO...</div>
             </div>
             <button class="btn-process" id="proc-btn" onclick="startBatch()">▶ PROCESSAR PRÓXIMO LOTE</button>
@@ -140,13 +142,13 @@
         </div>
 
         <div class="inventory-grid" id="inv-grid">
-            <!-- Itens gerados via JS -->
+            <!-- Gerado via JS -->
         </div>
 
-        <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS</button>
+        <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS POR ECP</button>
 
         <div class="terminal" id="logs">
-            <div class="log-g">[Sistema]: Dashboard v2.2 conectado.</div>
+            <div class="log-g">[Sistema]: Hub Operacional v2.3 carregado.</div>
         </div>
     </div>
 
@@ -154,7 +156,10 @@
     const API_URL = "https://ecopacto-api-production.up.railway.app";
     const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
 
-    if(wallet) document.getElementById('lock-screen').style.display = 'none';
+    if(wallet) {
+        document.getElementById('lock-screen').style.display = 'none';
+        addLog("Identidade verificada: " + wallet.email, "log-g");
+    }
 
     let state = {
         level: 1, energy: 100, ecp: 0, items: 0,
@@ -165,12 +170,12 @@
         { id: 'plastic', name: "Plástico", icon: "🧴", chance: 60, speed: 1000, reward: 1 },
         { id: 'paper', name: "Papelão", icon: "📦", chance: 20, speed: 1000, reward: 2 },
         { id: 'alum', name: "Alumínio", icon: "🥫", chance: 12, speed: 1000, reward: 5 },
-        { id: 'copper', name: "Cobre", icon: "🔌", chance: 5, speed: 2000, reward: 20 },
-        { id: 'lithium', name: "Lítio", icon: "🔋", chance: 2, speed: 2000, reward: 50 },
-        { id: 'parts', name: "Peças", icon: "💻", chance: 0.8, speed: 3000, reward: 150 },
-        { id: 'phone', name: "Smartphone", icon: "📱", chance: 0.15, speed: 3000, reward: 500 },
-        { id: 'board', name: "Placa-Mãe", icon: "🖥️", chance: 0.05, speed: 3000, reward: 1000 },
-        { id: 'chip', name: "Chip", icon: "⚡", chance: 0.01, speed: 4000, reward: 5000 }
+        { id: 'copper', name: "Cobre", icon: "🔌", chance: 5, speed: 1800, reward: 15 },
+        { id: 'lithium', name: "Lítio", icon: "🔋", chance: 2, speed: 1800, reward: 50 },
+        { id: 'parts', name: "Peças", icon: "💻", chance: 0.8, speed: 3000, reward: 120 },
+        { id: 'phone', name: "Smartphone", icon: "📱", chance: 0.15, speed: 3000, reward: 300 },
+        { id: 'board', name: "Placa-Mãe", icon: "🖥️", chance: 0.05, speed: 3000, reward: 800 },
+        { id: 'chip', name: "Chip", icon: "⚡", chance: 0.01, speed: 4500, reward: 2500 }
     ];
 
     function initInventory() {
@@ -201,7 +206,7 @@
     }
 
     function startBatch() {
-        if(state.energy <= 0) return addLog("Sem energia!", "#f97316");
+        if(state.energy <= 0) return addLog("Sem energia!", "log-o");
         const btn = document.getElementById('proc-btn');
         btn.disabled = true;
 
@@ -231,7 +236,7 @@
                 if(sel.id === 'chip' && wallet) {
                     fetch(`${API_URL}/mine?address=${wallet.address}`)
                         .then(r => r.json())
-                        .then(data => addLog("✨ BLOCO MINERADO! +100 ECO REAIS.", "var(--orange)"));
+                        .then(data => addLog("✨ BLOCO MINERADO! +100 ECO REAIS.", "log-o"));
                 }
 
                 if(state.items % 15 === 0) state.level++;
@@ -243,9 +248,9 @@
         requestAnimationFrame(frame);
     }
 
-    function addLog(msg, color = "") {
+    function addLog(msg, cl = "") {
         const logs = document.getElementById('logs');
-        logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML;
+        logs.innerHTML = `<div class="${cl}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML;
     }
 
     function sellItems() {
@@ -255,12 +260,12 @@
             state.inventory[m.id] = 0;
         });
         state.ecp += total;
-        addLog(`💰 Venda realizada: +${total} ECP`, "var(--accent)");
+        addLog(`💰 Venda concluída: +${total} ECP`, "log-g");
         updateUI();
     }
 
     initInventory();
-    setInterval(() => { if(state.energy < 100) { state.energy++; updateUI(); } }, 8000);
+    setInterval(() => { if(state.energy < 100) { state.energy++; updateUI(); } }, 10000);
 </script>
 </body>
 </html>
