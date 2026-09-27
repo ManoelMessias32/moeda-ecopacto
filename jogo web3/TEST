@@ -1213,3 +1213,72 @@ await ethereum.request({
    method:'eth_sendTransaction'
 })
 
+corrigir pagina patiio
+
+console.log(
+   state.inventory[sel.id]
+);
+state.inventory[sel.id]++;
+
+salvamento automatico
+function saveGame(){
+
+   localStorage.setItem(
+      "reciclyCitySave",
+      JSON.stringify(state)
+   );
+
+}
+
+funcçao carregar
+function loadGame(){
+
+   const save =
+      localStorage.getItem(
+         "reciclyCitySave"
+      );
+
+   if(save){
+
+      state =
+      JSON.parse(save);
+
+      updateUI();
+
+   }
+
+}
+chamar ao niicia
+loadGame();
+
+perfil
+Nome de usuário:
+manoel
+
+Carteira:
+ECO_85dd80d4bb33988cf430b8ec
+
+convites
+Seu link:
+
+https://reciclycity.com/ref/manoel
+
+Regras
+
+No cadastro:
+
+✅ mínimo 3 caracteres
+
+✅ máximo 20 caracteres
+
+✅ sem espaços
+
+✅ único
+banco de dados para salvar login
+{
+  "username": "manoel",
+  "wallet": "ECO_85dd80d4bb33988cf430b8ec",
+  "eco": 1250,
+  "level": 10
+}
+`

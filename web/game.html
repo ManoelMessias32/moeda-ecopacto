@@ -17,37 +17,50 @@
             font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
             margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; gap: 8px;
             overflow: hidden;
+            transition: background-color 0.5s;
         }
 
         /* CABEÇALHO FIXO */
         .top-header {
             background: #151921; border: 1px solid #30363d; border-radius: 10px; padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .logo { text-align: center; font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+        .logo { text-align: center; font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
         .player-info {
-            display: flex; justify-content: center; align-items: center; gap: 12px;
-            font-size: .7rem; color: #c9d1d9; flex-wrap: wrap;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            font-size: .75rem; color: #c9d1d9; flex-wrap: wrap;
         }
         .wallet-btn {
             background: #f97316; color: white; border: none; border-radius: 8px;
-            padding: 5px 10px; font-size: .65rem; font-weight: 700; cursor: pointer;
+            padding: 6px 10px; font-size: .7rem; font-weight: 700; cursor: pointer;
+            transition: 0.3s;
         }
+        .wallet-btn:hover { background: #ea580c; }
 
-        /* TABS NAVEGAÇÃO */
+        /* TABS NAVEGAÇÃO PRINCIPAL */
         .tabs { display: flex; gap: 4px; height: 35px; }
         .tab {
             flex: 1; text-align: center; font-size: 0.6rem; font-weight: 700;
             cursor: pointer; border-radius: 6px; background: var(--panel); color: var(--muted);
             border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
         }
         .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* DASHBOARD */
+        /* DASHBOARD AREA */
         .main-card {
             background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
             display: flex; flex-direction: column; flex: 1; overflow: hidden;
         }
         .card-header { background: var(--panel-h); padding: 6px 12px; font-size: 0.65rem; font-weight: 800; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
+
+        /* SEÇÕES DO PÁTIO */
+        .section-divider {
+            text-align: center; font-size: 0.5rem; color: var(--border); margin: 2px 0; letter-spacing: 2px;
+        }
+        .patio-label {
+            text-align: center; font-size: 0.65rem; font-weight: 800; color: var(--muted); margin: 2px 0; text-transform: uppercase;
+        }
 
         /* ESTEIRA */
         .belt-area {
@@ -58,28 +71,31 @@
             width: 100%; height: 50px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
             position: relative; overflow: hidden; display: flex; align-items: center;
         }
-        #item-active { position: absolute; font-size: 1.8rem; left: -50px; z-index: 10; }
-        .drop-box { position: absolute; right: 10px; font-size: 1.5rem; transition: 0.3s; }
+        #item-active { position: absolute; font-size: 1.8rem; left: -50px; z-index: 10; transition: left 0.1s linear; }
+        .drop-box { position: absolute; right: 10px; font-size: 1.5rem; transition: 0.3s; z-index: 5; }
         .belt-label { position: absolute; top: 2px; font-size: 0.5rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
 
         .btn-process {
             width: 100%; background: var(--accent); color: #000; border: none; padding: 10px;
             border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer;
-            box-shadow: 0 3px 0 #166534;
+            box-shadow: 0 3px 0 #166534; transition: 0.2s;
         }
+        .btn-process:active { transform: translateY(2px); box-shadow: none; }
+        .btn-process:disabled { background: var(--border); color: var(--muted); box-shadow: none; cursor: not-allowed; }
 
-        /* STATUS */
+        /* STATUS STRIP */
         .status-strip {
             background: #00000060; padding: 6px 12px; display: flex; justify-content: space-between;
             font-size: 0.55rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
             align-items: center; gap: 8px;
         }
-        .energy-info { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+        .energy-info { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .energy-bar-wrap { display: flex; align-items: center; gap: 4px; }
-        .energy-bar { width: 35px; height: 5px; background: #1e293b; border-radius: 10px; overflow: hidden; }
+        .energy-bar { width: 40px; height: 5px; background: #1e293b; border-radius: 10px; overflow: hidden; }
         #energy-fill { height: 100%; background: #3b82f6; width: 100%; transition: 0.3s; }
+        #energy-timer { font-size: .55rem; color: var(--muted); }
 
-        /* GRID MATERIAIS */
+        /* INVENTÁRIO GRID */
         .inventory-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px;
             background: #00000020; flex: 1; overflow-y: auto;
@@ -92,9 +108,10 @@
         .inv-count { font-size: 0.65rem; font-weight: 800; color: #fff; }
         .inv-name { font-size: 0.4rem; color: var(--muted); text-transform: uppercase; }
 
-        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; margin: 4px 10px; cursor: pointer; }
+        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; margin: 4px 10px; cursor: pointer; transition: 0.2s; }
+        .btn-sell:hover { background: #d97706; }
 
-        /* TERMINAL */
+        /* TERMINAL LOGS */
         .terminal {
             background: #000; margin: 0 10px 5px 10px; padding: 8px; border-radius: 6px;
             font-family: monospace; font-size: 0.5rem; color: #64748b; height: 40px; overflow-y: auto;
@@ -108,19 +125,19 @@
         }
         .modal.active { display: flex; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .modal-header h2 { font-size: 1rem; margin: 0; color: #fff; }
+        .modal-header h2 { font-size: 1.1rem; margin: 0; color: #fff; }
         .modal-header button { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; }
 
         /* LOJA ABAS */
         .shop-tabs { display: flex; gap: 4px; margin-bottom: 10px; background: #0b0e14; padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
-        .shop-tab { flex: 1; padding: 6px 0; text-align: center; font-size: 0.55rem; font-weight: 700; cursor: pointer; border-radius: 6px; color: var(--muted); }
+        .shop-tab { flex: 1; padding: 6px 0; text-align: center; font-size: 0.55rem; font-weight: 700; cursor: pointer; border-radius: 6px; color: var(--muted); transition: 0.2s; }
         .shop-tab.active { background: var(--panel-h); color: #fff; }
 
         .shop-content { display: none; flex-direction: column; gap: 8px; }
         .shop-content.active { display: flex; }
 
         .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-        .shop-item { background: var(--panel); padding: 8px; border-radius: 8px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; min-height: 110px;}
+        .shop-item { background: var(--panel); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; min-height: 120px; }
         .shop-item h4 { margin: 0 0 2px 0; font-size: 0.65rem; color: white; }
         .shop-item p { margin: 0 0 6px 0; font-size: 0.5rem; color: var(--muted); }
 
@@ -130,10 +147,20 @@
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .btn-auth-trigger { background: var(--orange); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 800; cursor: pointer; text-decoration: none; margin-top: 20px; font-size: 0.8rem; }
+
+        /* RARITY EFFECTS */
+        .rare-flash { animation: rare-bg 0.5s infinite alternate; }
+        @keyframes rare-bg { from { background-color: #0b0e14; } to { background-color: #0a1b3a; } }
+        .legendary-flash { animation: legendary-bg 0.5s infinite alternate; }
+        @keyframes legendary-bg { from { background-color: #0b0e14; } to { background-color: #3d2a00; } }
+
+        /* INPUT ESTILIZADO */
+        .input-text { width: 100%; background: #000; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; box-sizing: border-box; font-size: 0.75rem; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
+    <!-- CABEÇALHO UNIFICADO -->
     <div class="top-header">
         <div class="logo">♻️ RECICLY CITY</div>
         <div class="player-info">
@@ -145,6 +172,7 @@
         </div>
     </div>
 
+    <!-- NAVEGAÇÃO PRINCIPAL -->
     <div class="tabs">
         <div class="tab active" onclick="showTab('patio')">🏭 Pátio</div>
         <div class="tab" onclick="showTab('shop')">🛒 Loja</div>
@@ -152,17 +180,22 @@
         <div class="tab" onclick="showTab('ranking')">🏆 Ranking</div>
     </div>
 
+    <!-- TELA DE BLOQUEIO -->
     <div id="lock-screen">
         <div style="font-size:2rem; font-weight:800">RECICLY CITY</div>
-        <p style="color:var(--muted); font-size:0.8rem;">Conecte sua carteira para operar.</p>
+        <p style="color:var(--muted); font-size:0.8rem;">Conecte sua carteira via Hub para operar.</p>
         <a href="index.html" class="btn-auth-trigger">🔓 CONECTAR VIA HUB</a>
     </div>
 
+    <!-- VIEW: PÁTIO -->
     <div class="main-card" id="patio-view">
         <div class="card-header">
             <span>🏗️ Triagem Operacional</span>
             <span style="color:var(--muted); font-size:0.5rem;" id="auto-status">AUTO: OFF</span>
         </div>
+
+        <div class="section-divider">═══════════════════</div>
+        <div class="patio-label">ESTEIRA</div>
 
         <div class="belt-area">
             <div class="belt-container">
@@ -174,7 +207,7 @@
         </div>
 
         <div class="status-strip">
-            <div>Sede: <span id="sede-name" style="color:white; font-weight:800">🏚️ Barraco</span></div>
+            <div>Sede: <span id="sede-name" style="color:white; font-weight:800">🏚️ Barraco de Triagem</span></div>
             <div>Lvl: <span id="lvl-val" style="color:white; font-weight:800">1</span></div>
             <div class="energy-info">
                 <div class="energy-bar-wrap">E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span></div>
@@ -184,12 +217,23 @@
             <button class="tab" style="padding:2px 8px; font-size:0.5rem; background:#f97316; color:white; border:none; flex:none; height:18px;" onclick="window.location.href='index.html'">Hub</button>
         </div>
 
+        <div class="section-divider">═══════════════════</div>
+        <div class="patio-label">MATERIAIS</div>
+
         <div class="inventory-grid" id="inv-grid"></div>
+
+        <div class="section-divider">═══════════════════</div>
+        <div class="patio-label">VENDER</div>
+
         <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS POR ECO</button>
+
+        <div class="section-divider">═══════════════════</div>
+        <div class="patio-label">LOGS</div>
+
         <div class="terminal" id="logs"></div>
     </div>
 
-    <!-- LOJA COM ABAS E BOTOES DIVIDIDOS -->
+    <!-- MODAL LOJA -->
     <div id="modal-shop" class="modal">
         <div class="modal-header"><h2>🛒 Loja de Melhorias Web3</h2><button onclick="showTab('patio')">✕</button></div>
 
@@ -201,138 +245,33 @@
             <div class="shop-tab" onclick="showShopTab('boosters')">🚀 Boosters</div>
         </div>
 
-        <!-- ENERGIA -->
+        <!-- ABAS DA LOJA -->
         <div id="shop-energy" class="shop-content active">
             <div class="shop-grid">
-                <div class="shop-item">
-                    <h4>⚡ +50 Energia</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy50', 100)">💰 100 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00002, 'energy50')">🦊 0.00002 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>⚡ +100 Energia</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy100', 180)">💰 180 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00004, 'energy100')">🦊 0.00004 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>⚡ +500 Energia</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy500', 800)">💰 800 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00015, 'energy500')">🦊 0.00015 BNB</button>
-                    </div>
-                </div>
+                <div class="shop-item"><h4>⚡ +50 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy50', 100)">💰 100 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00002, 'energy50')">🦊 0.00002 BNB</button></div></div>
+                <div class="shop-item"><h4>⚡ +100 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy100', 180)">💰 180 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00004, 'energy100')">🦊 0.00004 BNB</button></div></div>
+                <div class="shop-item"><h4>⚡ +500 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy500', 800)">💰 800 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00015, 'energy500')">🦊 0.00015 BNB</button></div></div>
             </div>
         </div>
-
-        <!-- EQUIPE -->
         <div id="shop-staff" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item">
-                    <h4>👷 Catador Adicional</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_add', 500)">💰 500 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00010, 'staff_add')">🦊 0.00010 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>👷 Profissional</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_pro', 2500)">💰 2500 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00050, 'staff_pro')">🦊 0.00050 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>👷 Supervisor</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_super', 10000)">💰 10000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00200, 'staff_super')">🦊 0.00200 BNB</button>
-                    </div>
-                </div>
+                <div class="shop-item"><h4>👷 Catador Adicional</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('staff_add', 500)">💰 500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00010, 'staff_add')">🦊 0.00010 BNB</button></div></div>
+                <div class="shop-item"><h4>👷 Supervisor</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('staff_super', 10000)">💰 10000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00200, 'staff_super')">🦊 0.00200 BNB</button></div></div>
             </div>
         </div>
-
-        <!-- ROBÔS -->
         <div id="shop-robots" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item">
-                    <h4>🤖 Robô Básico</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_basic', 5000)">💰 5000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00100, 'robot_basic')">🦊 0.00100 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>🤖 Robô Superior</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_super', 15000)">💰 15000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00300, 'robot_super')">🦊 0.00300 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>🤖 Robô Industrial</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_ind', 50000)">💰 50000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.01000, 'robot_ind')">🦊 0.01000 BNB</button>
-                    </div>
-                </div>
+                <div class="shop-item"><h4>🤖 Robô Básico</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('robot_basic', 5000)">💰 5000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00100, 'robot_basic')">🦊 0.00100 BNB</button></div></div>
             </div>
         </div>
-
-        <!-- ESTEIRAS -->
         <div id="shop-belts" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item">
-                    <h4>⚙️ Nível 2</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_lvl2', 1000)">💰 1000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00020, 'belt_lvl2')">🦊 0.00020 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>⚙️ Nível 3</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_lvl3', 5000)">💰 5000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00100, 'belt_lvl3')">🦊 0.00100 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>⚙️ Industrial</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_ind', 20000)">💰 20000 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00400, 'belt_ind')">🦊 0.00400 BNB</button>
-                    </div>
-                </div>
+                <div class="shop-item"><h4>⚙️ Esteira Nível 2</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('belt_lvl2', 1000)">💰 1000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00020, 'belt_lvl2')">🦊 0.00020 BNB</button></div></div>
             </div>
         </div>
-
-        <!-- BOOSTERS -->
         <div id="shop-boosters" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item">
-                    <h4>🚀 2x (30 min)</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_2x_30m', 300)">💰 300 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00006, 'boost_2x_30m')">🦊 0.00006 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>🚀 2x (1h)</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_2x_1h', 500)">💰 500 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00010, 'boost_2x_1h')">🦊 0.00010 BNB</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <h4>🚀 3x (1h)</h4>
-                    <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_3x_1h', 1500)">💰 1500 ECO</button>
-                        <button class="bnb-btn" onclick="buyWithBNB(0.00030, 'boost_3x_1h')">🦊 0.00030 BNB</button>
-                    </div>
-                </div>
+                <div class="shop-item"><h4>🚀 Turbo 2x (30m)</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('boost_2x_30m', 300)">💰 300 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00006, 'boost_2x_30m')">🦊 0.00006 BNB</button></div></div>
             </div>
         </div>
     </div>
@@ -341,18 +280,58 @@
     <div id="modal-profile" class="modal">
         <div class="modal-header"><h2>👤 Perfil do Operador</h2><button onclick="showTab('patio')">✕</button></div>
         <div style="background:var(--panel); padding:15px; border-radius:12px; border:1px solid var(--border);">
+            <div style="background:#151921; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid var(--border);">
+                <div style="font-size:1rem; font-weight:800; color:white;">♻️ RECICLY CITY</div>
+                <div style="font-size:.7rem; margin-top:5px; color:var(--muted);">Painel do Operador</div>
+            </div>
+
             <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #ffffff10; padding-bottom:10px;">
                 <div style="font-weight:800; font-size:1.1rem;" id="prof-user">OPERADOR</div>
                 <small id="prof-id" style="color:var(--muted)">ID: -</small>
             </div>
-            <p><strong>📦 Processados:</strong> <span id="processed-items">0</span></p>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div style="background:#000; padding:10px; border-radius:8px; text-align:center;">
+                    <small style="color:var(--muted)">PROCESSADOS</small>
+                    <div id="processed-items" style="font-weight:800;">0</div>
+                </div>
+                <div style="background:#000; padding:10px; border-radius:8px; text-align:center;">
+                    <small style="color:var(--muted)">NÍVEL ATUAL</small>
+                    <div id="prof-lvl" style="font-weight:800;">1</div>
+                </div>
+            </div>
+
             <p><strong>🦊 MetaMask:</strong> <span id="metamask-status" style="color:var(--orange)">Não conectada</span></p>
-            <p><strong>👥 Convidados:</strong> <span id="invite-count">0</span></p>
-            <div style="background:#000; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:.6rem; word-break:break-all; color:var(--rare);" id="invite-link">-</div>
-            <button onclick="copyInvite()" class="shop-btn" style="background:var(--orange); color:white; margin-top:8px; width:100%; border:none; padding:8px; border-radius:6px; font-weight:800; cursor:pointer;">📋 COPIAR LINK</button>
+
+            <p style="margin-top:15px; margin-bottom:5px;"><strong>👤 Personalizar Usuário:</strong></p>
+            <input type="text" id="edit-username" placeholder="Seu apelido..." class="input-text">
+            <button onclick="saveUsername()" class="eco-btn" style="margin-bottom:15px;">💾 SALVAR NOME</button>
+
+            <div style="border-top:1px solid #ffffff10; padding-top:15px;">
+                <p><strong>👥 Convidados:</strong> <span id="invite-count">0 amigos</span></p>
+                <p><strong>🎫 Seu Código:</strong> <span id="invite-code" style="color:var(--accent); font-weight:bold;">-</span></p>
+                <p style="margin-top:10px;"><strong>🔗 Link de Convite:</strong></p>
+                <div style="background:#000; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:.6rem; word-break:break-all; color:var(--rare);" id="invite-link">-</div>
+                <button onclick="copyInvite()" class="shop-btn" style="background:var(--orange); color:white; margin-top:8px; width:100%; border:none; padding:8px; border-radius:6px; font-weight:800; cursor:pointer;">📋 COPIAR LINK</button>
+            </div>
+
+            <hr style="border:1px solid #ffffff05; margin:15px 0;">
+            <div style="text-align:center;">
+                <small style="color:var(--muted)">RENDA PASSIVA ATUAL</small>
+                <div id="passive-income" style="font-weight:800; color:var(--accent); font-size:1.1rem;">0.05 ECO/h</div>
+            </div>
+
+            <div style="margin-top:15px; font-size:0.6rem; color:var(--muted); background:#000; padding:10px; border-radius:8px;">
+                <strong>🎁 RECOMPENSAS:</strong><br>
+                1 amigo = 100 ECO<br>
+                5 amigos = 1.000 ECO<br>
+                10 amigos = Robô Básico<br>
+                50 amigos = Esteira Especial
+            </div>
         </div>
     </div>
 
+    <!-- MODAL RANKING -->
     <div id="modal-ranking" class="modal">
         <div class="modal-header"><h2>🏆 Ranking Global</h2><button onclick="showTab('patio')">✕</button></div>
         <div style="background:var(--panel); padding:15px; border-radius:12px; border:1px solid var(--border);">
@@ -366,7 +345,10 @@
     const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
     if(wallet) document.getElementById('lock-screen').style.display = 'none';
 
-    let state = { level: 1, energy: 100, ecp: 0, items: 0, invites: 0, inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 } };
+    let state = {
+        level: 1, energy: 100, ecp: 0, items: 0, invites: 0, username: "",
+        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 }
+    };
     let autoRunning = false, countdown = 180, metamaskWallet = null;
 
     const MATERIAL_DATA = [
@@ -375,38 +357,96 @@
         { id: 'alum', name: "Alumínio", icon: "🥫", chance: 12, speed: 2000, reward: 5 },
         { id: 'copper', name: "Cobre", icon: "🔌", chance: 5, speed: 4000, reward: 15 },
         { id: 'lithium', name: "Lítio", icon: "🔋", chance: 2, speed: 4000, reward: 50 },
-        { id: 'parts', name: "Peças", icon: "💻", chance: 0.8, speed: 6000, reward: 120 },
+        { id: 'parts', name: "Peças Eletrônicas", icon: "💻", chance: 0.8, speed: 6000, reward: 120 },
         { id: 'phone', name: "Smartphone", icon: "📱", chance: 0.15, speed: 6000, reward: 300 },
-        { id: 'board', name: "Placa", icon: "🖥️", chance: 0.05, speed: 6000, reward: 800 },
+        { id: 'board', name: "Placa-Mãe", icon: "🖥️", chance: 0.05, speed: 6000, reward: 800 },
         { id: 'chip', name: "Chip", icon: "⚡", chance: 0.01, speed: 8000, reward: 2500 }
     ];
 
+    function saveGame(){
+        localStorage.setItem("reciclyCitySave", JSON.stringify(state));
+    }
+
+    function loadGame(){
+        const save = localStorage.getItem("reciclyCitySave");
+        if(save){
+            try {
+                const loaded = JSON.parse(save);
+                for(let key in loaded) {
+                    if(key === 'inventory') {
+                        for(let invKey in loaded.inventory) {
+                            state.inventory[invKey] = loaded.inventory[invKey];
+                        }
+                    } else {
+                        state[key] = loaded[key];
+                    }
+                }
+                if(state.username) document.getElementById('edit-username').value = state.username;
+            } catch(e) { console.error("Erro ao carregar save", e); }
+        }
+        updateUI();
+    }
+
+    function saveUsername() {
+        const newName = document.getElementById('edit-username').value.trim().replace(/[^a-zA-Z0-9]/g, "");
+        if(newName.length < 3) return addLog("Nome muito curto (mínimo 3 caracteres)!", "var(--orange)");
+        state.username = newName;
+        updateUI();
+        saveGame();
+        addLog("Nome de usuário atualizado!", "var(--accent)");
+    }
+
     function updateUI() {
         document.getElementById('lvl-val').innerText = state.level;
-        document.getElementById('energy-val').innerText = state.energy + "/" + getMaxEnergy();
-        document.getElementById('header-energy').innerText = state.energy + "/" + getMaxEnergy();
-        document.getElementById('energy-fill').style.width = (state.energy / getMaxEnergy() * 100) + "%";
-        document.getElementById('ecp-val').innerText = state.ecp.toLocaleString();
-        document.getElementById('header-eco').innerText = state.ecp.toLocaleString();
-        document.getElementById('processed-items').innerText = state.items;
+        document.getElementById('prof-lvl').innerText = state.level;
+        const maxE = getMaxEnergy();
+        document.getElementById('energy-val').innerText = state.energy + "/" + maxE;
+        document.getElementById('header-energy').innerText = state.energy + "/" + maxE;
+        document.getElementById('energy-fill').style.width = (state.energy / maxE * 100) + "%";
+
+        const ecpTxt = state.ecp.toLocaleString();
+        document.getElementById('ecp-val').innerText = ecpTxt;
+        document.getElementById('header-eco').innerText = ecpTxt;
+        document.getElementById('processed-items').innerText = state.items.toLocaleString();
 
         const sede = document.getElementById('sede-name'), box = document.getElementById('main-box');
-        if(state.level >= 100) { sede.innerText = "🌎 Ecopacto City"; box.innerText = "🤖"; }
-        else if(state.level >= 50) { sede.innerText = "🌆 Recicly City"; box.innerText = "🏭"; }
-        else if(state.level >= 20) { sede.innerText = "🏭 Galpão"; box.innerText = "♻️"; }
-        else { sede.innerText = "🏚️ Barraco"; box.innerText = "📦"; }
+
+        // Sede Evolution
+        if(state.level >= 100) sede.innerText = "🌎 Ecopacto City";
+        else if(state.level >= 50) sede.innerText = "🌆 Recicly City";
+        else if(state.level >= 25) sede.innerText = "🏭 Galpão de Reciclagem";
+        else if(state.level >= 10) sede.innerText = "🏠 Centro de Coleta";
+        else sede.innerText = "🏚️ Barraco de Triagem";
+
+        // Box Evolution
+        if(state.level >= 100) box.innerText = "🤖";
+        else if(state.level >= 50) box.innerText = "🏭";
+        else if(state.level >= 20) box.innerText = "♻️";
+        else box.innerText = "📦";
 
         if(wallet) {
-            document.getElementById('prof-user').innerText = (wallet.name || "OPERADOR").toUpperCase();
-            document.getElementById('prof-id').innerText = "ID: " + wallet.address.slice(0,12) + "...";
-            document.getElementById('user-name').innerText = "👤 " + (wallet.name || "Operador");
-            document.getElementById('invite-link').innerText = `https://hub.ecopacto/ref/${wallet.address}`;
+            document.getElementById('prof-user').innerText = (state.username || wallet.name || "OPERADOR").toUpperCase();
+            document.getElementById('prof-id').innerText = wallet.address || "Sem Carteira";
+            document.getElementById('user-name').innerText = "👤 " + (state.username || wallet.name || "Operador");
+
+            const userCode = state.username || wallet.address.slice(0,10);
+            document.getElementById('invite-code').innerText = userCode;
+            document.getElementById('invite-link').innerText = `https://recicly.com/ref/${userCode}`;
+            document.getElementById('invite-count').innerText = state.invites + " amigos";
+
+            let passive = state.invites >= 50 ? 1.00 : state.invites >= 25 ? 0.50 : state.invites >= 10 ? 0.20 : state.invites >= 5 ? 0.10 : 0.05;
+            document.getElementById('passive-income').innerText = passive.toFixed(2) + " ECO/h";
         }
 
         if(metamaskWallet) {
             document.getElementById('btn-metamask').innerText = "🟢 " + metamaskWallet.slice(0,6) + "..." + metamaskWallet.slice(-4);
             document.getElementById('metamask-status').innerText = "Conectada (" + metamaskWallet.slice(0,6) + ")";
             document.getElementById('metamask-status').style.color = "var(--accent)";
+        }
+
+        for(let key in state.inventory) {
+            const el = document.getElementById(`count-${key}`);
+            if(el) el.innerText = (state.inventory[key] || 0).toLocaleString();
         }
     }
 
@@ -419,6 +459,7 @@
     }
 
     async function buyWithBNB(priceBNB, itemId) {
+        if (!confirm(`Deseja comprar este item por ${priceBNB} BNB? (Será cobrada uma taxa de rede pela MetaMask)`)) return;
         try {
             if (!window.ethereum) return alert("MetaMask não encontrada!");
             const accounts = await ethereum.request({ method: "eth_requestAccounts" });
@@ -429,39 +470,29 @@
                 method: "eth_sendTransaction",
                 params: [{
                     from: sender,
-                    to: "0x1234567890123456789012345678901234567890", // Endereço da Pool
+                    to: "0x6E4467d5e468202581622340689C82fF40E00000",
                     value: "0x" + BigInt(Math.floor(priceBNB * 1e18)).toString(16)
                 }]
             });
 
-            addLog("⏳ Transação enviada: " + tx.slice(0,12) + "...");
+            addLog("⏳ TX Enviada: " + tx.slice(0,12) + "...");
             processReward(itemId);
-            addLog("✅ Compra aprovada na rede!", "var(--accent)");
-            alert("✅ Item comprado com sucesso!");
-        } catch (err) { addLog("❌ Compra cancelada.", "var(--orange)"); }
+            addLog("✅ Compra confirmada via Web3!", "var(--accent)");
+            alert("✅ Compra realizada com sucesso!");
+        } catch (err) { addLog("❌ Transação cancelada.", "var(--orange)"); }
     }
 
     function buyItem(itemId, price) {
         if (state.ecp < price) return addLog("Saldo ECO insuficiente!", "var(--orange)");
-        state.ecp -= price;
-        processReward(itemId);
-        addLog(`🛍️ Comprado: ${itemId} por ${price} ECO`);
+        state.ecp -= price; processReward(itemId); addLog(`🛍️ Comprado: ${itemId} por ${price} ECO`);
     }
 
     function processReward(itemId) {
         if (itemId.includes('energy')) {
-            const amount = parseInt(itemId.replace('energy', ''));
-            state.energy = Math.min(getMaxEnergy(), state.energy + amount);
-        } else if (itemId.includes('staff')) {
-            addLog("👷 Membro da equipe contratado!");
-        } else if (itemId.includes('robot')) {
-            addLog("🤖 Robô de automação ativado!");
-        } else if (itemId.includes('belt')) {
-            addLog("⚙️ Esteira aprimorada!");
-        } else if (itemId.includes('boost')) {
-            addLog("🚀 Booster de produção ativado!");
+           const amount = parseInt(itemId.replace('energy', ''));
+           state.energy = Math.min(getMaxEnergy(), state.energy + amount);
         }
-        updateUI();
+        updateUI(); saveGame();
     }
 
     function toggleAuto() {
@@ -472,7 +503,16 @@
     }
 
     function startBatch() {
-        if(!autoRunning || state.energy <= 0) return;
+        if(!autoRunning || state.energy <= 0) {
+            if(state.energy <= 0 && autoRunning) {
+                autoRunning = false;
+                document.getElementById("proc-btn").innerText = "▶ INICIAR PRODUÇÃO";
+                document.getElementById("auto-status").innerText = "AUTO: OFF";
+                addLog("Sem energia!", "var(--orange)");
+            }
+            return;
+        }
+
         let r = Math.random() * 100, acc = 0, sel = MATERIAL_DATA[0];
         for(let m of MATERIAL_DATA) { acc += m.chance; if(r <= acc) { sel = m; break; } }
 
@@ -480,39 +520,118 @@
         sprite.innerText = sel.icon; sprite.style.left = "-40px";
         document.getElementById('belt-info').innerText = "TRIAGEM: " + sel.name.toUpperCase();
 
+        let currentSpeed = sel.speed;
+        if(sel.chance <= 5) {
+            addLog("✨ ITEM RARO DETECTADO!", "var(--rare)");
+            document.body.classList.add('rare-flash');
+            setTimeout(() => document.body.classList.remove('rare-flash'), 2000);
+        }
+        if(sel.chance <= 0.05) {
+            addLog("🚨 LENDÁRIO DETECTADO!", "var(--legendary)");
+            document.body.classList.add('legendary-flash');
+            setTimeout(() => document.body.classList.remove('legendary-flash'), 3000);
+            currentSpeed = sel.speed * 1.5;
+        }
+
         let start = null;
         function frame(t) {
             if(!start) start = t;
-            let p = (t - start) / sel.speed;
-            if(p < 1) { sprite.style.left = `calc(${p * 100}% - 40px)`; requestAnimationFrame(frame); }
-            else {
-                state.energy--; state.inventory[sel.id]++; state.items++;
+            let p = (t - start) / currentSpeed;
+            if(p < 1) {
+                sprite.style.left = `calc(${p * 100}% - 40px)`;
+                requestAnimationFrame(frame);
+            } else {
+                state.energy--;
+                state.inventory[sel.id] = (state.inventory[sel.id] || 0) + 1;
+                state.items++;
+
+                if(sel.id === 'chip') {
+                    state.ecp += 100;
+                    addLog("⚡ CHIP ENCONTRADO! +100 ECO", "var(--legendary)");
+                }
+
                 if(state.items % 15 === 0) state.level++;
-                updateUI(); if(autoRunning && state.energy > 0) setTimeout(startBatch, 500);
-                else if(state.energy <= 0) toggleAuto();
+
+                updateUI();
+                saveGame();
+
+                if(autoRunning) setTimeout(startBatch, 500);
             }
         }
         requestAnimationFrame(frame);
     }
 
-    function getMaxEnergy() { return state.level >= 50 ? 200 : state.level >= 25 ? 150 : state.level >= 10 ? 120 : 100; }
-    function addLog(msg, color = "") { const logs = document.getElementById('logs'); logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML; }
-    function sellItems() { let t = 0; MATERIAL_DATA.forEach(m => { t += state.inventory[m.id] * m.reward; state.inventory[m.id] = 0; }); state.ecp += t; updateUI(); addLog("💰 Materiais vendidos!"); }
-    function copyInvite() { navigator.clipboard.writeText(document.getElementById('invite-link').innerText); addLog("🔗 Link copiado."); }
-    function showShopTab(id) { document.querySelectorAll('.shop-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active')); document.getElementById('shop-' + id).classList.add('active'); event.currentTarget.classList.add('active'); }
-    function showTab(id) { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); if(id !== 'patio') { document.getElementById('modal-' + id).classList.add('active'); let tabIdx = id === 'shop' ? 1 : id === 'profile' ? 2 : 3; document.querySelectorAll('.tabs .tab')[tabIdx].classList.add('active'); } else { document.querySelectorAll('.tabs .tab')[0].classList.add('active'); } updateUI(); }
+    function getMaxEnergy() {
+        return state.level >= 50 ? 200 : state.level >= 25 ? 150 : state.level >= 10 ? 120 : 100;
+    }
+
+    function addLog(msg, color = "") {
+        const logs = document.getElementById('logs');
+        logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML;
+    }
+
+    function sellItems() {
+        let t = 0;
+        MATERIAL_DATA.forEach(m => {
+            t += (state.inventory[m.id] || 0) * m.reward;
+            state.inventory[m.id] = 0;
+        });
+        state.ecp += t;
+        updateUI();
+        saveGame();
+        addLog("💰 Materiais vendidos!");
+    }
+
+    function copyInvite() {
+        navigator.clipboard.writeText(document.getElementById('invite-link').innerText);
+        addLog("🔗 Link copiado.");
+    }
+
+    function showShopTab(id) {
+        document.querySelectorAll('.shop-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('shop-' + id).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function showTab(id) {
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+        if(id !== 'patio') {
+            document.getElementById('modal-' + id).classList.add('active');
+            let idx = id === 'shop' ? 1 : id === 'profile' ? 2 : id === 'ranking' ? 3 : 0;
+            document.querySelectorAll('.tabs .tab')[idx].classList.add('active');
+        } else {
+            document.querySelectorAll('.tabs .tab')[0].classList.add('active');
+        }
+        updateUI();
+    }
 
     const grid = document.getElementById('inv-grid');
     grid.innerHTML = MATERIAL_DATA.map(m => `<div class="inv-slot"><div class="inv-icon">${m.icon}</div><div class="inv-count" id="count-${m.id}">0</div><div class="inv-name">${m.name}</div></div>`).join('');
+
+    loadGame();
     updateUI();
 
     setInterval(() => {
-        if(state.energy >= getMaxEnergy()) { document.getElementById("energy-timer-header").innerText = "✅ Energia Máxima"; document.getElementById("energy-timer-strip").innerText = "✅ Cheio"; return; }
-        countdown--; let m = Math.floor(countdown / 60), s = countdown % 60;
-        const ts = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        document.getElementById("energy-timer-header").innerText = ts;
-        document.getElementById("energy-timer-strip").innerText = ts;
-        if(countdown <= 0){ state.energy++; updateUI(); countdown = 180; }
+        if(state.energy >= getMaxEnergy()) {
+            document.getElementById("energy-timer-header").innerText = "✅ Energia Máxima";
+            document.getElementById("energy-timer-strip").innerText = "✅ Cheio";
+            document.getElementById("energy-timer").innerText = "⚡ CHEIO";
+            return;
+        }
+        countdown--;
+        let m = Math.floor(countdown / 60), s = countdown % 60;
+        const timeStr = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        document.getElementById("energy-timer-header").innerText = timeStr;
+        document.getElementById("energy-timer-strip").innerText = timeStr;
+        document.getElementById("energy-timer").innerText = timeStr;
+        if(countdown <= 0){
+            state.energy++;
+            updateUI();
+            saveGame();
+            countdown = 180;
+        }
     }, 1000);
 </script>
 </body>
