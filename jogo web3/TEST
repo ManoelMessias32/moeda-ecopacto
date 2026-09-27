@@ -708,3 +708,233 @@ VENDER
 
 LOGS
 
+atualizaçao da pargina de perfil
+
+<hr style="border:1px solid #ffffff05; margin:15px 0;">
+
+<p><strong>👥 Convidados:</strong>
+<span id="invite-count">0</span>
+</p>
+
+<p style="margin-top:10px;">
+<strong>🔗 Link de Convite</strong>
+</p>
+
+<div style="
+    background:#0b0e14;
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:8px;
+    font-size:.65rem;
+    word-break:break-all;
+    color:var(--rare);
+">
+    <span id="invite-link">
+        https://hub.ecopacto/ref/SEM_ID
+    </span>
+</div>
+
+<button
+    onclick="copyInvite()"
+    class="shop-btn"
+    style="margin-top:10px;"
+>
+📋 COPIAR LINK
+</button>
+
+funçao java
+
+function copyInvite(){
+
+    const link =
+        document.getElementById('invite-link').innerText;
+
+    navigator.clipboard.writeText(link);
+
+    addLog("🔗 Link copiado.");
+}
+
+dentro do updadeui
+if(wallet){
+
+    const inviteLink =
+    `https://hub.ecopacto/ref/${wallet.address}`;
+
+    document.getElementById('invite-link').innerText =
+    inviteLink;
+}
+
+cabeçalho tambem no perfil
+<div style="
+background:#151921;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+text-align:center;
+border:1px solid var(--border);
+">
+
+<div style="
+font-size:1rem;
+font-weight:800;
+color:white;
+">
+♻️ RECICLY CITY
+</div>
+
+<div style="
+font-size:.7rem;
+margin-top:5px;
+color:var(--muted);
+">
+Perfil do Operador
+</div>
+
+</div>
+
+adicionar uma estatisticas
+
+📦 Materiais Processados
+
+1250
+
+automatizar a esteira
+
+▶ INICIAR PRODUÇÃO
+
+↓
+
+🧴
+🥫
+🧴
+🔋
+🧴
+💻
+
+↓
+
+Energia vai diminuindo
+
+↓
+
+0 energia
+
+↓
+
+Produção parada
+
+criar variavel
+let autoRunning = false;
+botao
+<button
+id="proc-btn"
+class="btn-process"
+onclick="toggleAuto()">
+▶ INICIAR PRODUÇÃO
+</button>
+
+funçao estarbatch
+if(autoRunning && state.energy > 0){
+
+    setTimeout(()=>{
+        startBatch();
+    },500);
+
+}else{
+
+    autoRunning = false;
+
+    document.getElementById("proc-btn").innerText =
+    "▶ INICIAR PRODUÇÃO";
+
+}
+
+contador de energia
+⚡ 98/100
+⏳ 02:31
+<div class="energy-info">
+
+    <div class="energy-bar-wrap">
+        E:
+        <div class="energy-bar">
+            <div id="energy-fill"></div>
+        </div>
+
+        <span id="energy-val">
+            100/100
+        </span>
+    </div>
+
+    <small id="energy-timer">
+        ⏳ 03:00
+    </small>
+
+</div>
+css
+.energy-info{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+}
+
+#energy-timer{
+    font-size:.55rem;
+    color:var(--muted);
+}
+
+temporizador real
+let countdown = 180;
+como usar
+1 energia = 3 minutos
+
+sao
+180 segundos
+``
+setInterval(()=>{
+
+    if(state.energy >= getMaxEnergy()){
+
+        document.getElementById("energy-timer")
+        .innerText = "⚡ CHEIO";
+
+        return;
+    }
+
+    countdown--;
+
+    let m =
+    Math.floor(countdown / 60);
+
+    let s =
+    countdown % 60;
+
+    document.getElementById("energy-timer")
+    .innerText =
+    `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+    if(countdown <= 0){
+
+        state.energy++;
+
+        updateUI();
+
+        countdown = 180;
+    }
+
+},1000);
+o topo ficaria assim
+👤 Operador
+
+💰 ECO: 1250
+
+⚡ 98/100
+
+⏳ 02:41
+qndo cheio
+⚡ 100/100
+
+✅ Energia Máxima
+
+
+

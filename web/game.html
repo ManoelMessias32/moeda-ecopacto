@@ -100,9 +100,19 @@
             font-size: 0.6rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
             align-items: center; gap: 10px;
         }
+        .energy-info{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:2px;
+        }
         .energy-bar-wrap { display: flex; align-items: center; gap: 5px; }
         .energy-bar { width: 40px; height: 5px; background: #1e293b; border-radius: 10px; overflow: hidden; }
         #energy-fill { height: 100%; background: #3b82f6; width: 100%; transition: 0.3s; }
+        #energy-timer{
+            font-size:.55rem;
+            color:var(--muted);
+        }
 
         /* INVENTÁRIO GRID CORRIGIDO */
         .inventory-grid {
@@ -189,15 +199,20 @@
                 <div class="drop-box">📦</div>
                 <div class="belt-label" id="belt-info">AGUARDANDO...</div>
             </div>
-            <button class="btn-process" id="proc-btn" onclick="startBatch()">▶ PROCESSAR PRÓXIMO LOTE</button>
+            <button class="btn-process" id="proc-btn" onclick="toggleAuto()">▶ INICIAR PRODUÇÃO</button>
         </div>
 
         <div class="status-strip">
             <div>Sede: <span id="sede-name" style="color:white; font-weight:800">🏚️ Barraco</span></div>
             <div>Lvl: <span id="lvl-val" style="color:white; font-weight:800">1</span></div>
-            <div class="energy-bar-wrap">
-                E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span>
+
+            <div class="energy-info">
+                <div class="energy-bar-wrap">
+                    E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span>
+                </div>
+                <small id="energy-timer">⏳ 03:00</small>
             </div>
+
             <div>💰 <span id="ecp-val" style="color:var(--accent); font-weight:800">0</span></div>
             <button class="tab" style="padding:2px 8px; font-size:0.5rem; background:#f97316; color:white; border:none; flex:none; height:18px;" onclick="window.location.href='index.html'">Hub</button>
         </div>
@@ -209,7 +224,7 @@
         <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS POR ECO</button>
 
         <div class="terminal" id="logs">
-            <div class="log-g">[Sistema]: Dashboard v2.5 operando...</div>
+            <div class="log-g">[Sistema]: Dashboard v2.6 operando...</div>
         </div>
     </div>
 
@@ -248,15 +263,36 @@
         </div>
     </div>
 
-    <!-- MODAL PERFIL -->
+    <!-- MODAL PERFIL ATUALIZADO CONFORME TEST -->
     <div id="modal-profile" class="modal">
         <div class="modal-header"><h2>👤 Perfil & Convites</h2><button onclick="showTab('patio')">✕</button></div>
+
+        <div style="background:#151921; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid var(--border);">
+            <div style="font-size:1rem; font-weight:800; color:white;">♻️ RECICLY CITY</div>
+            <div style="font-size:.7rem; margin-top:5px; color:var(--muted);">Perfil do Operador</div>
+        </div>
+
         <div style="background:var(--panel); padding:15px; border-radius:12px; border:1px solid var(--border);">
             <p><strong>Nível:</strong> <span id="prof-lvl">1</span></p>
-            <p><strong>ID:</strong> <small id="prof-id" style="color:var(--rare)">-</small></p>
+            <p><strong>ID da Carteira:</strong> <small id="prof-id" style="color:var(--rare)">-</small></p>
+            <p><strong>📦 Materiais Processados:</strong> <span id="processed-items" style="color:white; font-weight:bold;">0</span></p>
+
             <hr style="border:1px solid #ffffff05; margin:15px 0;">
-            <p style="text-align:center; font-size:0.6rem; color:var(--muted)">RENDA PASSIVA</p>
-            <p style="text-align:center; font-weight:800; color:var(--accent)" id="passive-income">0.05 ECP/h</p>
+            <p style="text-align:center; font-size:0.6rem; color:var(--muted); margin-bottom: 2px;">RENDA PASSIVA</p>
+            <p style="text-align:center; font-weight:800; color:var(--accent); margin-top: 0;" id="passive-income">0.05 ECP/h</p>
+
+            <hr style="border:1px solid #ffffff05; margin:15px 0;">
+
+            <p><strong>👥 Convidados:</strong> <span id="invite-count">0</span></p>
+            <p style="margin-top:10px; margin-bottom:4px;"><strong>🔗 Link de Convite</strong></p>
+
+            <div style="background:#0b0e14; border:1px solid var(--border); padding:10px; border-radius:8px; font-size:.65rem; word-break:break-all; color:var(--rare);">
+                <span id="invite-link">https://hub.ecopacto/ref/SEM_ID</span>
+            </div>
+
+            <button onclick="copyInvite()" class="shop-btn" style="margin-top:10px; background: var(--orange); color: white;">
+                📋 COPIAR LINK
+            </button>
         </div>
     </div>
 
@@ -280,6 +316,9 @@
         level: 1, energy: 100, ecp: 0, items: 0,
         inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 }
     };
+
+    let autoRunning = false;
+    let countdown = 180;
 
     const MATERIAL_DATA = [
         { id: 'plastic', name: "Plástico", icon: "🧴", chance: 60, speed: 2000, reward: 1 },
@@ -313,6 +352,7 @@
 
         document.getElementById('header-eco').innerText = state.ecp.toLocaleString();
         document.getElementById('header-energy').innerText = state.energy + "/" + getMaxEnergy();
+        document.getElementById('processed-items').innerText = state.items.toLocaleString();
 
         for(let key in state.inventory) {
             const el = document.getElementById(`count-${key}`);
@@ -330,7 +370,16 @@
             document.getElementById('prof-id').innerText = wallet.address || "Sem Carteira";
             document.getElementById('user-name').innerText = "👤 " + (wallet.name || "Operador");
             document.getElementById('prof-lvl').innerText = state.level;
+
+            const inviteLink = `https://hub.ecopacto/ref/${wallet.address || 'SEM_ID'}`;
+            document.getElementById('invite-link').innerText = inviteLink;
         }
+    }
+
+    function copyInvite(){
+        const link = document.getElementById('invite-link').innerText;
+        navigator.clipboard.writeText(link);
+        addLog("🔗 Link copiado para a área de transferência.", "var(--rare)");
     }
 
     function getMaxEnergy() {
@@ -340,10 +389,26 @@
         return 100;
     }
 
+    function toggleAuto() {
+        if (autoRunning) {
+            autoRunning = false;
+            document.getElementById("proc-btn").innerText = "▶ INICIAR PRODUÇÃO";
+        } else {
+            if (state.energy <= 0) return addLog("Sem energia!", "#f97316");
+            autoRunning = true;
+            document.getElementById("proc-btn").innerText = "⏸ PARAR PRODUÇÃO";
+            startBatch();
+        }
+    }
+
     function startBatch() {
-        if(state.energy <= 0) return addLog("Sem energia!", "#f97316");
+        if(state.energy <= 0) {
+            autoRunning = false;
+            document.getElementById("proc-btn").innerText = "▶ INICIAR PRODUÇÃO";
+            return addLog("Sem energia!", "#f97316");
+        }
         const btn = document.getElementById('proc-btn');
-        btn.disabled = true;
+        btn.disabled = !autoRunning;
 
         let r = Math.random() * 100;
         let acc = 0;
@@ -390,8 +455,17 @@
 
                 if(state.items % 15 === 0) state.level++;
                 updateUI();
-                btn.disabled = false;
                 document.getElementById('belt-info').innerText = "AGUARDANDO...";
+
+                if(autoRunning && state.energy > 0){
+                    setTimeout(()=>{
+                        startBatch();
+                    }, 500);
+                }else{
+                    autoRunning = false;
+                    document.getElementById("proc-btn").innerText = "▶ INICIAR PRODUÇÃO";
+                    btn.disabled = false;
+                }
             }
         }
         requestAnimationFrame(frame);
@@ -440,7 +514,25 @@
     }
 
     initInventory();
-    setInterval(() => { if(state.energy < getMaxEnergy()) { state.energy++; updateUI(); } }, 180000); // 1 a cada 3 min
+
+    setInterval(()=>{
+        if(state.energy >= getMaxEnergy()){
+            document.getElementById("energy-timer").innerText = "⚡ CHEIO";
+            return;
+        }
+
+        countdown--;
+        let m = Math.floor(countdown / 60);
+        let s = countdown % 60;
+
+        document.getElementById("energy-timer").innerText = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if(countdown <= 0){
+            state.energy++;
+            updateUI();
+            countdown = 180;
+        }
+    },1000);
 </script>
 </body>
 </html>
