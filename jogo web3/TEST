@@ -414,6 +414,93 @@ pagina tap on
 50 convites
 1,00 ECP/h
 
+valores dos itens com eco
 
+🧴 Plástico
+60%
+1 ECO
+
+📦 Papelão
+20%
+2 ECO
+
+🥫 Alumínio
+12%
+5 ECO
+
+🔌 Cobre
+5%
+15 ECO
+
+🔋 Lítio
+2%
+50 ECO
+
+💻 Peça Eletrônica
+0,8%
+120 ECO
+
+📱 Smartphone
+0,15%
+300 ECO
+
+🖥️ Placa-Mãe
+0,05%
+800 ECO
+
+⚡ Chip
+0,01%
+2500 ECO
+
+valor medioi por itens
+(0,60×1) +
+(0,20×2) +
+(0,12×5) +
+(0,05×15) +
+(0,02×50) +
+(0,008×120) +
+(0,0015×300) +
+(0,0005×800) +
+(0,0001×2500)
+
+= 5,41 ECO por item
+1 item a cada 20 segundos
+
+≈ 1.300 ECO/hora
+
+energia
+100 energia
+
+1 energia = 1 item
+
+100 itens
+
+
+recarga de energia
+
+Energia máxima:
+100
+
+Recarga:
+1 energia a cada 3 minutos
+
+Máximo:
+100
+
+nveis de energia
+
+Nível 1
+100 Energia
+
+Nível 10
+120 Energia
+
+Nível 25
+150 Energia
+
+Nível 50
+200 Energia
+
+preço dos iten da loja
 
 

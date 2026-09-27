@@ -51,6 +51,8 @@ type AppState struct {
 
 var state AppState
 const DB_FILE = "blockchain.db"
+const InitialMiningReward = 10
+const HalvingIntervalBlocks = 2628000
 
 func saveState() {
 	data, _ := json.MarshalIndent(state, "", "  ")
@@ -61,7 +63,7 @@ func loadState() {
 	file, err := os.ReadFile(DB_FILE)
 	if err == nil {
 		json.Unmarshal(file, &state)
-		fmt.Println("📦 Banco de dados carregado.")
+		fmt.Println("📦 Dados carregados.")
 	} else {
 		initNewBlockchain()
 	}
@@ -72,13 +74,18 @@ func initNewBlockchain() {
 		Wallets: make(map[string]*Wallet),
 		Emails:  make(map[string]string),
 		Tokenomics: Tokenomics{
-			TotalSupply: 1_200_000_000_000, GameRewards: 300_000_000_000, NodeMining: 300_000_000_000,
-			DevEmergency: 200_000_000_000, Treasury: 150_000_000_000, GeneralReserve: 150_000_000_000,
-			Liquidity: 100_000_000_000, Symbol: "ECO",
+			TotalSupply:    1_200_000_000_000,
+			GameRewards:    300_000_000_000,
+			NodeMining:     300_000_000_000,
+			DevEmergency:   200_000_000_000,
+			Treasury:       150_000_000_000,
+			GeneralReserve: 150_000_000_000,
+			Liquidity:      100_000_000_000,
+			Symbol:         "ECO",
 		},
 		Blockchain: Blockchain{Difficulty: 4},
 	}
-	genesis := Block{Index: 0, Timestamp: time.Now().String(), Data: "Ecopacto Genesis", PrevHash: "0"}
+	genesis := Block{Index: 0, Timestamp: time.Now().String(), Data: "Genesis", PrevHash: "0"}
 	genesis.Hash = calculateHash(genesis)
 	state.Blockchain.Chain = append(state.Blockchain.Chain, genesis)
 	state.Wallets["ECO_FOUNDER_RESERVE"] = &Wallet{Address: "ECO_FOUNDER_RESERVE", Balance: state.Tokenomics.DevEmergency}
@@ -92,8 +99,15 @@ func calculateHash(b Block) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// Middleware de segurança para permitir conexão da Vercel
-func commonMiddleware(next http.Handler) http.Handler {
+func getCurrentReward() uint64 {
+	halvings := len(state.Blockchain.Chain) / HalvingIntervalBlocks
+	reward := uint64(InitialMiningReward)
+	for i := 0; i < halvings; i++ { reward = reward / 2 }
+	if reward < 1 { return 1 }
+	return reward
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
@@ -113,8 +127,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	email := strings.ToLower(req.Email)
-	fmt.Printf("👤 Tentativa de login: %s\n", email)
-
 	if addr, exists := state.Emails[email]; exists {
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 		return
@@ -128,16 +140,41 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newWallet)
 }
 
+func mineHandler(w http.ResponseWriter, r *http.Request) {
+	addr := r.URL.Query().Get("address")
+	wallet := state.Wallets[addr]
+	if wallet == nil {
+		http.Error(w, "Wallet not found", 404)
+		return
+	}
+	reward := getCurrentReward()
+	if state.Tokenomics.NodeMining < reward {
+		http.Error(w, "Reserve empty", 400)
+		return
+	}
+	prev := state.Blockchain.Chain[len(state.Blockchain.Chain)-1]
+	newB := Block{Index: prev.Index + 1, Timestamp: time.Now().String(), Data: "Game Reward", PrevHash: prev.Hash}
+	target := strings.Repeat("0", state.Blockchain.Difficulty) + "7"
+	for {
+		newB.Hash = calculateHash(newB)
+		if strings.HasPrefix(newB.Hash, target) { break }
+		newB.Nonce++
+	}
+	state.Blockchain.Chain = append(state.Blockchain.Chain, newB)
+	wallet.Balance += reward
+	state.Tokenomics.NodeMining -= reward
+	saveState()
+	json.NewEncoder(w).Encode(map[string]interface{}{"reward": reward, "balance": wallet.Balance})
+}
+
 func transferHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct{ From string `json:"from"`; To string `json:"to"`; Amount uint64 `json:"amount"` }
 	json.NewDecoder(r.Body).Decode(&req)
 	from := state.Wallets[req.From]; to := state.Wallets[req.To]
-	if from == nil || to == nil { http.Error(w, "Carteira não encontrada", 404); return }
-
+	if from == nil || to == nil { http.Error(w, "Wallet invalid", 404); return }
 	fee := uint64(float64(req.Amount) * 0.01)
 	if fee < 1 && req.Amount > 0 { fee = 1 }
-	if from.Balance < req.Amount + fee { http.Error(w, "Saldo insuficiente", 400); return }
-
+	if from.Balance < req.Amount + fee { http.Error(w, "Insufficient balance", 400); return }
 	from.Balance -= (req.Amount + fee)
 	to.Balance += req.Amount
 	state.Tokenomics.Treasury += fee
@@ -149,6 +186,7 @@ func main() {
 	loadState()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/mine", mineHandler)
 	mux.HandleFunc("/transfer", transferHandler)
 	mux.HandleFunc("/tokenomics", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(state.Tokenomics)
@@ -157,5 +195,5 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" { port = "8080" }
 	fmt.Printf("🚀 ECOPACTO ONLINE EM 0.0.0.0:%s\n", port)
-	http.ListenAndServe("0.0.0.0:"+port, commonMiddleware(mux))
+	http.ListenAndServe("0.0.0.0:"+port, corsMiddleware(mux))
 }

@@ -3,215 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Recicly City | Ecopacto Web3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Recicly City | Operações Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #05070a; --card: #0f121a; --accent: #22c55e;
-            --rare: #3b82f6; --epic: #a855f7; --legendary: #f59e0b;
-            --text: #ffffff; --muted: #64748b;
+            --bg: #0b0e14; --panel: #151921; --header: #1c222d;
+            --accent: #238636; --rare: #3b82f6; --legendary: #f59e0b;
+            --text: #f8fafc; --muted: #64748b; --border: #ffffff10;
         }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text);
-            margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; gap: 8px;
+            overflow: hidden;
         }
 
-        /* HEADER & DASHBOARD */
-        header { padding: 15px 20px; background: var(--card); border-bottom: 1px solid #ffffff10; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .sede-badge { display: flex; align-items: center; gap: 8px; background: #000; padding: 5px 12px; border-radius: 12px; border: 1px solid #ffffff10; }
-        .sede-icon { font-size: 1.4rem; }
-        .sede-name { font-size: 0.75rem; font-weight: 800; color: var(--muted); }
+        /* TELA DE BLOQUEIO */
+        #lock-screen {
+            position: fixed; inset: 0; background: var(--bg); z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        }
+        .btn-auth {
+            background: #f97316; color: white; border: none; padding: 12px 24px;
+            border-radius: 8px; font-weight: 800; cursor: pointer; text-decoration: none;
+            margin-top: 20px; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
 
-        .main-stats { display: flex; gap: 20px; }
-        .stat { text-align: right; }
-        .stat-l { font-size: 0.55rem; color: var(--muted); font-weight: 800; text-transform: uppercase; }
-        .stat-v { font-size: 0.9rem; font-weight: 800; color: var(--accent); }
+        /* TABS COMPACTAS */
+        .tabs { display: flex; gap: 4px; height: 35px; }
+        .tab {
+            flex: 1; padding: 0; text-align: center; font-size: 0.65rem; font-weight: 700;
+            cursor: pointer; border-radius: 6px; background: var(--panel); color: var(--muted);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 4px;
+        }
+        .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* GAME SCREEN */
-        main { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        #overlay-fx { position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 1000; }
+        /* DASHBOARD AREA */
+        .dashboard {
+            background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+            display: flex; flex-direction: column; flex: 1; overflow: hidden;
+        }
+        .dashboard-header { background: var(--header); padding: 6px 12px; font-size: 0.7rem; font-weight: 800; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
 
-        /* CONVEYOR BELT */
-        .belt-container { width: 100%; height: 120px; background: #111827; border-top: 4px solid #334155; border-bottom: 4px solid #334155; position: relative; overflow: hidden; display: flex; align-items: center; }
-        .belt-marks { position: absolute; width: 200%; height: 100%; background-image: repeating-linear-gradient(90deg, #ffffff05, #ffffff05 40px, transparent 40px, transparent 80px); animation: moveBelt 2s linear infinite; }
-        @keyframes moveBelt { from { transform: translateX(0); } to { transform: translateX(-80px); } }
+        /* ESTEIRA SLIM */
+        .belt-area {
+            padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            background: linear-gradient(180deg, #111827 0%, #0d1117 100%);
+        }
+        .belt-container {
+            width: 100%; height: 60px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
+            position: relative; overflow: hidden; display: flex; align-items: center;
+        }
+        #active-item { position: absolute; font-size: 2rem; left: -50px; z-index: 10; }
+        .belt-label { position: absolute; top: 2px; font-size: 0.5rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
 
-        #item-sprite { position: absolute; font-size: 3.5rem; left: -100px; z-index: 10; user-select: none; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); cursor: pointer; }
-        .bin-container { position: absolute; right: 20px; bottom: 40px; text-align: center; }
-        #bin-sprite { font-size: 5rem; transition: 0.1s; display: block; }
-        .bin-name { font-size: 0.6rem; font-weight: 800; color: var(--muted); margin-top: 5px; }
+        .btn-process {
+            width: 100%; background: var(--accent); color: white; border: none; padding: 10px;
+            border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer;
+        }
 
-        /* MODALS */
-        .modal { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: none; flex-direction: column; padding: 25px; overflow-y: auto; }
-        .modal.active { display: flex; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .close-btn { font-size: 1.5rem; cursor: pointer; padding: 10px; }
+        /* STATUS STRIP */
+        .status-strip {
+            background: #00000060; padding: 6px 12px; display: flex; justify-content: space-between;
+            font-size: 0.6rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .energy-bar-wrap { display: flex; align-items: center; gap: 5px; }
+        .energy-bar { width: 40px; height: 5px; background: #1e293b; border-radius: 10px; overflow: hidden; }
+        #energy-fill { height: 100%; background: #3b82f6; width: 100%; transition: 0.3s; }
 
-        .shop-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
-        .tab { padding: 8px 15px; background: var(--card); border-radius: 10px; font-size: 0.7rem; font-weight: 800; cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
-        .tab.active { border-color: var(--accent); color: var(--accent); }
+        /* INVENTÁRIO (GRID 9) */
+        .inventory-grid {
+            display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; padding: 8px;
+            background: #00000020; flex: 1; overflow-y: auto;
+        }
+        .inv-slot {
+            background: #0b0e14; border: 1px solid var(--border); border-radius: 6px;
+            padding: 6px 2px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px;
+        }
+        .inv-icon { font-size: 1rem; }
+        .inv-count { font-size: 0.7rem; font-weight: 800; color: #fff; }
+        .inv-name { font-size: 0.35rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
 
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .shop-card { background: var(--card); padding: 15px; border-radius: 20px; border: 1px solid #ffffff10; text-align: center; }
-        .buy-btn { width: 100%; padding: 10px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-weight: 800; margin-top: 10px; cursor: pointer; }
+        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; margin: 5px 10px; cursor: pointer; }
 
-        /* NAV */
-        nav { display: flex; background: var(--card); border-top: 1px solid #ffffff10; padding: 10px 0; }
-        .nav-item { flex: 1; text-align: center; cursor: pointer; color: var(--muted); font-size: 0.6rem; font-weight: 800; display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
-        .nav-item.active { color: var(--accent); }
-        .nav-icon { font-size: 1.2rem; }
+        /* LOGS */
+        .terminal {
+            background: #000; margin: 0 10px 5px 10px; padding: 8px; border-radius: 6px;
+            font-family: monospace; font-size: 0.55rem; color: #64748b; height: 50px; overflow-y: auto;
+            border: 1px solid var(--border); line-height: 1.2;
+        }
+        .log-g { color: var(--accent); }
 
-        #alert-msg { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); padding: 15px 30px; border-radius: 50px; border: 2px solid var(--accent); font-weight: 800; display: none; z-index: 200; text-align: center; }
+        @media (max-width: 600px) { .inventory-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="sede-badge">
-        <span class="sede-icon" id="sede-icon">🏚️</span>
-        <span class="sede-name" id="sede-name">Barraco</span>
+    <!-- LOCK SCREEN -->
+    <div id="lock-screen">
+        <h1 style="margin:0; letter-spacing:-2px; color:#fff">RECICLY CITY</h1>
+        <p style="color:var(--muted); font-size:0.8rem;">Dashboard de Operações Industriais</p>
+        <a href="index.html" class="btn-auth">🔓 CONECTAR CARTEIRA ECOPACTO</a>
     </div>
-    <div class="main-stats">
-        <div class="stat">
-            <div class="stat-l">Energia</div>
-            <div class="stat-v" style="color:#3b82f6" id="disp-energy">100/100</div>
+
+    <!-- UI -->
+    <div class="tabs">
+        <div class="tab active">🏭 Pátio</div>
+        <div class="tab">🛒 Loja</div>
+        <div class="tab">👤 Perfil</div>
+        <div class="tab">🏆 Ranking</div>
+    </div>
+
+    <div class="main-card">
+        <div class="dashboard-header">
+            <span>🏗️ Triagem de Lote</span>
+            <span style="color:var(--muted); font-size:0.55rem;">AUTO: 0/S</span>
         </div>
-        <div class="stat">
-            <div class="stat-l">ECO Tokens</div>
-            <div class="stat-v" id="disp-bal">0</div>
+
+        <div class="belt-area">
+            <div class="belt-container">
+                <div id="active-item"></div>
+                <div class="belt-label" id="belt-info">AGUARDANDO...</div>
+            </div>
+            <button class="btn-process" id="proc-btn" onclick="startBatch()">▶ PROCESSAR PRÓXIMO LOTE</button>
+        </div>
+
+        <div class="status-strip">
+            <div>Sede: <span id="sede-name" style="color:white; font-weight:800">🏚️ Barraco</span></div>
+            <div>Lvl: <span id="lvl-val" style="color:white; font-weight:800">1</span></div>
+            <div class="energy-bar-wrap">
+                E: <div class="energy-bar"><div id="energy-fill"></div></div>
+            </div>
+            <div>💰 <span id="ecp-val" style="color:var(--accent); font-weight:800">0</span></div>
+            <button class="tab" style="padding:2px 8px; font-size:0.5rem; background:#f97316; color:white; border:none; flex:none; height:18px;" onclick="window.location.href='index.html'">Hub</button>
+        </div>
+
+        <div class="inventory-grid" id="inv-grid">
+            <!-- Itens gerados via JS -->
+        </div>
+
+        <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS</button>
+
+        <div class="terminal" id="logs">
+            <div class="log-g">[Sistema]: Dashboard v2.2 conectado.</div>
         </div>
     </div>
-</header>
-
-<main>
-    <div id="overlay-fx"></div>
-    <div id="alert-msg">✨ ITEM RARO ✨</div>
-    <div class="belt-container">
-        <div class="belt-marks" id="belt-anim"></div>
-        <div id="item-sprite">🧴</div>
-    </div>
-    <div class="bin-container">
-        <div id="bin-sprite">📦</div>
-        <div class="bin-name" id="bin-name">Caixa de Madeira</div>
-    </div>
-</main>
-
-<!-- MODAL SHOP -->
-<div id="modal-shop" class="modal">
-    <div class="modal-header"><h2>🛒 Loja</h2><span class="close-btn" onclick="closeModal()">✕</span></div>
-    <div class="shop-tabs">
-        <div class="tab active">MELHORIAS</div>
-        <div class="tab">ENERGIA</div>
-        <div class="tab">AUTOMAÇÃO</div>
-        <div class="tab">PREMIUM</div>
-    </div>
-    <div class="shop-grid">
-        <div class="shop-card"><div>👷 Catador</div><div style="color:var(--accent)">100 ECP</div><button class="buy-btn">COMPRAR</button></div>
-        <div class="shop-card"><div>⚡ +50 Energia</div><div style="color:var(--accent)">50 ECP</div><button class="buy-btn">COMPRAR</button></div>
-    </div>
-</div>
-
-<!-- MODAL PROFILE -->
-<div id="modal-profile" class="modal">
-    <div class="modal-header"><h2>👤 Perfil</h2><span class="close-btn" onclick="closeModal()">✕</span></div>
-    <div style="background:var(--card); padding:20px; border-radius:20px; border:1px solid #ffffff10;">
-        <p><strong>Nível:</strong> <span id="prof-lvl">1</span></p>
-        <p><strong>Carteira:</strong> <small id="prof-addr" style="color:var(--rare)">-</small></p>
-        <hr style="border:1px solid #ffffff05; margin:15px 0;">
-        <p style="text-align:center; color:var(--accent); font-weight:800;">RENDA PASSIVA</p>
-        <p style="text-align:center; font-size:1.2rem;" id="disp-passive">0.05 ECP/h</p>
-    </div>
-</div>
-
-<nav>
-    <div class="nav-item active" onclick="closeModal()"><span class="nav-icon">🏭</span>PÁTIO</div>
-    <div class="nav-item" onclick="openModal('shop')"><span class="nav-icon">🛒</span>LOJA</div>
-    <div class="nav-item" onclick="openModal('profile')"><span class="nav-icon">👤</span>PERFIL</div>
-    <a href="index.html" class="nav-item"><span class="nav-icon">💼</span>WALLET</a>
-</nav>
 
 <script>
     const API_URL = "https://ecopacto-api-production.up.railway.app";
     const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
 
-    let game = { level: 1, energy: 100, processed: 0, balance: wallet ? wallet.balance : 0, invites: 0 };
+    if(wallet) document.getElementById('lock-screen').style.display = 'none';
 
-    const ITEMS = [
-        { name: "Plástico", icon: "🧴", chance: 60, speed: 2000, reward: 0.1, rarity: 'comum' },
-        { name: "Papelão", icon: "📦", chance: 20, speed: 2000, reward: 0.2, rarity: 'comum' },
-        { name: "Alumínio", icon: "🥫", chance: 12, speed: 2000, reward: 0.5, rarity: 'comum' },
-        { name: "Cobre", icon: "🔌", chance: 5, speed: 4000, reward: 2.0, rarity: 'raro' },
-        { name: "Lítio", icon: "🔋", chance: 2, speed: 4000, reward: 5.0, rarity: 'epico' },
-        { name: "Laptop", icon: "💻", chance: 0.8, speed: 6000, reward: 10.0, rarity: 'lendario' },
-        { name: "Smartphone", icon: "📱", chance: 0.15, speed: 6000, reward: 25.0, rarity: 'lendario' },
-        { name: "Placa-Mãe", icon: "🖥️", chance: 0.05, speed: 6000, reward: 50.0, rarity: 'lendario' },
-        { name: "Chip", icon: "⚡", chance: 0.01, speed: 8000, reward: 100.0, rarity: 'lendario' }
+    let state = {
+        level: 1, energy: 100, ecp: 0, items: 0,
+        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 }
+    };
+
+    const MATERIAL_DATA = [
+        { id: 'plastic', name: "Plástico", icon: "🧴", chance: 60, speed: 1000, reward: 1 },
+        { id: 'paper', name: "Papelão", icon: "📦", chance: 20, speed: 1000, reward: 2 },
+        { id: 'alum', name: "Alumínio", icon: "🥫", chance: 12, speed: 1000, reward: 5 },
+        { id: 'copper', name: "Cobre", icon: "🔌", chance: 5, speed: 2000, reward: 20 },
+        { id: 'lithium', name: "Lítio", icon: "🔋", chance: 2, speed: 2000, reward: 50 },
+        { id: 'parts', name: "Peças", icon: "💻", chance: 0.8, speed: 3000, reward: 150 },
+        { id: 'phone', name: "Smartphone", icon: "📱", chance: 0.15, speed: 3000, reward: 500 },
+        { id: 'board', name: "Placa-Mãe", icon: "🖥️", chance: 0.05, speed: 3000, reward: 1000 },
+        { id: 'chip', name: "Chip", icon: "⚡", chance: 0.01, speed: 4000, reward: 5000 }
     ];
 
-    function updateEvolution() {
-        const sedeI = document.getElementById('sede-icon'); const sedeN = document.getElementById('sede-name');
-        const binI = document.getElementById('bin-sprite'); const binN = document.getElementById('bin-name');
-
-        if(game.level >= 100) { sedeI.innerText="🌎"; sedeN.innerText="Ecopacto City"; binI.innerText="🤖"; binN.innerText="Auto System"; }
-        else if(game.level >= 50) { sedeI.innerText="🌆"; sedeN.innerText="Recicly City"; binI.innerText="🏭"; binN.innerText="Prensa Industrial"; }
-        else if(game.level >= 25) { sedeI.innerText="🏭"; sedeN.innerText="Galpão"; binI.innerText="♻️"; binN.innerText="Centro Triagem"; }
-        else if(game.level >= 10) { sedeI.innerText="🏠"; sedeN.innerText="Centro Coleta"; }
+    function initInventory() {
+        const grid = document.getElementById('inv-grid');
+        grid.innerHTML = MATERIAL_DATA.map(m => `
+            <div class="inv-slot">
+                <div class="inv-icon">${m.icon}</div>
+                <div class="inv-count" id="count-${m.id}">0</div>
+                <div class="inv-name">${m.name}</div>
+            </div>
+        `).join('');
+        updateUI();
     }
 
     function updateUI() {
-        document.getElementById('disp-bal').innerText = Math.floor(game.balance).toLocaleString();
-        document.getElementById('disp-energy').innerText = game.energy + "/100";
-        document.getElementById('prof-lvl').innerText = game.level;
-        if(wallet) document.getElementById('prof-addr').innerText = wallet.address;
-        updateEvolution();
+        document.getElementById('lvl-val').innerText = state.level;
+        document.getElementById('energy-fill').style.width = state.energy + "%";
+        document.getElementById('ecp-val').innerText = state.ecp.toLocaleString();
+        for(let key in state.inventory) {
+            const el = document.getElementById(`count-${key}`);
+            if(el) el.innerText = state.inventory[key].toLocaleString();
+        }
+        const sede = document.getElementById('sede-name');
+        if(state.level >= 100) sede.innerText = "🌎 City";
+        else if(state.level >= 50) sede.innerText = "🌆 Recicly";
+        else if(state.level >= 25) sede.innerText = "🏭 Galpão";
+        else if(state.level >= 10) sede.innerText = "🏠 Centro";
     }
 
-    async function spawn() {
-        if(game.energy <= 0) return setTimeout(spawn, 3000);
-        let r = Math.random() * 100; let acc = 0; let item = ITEMS[0];
-        for(let i of ITEMS) { acc += i.chance; if(r <= acc) { item = i; break; } }
+    function startBatch() {
+        if(state.energy <= 0) return addLog("Sem energia!", "#f97316");
+        const btn = document.getElementById('proc-btn');
+        btn.disabled = true;
 
-        const el = document.getElementById('item-sprite'); const alert = document.getElementById('alert-msg');
-        el.innerText = item.icon; el.style.left = "-100px";
+        let r = Math.random() * 100;
+        let acc = 0;
+        let sel = MATERIAL_DATA[0];
+        for(let m of MATERIAL_DATA) { acc += m.chance; if(r <= acc) { sel = m; break; } }
 
-        if(item.rarity === 'lendario') {
-            alert.innerText = "🚨 " + item.name.toUpperCase() + " DETECTADO 🚨"; alert.style.display = "block";
-            document.getElementById('belt-anim').style.animationDuration = "8s";
-        } else if(item.rarity !== 'comum') {
-            alert.innerText = "✨ ITEM RARO: " + item.name.toUpperCase(); alert.style.display = "block";
-            document.getElementById('belt-anim').style.animationDuration = "4s";
-        } else { alert.style.display = "none"; document.getElementById('belt-anim').style.animationDuration = "2s"; }
+        const sprite = document.getElementById('item-active');
+        document.getElementById('belt-info').innerText = sel.name.toUpperCase();
+        sprite.innerText = sel.icon;
+        sprite.style.left = "-40px";
 
         let start = null;
-        function animate(t) {
-            if(!start) start = t; let p = (t - start) / item.speed;
-            if(p < 1) { el.style.left = `calc(${p * 100}% - 50px)`; requestAnimationFrame(animate); }
-            else { finalize(item); }
+        function frame(t) {
+            if(!start) start = t;
+            let p = (t - start) / sel.speed;
+            if(p < 1) {
+                sprite.style.left = `calc(${p * 100}% - 20px)`;
+                requestAnimationFrame(frame);
+            } else {
+                state.energy--;
+                state.inventory[sel.id]++;
+                state.items++;
+                addLog(`+1 ${sel.name}`);
+
+                if(sel.id === 'chip' && wallet) {
+                    fetch(`${API_URL}/mine?address=${wallet.address}`)
+                        .then(r => r.json())
+                        .then(data => addLog("✨ BLOCO MINERADO! +100 ECO REAIS.", "var(--orange)"));
+                }
+
+                if(state.items % 15 === 0) state.level++;
+                updateUI();
+                btn.disabled = false;
+                document.getElementById('belt-info').innerText = "AGUARDANDO...";
+            }
         }
-        requestAnimationFrame(animate);
+        requestAnimationFrame(frame);
     }
 
-    async function finalize(item) {
-        document.getElementById('bin-sprite').style.transform="scale(1.2)";
-        setTimeout(()=>document.getElementById('bin-sprite').style.transform="scale(1)", 100);
-        game.energy -= 1; game.processed++;
-
-        if(item.rarity === 'lendario' && wallet) {
-            document.getElementById('overlay-fx').style.opacity="0.5"; setTimeout(()=>document.getElementById('overlay-fx').style.opacity="0",200);
-            const res = await fetch(`${API_URL}/mine?address=${wallet.address}`);
-            const data = await res.json(); game.balance = data.balance;
-        } else { game.balance += item.reward; }
-
-        if(game.processed % 20 === 0) game.level++;
-        updateUI(); setTimeout(spawn, 500);
+    function addLog(msg, color = "") {
+        const logs = document.getElementById('logs');
+        logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML;
     }
 
-    function openModal(id) { document.getElementById('modal-'+id).classList.add('active'); }
-    function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
+    function sellItems() {
+        let total = 0;
+        MATERIAL_DATA.forEach(m => {
+            total += state.inventory[m.id] * m.reward;
+            state.inventory[m.id] = 0;
+        });
+        state.ecp += total;
+        addLog(`💰 Venda realizada: +${total} ECP`, "var(--accent)");
+        updateUI();
+    }
 
-    updateUI(); spawn();
-    setInterval(() => { if(game.energy < 100) { game.energy++; updateUI(); } }, 10000);
+    initInventory();
+    setInterval(() => { if(state.energy < 100) { state.energy++; updateUI(); } }, 8000);
 </script>
 </body>
 </html>
