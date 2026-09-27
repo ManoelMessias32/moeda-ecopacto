@@ -1135,4 +1135,81 @@ Produção 2x (30 min)	300 ECO	0,00006 BNB
 Produção 2x (1h)	500 ECO	0,00010 BNB
 Produção 3x (1h)	1.500 ECO	0,00030 BNB
 
+ajustar metamesk compra
+
+deve mostrar assim
+Recicly City quer enviar:
+
+0.001 BNB
+
+Para:
+0xSEU_ENDERECO
+
+Taxa de Rede:
+0.0000xxxx BNB
+
+Total:
+0.001xxxx BNB
+
+[Cancelar]
+[Confirmar]
+
+adiicionar funçao
+async function buyWithBNB(priceBNB, itemId){
+
+    try{
+
+        if(!window.ethereum){
+            alert("MetaMask não encontrada!");
+            return;
+        }
+
+        const accounts = await ethereum.request({
+            method: "eth_requestAccounts"
+        });
+
+        const sender = accounts[0];
+
+        addLog("🦊 Abrindo MetaMask...");
+
+        const tx = await ethereum.request({
+            method: "eth_sendTransaction",
+            params: [{
+                from: sender,
+
+                to: "0xSEU_ENDERECO_BNB",
+
+                value: "0x" +
+                BigInt(
+                    Math.floor(
+                        priceBNB * 1000000000000000000
+                    )
+                ).toString(16)
+            }]
+        });
+
+        addLog("⏳ Transação enviada...");
+        addLog("TX: " + tx);
+
+        unlockItem(itemId);
+
+        addLog("✅ Compra confirmada!");
+        alert("✅ Item comprado com sucesso!");
+
+    }catch(err){
+
+        addLog("❌ Compra cancelada");
+
+        console.error(err);
+
+    }
+}
+
+a funçao
+
+unlockItem(itemId);
+
+await ethereum.request({
+   method:'eth_sendTransaction'
+})
 

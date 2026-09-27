@@ -33,7 +33,7 @@
             padding: 5px 10px; font-size: .65rem; font-weight: 700; cursor: pointer;
         }
 
-        /* TABS PRINCIPAIS */
+        /* TABS NAVEGAÇÃO */
         .tabs { display: flex; gap: 4px; height: 35px; }
         .tab {
             flex: 1; text-align: center; font-size: 0.6rem; font-weight: 700;
@@ -42,7 +42,7 @@
         }
         .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* DASHBOARD AREA */
+        /* DASHBOARD */
         .main-card {
             background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
             display: flex; flex-direction: column; flex: 1; overflow: hidden;
@@ -68,7 +68,7 @@
             box-shadow: 0 3px 0 #166534;
         }
 
-        /* STATUS STRIP */
+        /* STATUS */
         .status-strip {
             background: #00000060; padding: 6px 12px; display: flex; justify-content: space-between;
             font-size: 0.55rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -79,14 +79,14 @@
         .energy-bar { width: 35px; height: 5px; background: #1e293b; border-radius: 10px; overflow: hidden; }
         #energy-fill { height: 100%; background: #3b82f6; width: 100%; transition: 0.3s; }
 
-        /* INVENTÁRIO */
+        /* GRID MATERIAIS */
         .inventory-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px;
             background: #00000020; flex: 1; overflow-y: auto;
         }
         .inv-slot {
             background: #0b0e14; border: 1px solid var(--border); border-radius: 6px;
-            padding: 4px; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 65px; justify-content: center;
+            padding: 4px; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 70px; justify-content: center;
         }
         .inv-icon { font-size: 1rem; }
         .inv-count { font-size: 0.65rem; font-weight: 800; color: #fff; }
@@ -111,29 +111,22 @@
         .modal-header h2 { font-size: 1rem; margin: 0; color: #fff; }
         .modal-header button { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; }
 
-        /* ABAS DA LOJA (SHOP SUB-TABS) */
-        .shop-tabs {
-            display: flex; gap: 4px; margin-bottom: 10px; background: #0b0e14; padding: 4px; border-radius: 8px; border: 1px solid var(--border);
-        }
-        .shop-tab {
-            flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; font-weight: 700;
-            cursor: pointer; border-radius: 6px; color: var(--muted); background: transparent; transition: 0.2s;
-        }
+        /* LOJA ABAS */
+        .shop-tabs { display: flex; gap: 4px; margin-bottom: 10px; background: #0b0e14; padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
+        .shop-tab { flex: 1; padding: 6px 0; text-align: center; font-size: 0.55rem; font-weight: 700; cursor: pointer; border-radius: 6px; color: var(--muted); }
         .shop-tab.active { background: var(--panel-h); color: #fff; }
 
         .shop-content { display: none; flex-direction: column; gap: 8px; }
         .shop-content.active { display: flex; }
 
         .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-        .shop-item { background: var(--panel); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-        .shop-item h4 { margin: 0 0 4px 0; font-size: 0.75rem; color: white; }
-        .shop-item p { margin: 0 0 8px 0; font-size: 0.55rem; color: var(--muted); }
+        .shop-item { background: var(--panel); padding: 8px; border-radius: 8px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; min-height: 110px;}
+        .shop-item h4 { margin: 0 0 2px 0; font-size: 0.65rem; color: white; }
+        .shop-item p { margin: 0 0 6px 0; font-size: 0.5rem; color: var(--muted); }
 
-        /* BOTÕES DIVIDIDOS (ECO / BNB) */
-        .btn-group { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: auto; }
-        .eco-btn { width: 100%; padding: 6px; border-radius: 6px; border: none; background: #22c55e; color: #000; font-weight: 800; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; }
-        .bnb-btn { width: 100%; padding: 6px; border-radius: 6px; border: none; background: #f97316; color: #fff; font-weight: 800; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; }
-        .eco-btn:hover, .bnb-btn:hover { opacity: 0.9; }
+        .btn-group { display: flex; flex-direction: column; gap: 4px; margin-top: auto; }
+        .eco-btn { width: 100%; padding: 5px; border: none; border-radius: 6px; background: #22c55e; color: #000; font-weight: 800; font-size: 0.55rem; cursor: pointer; }
+        .bnb-btn { width: 100%; padding: 5px; border: none; border-radius: 6px; background: #f97316; color: #fff; font-weight: 800; font-size: 0.55rem; cursor: pointer; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .btn-auth-trigger { background: var(--orange); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 800; cursor: pointer; text-decoration: none; margin-top: 20px; font-size: 0.8rem; }
@@ -141,7 +134,6 @@
 </head>
 <body>
 
-    <!-- CABEÇALHO FIXO -->
     <div class="top-header">
         <div class="logo">♻️ RECICLY CITY</div>
         <div class="player-info">
@@ -153,7 +145,6 @@
         </div>
     </div>
 
-    <!-- TABS DE NAVEGAÇÃO PRINCIPAL -->
     <div class="tabs">
         <div class="tab active" onclick="showTab('patio')">🏭 Pátio</div>
         <div class="tab" onclick="showTab('shop')">🛒 Loja</div>
@@ -161,14 +152,12 @@
         <div class="tab" onclick="showTab('ranking')">🏆 Ranking</div>
     </div>
 
-    <!-- TELA DE BLOQUEIO DE CONEXÃO -->
     <div id="lock-screen">
         <div style="font-size:2rem; font-weight:800">RECICLY CITY</div>
         <p style="color:var(--muted); font-size:0.8rem;">Conecte sua carteira para operar.</p>
         <a href="index.html" class="btn-auth-trigger">🔓 CONECTAR VIA HUB</a>
     </div>
 
-    <!-- TELA PRINCIPAL: PÁTIO -->
     <div class="main-card" id="patio-view">
         <div class="card-header">
             <span>🏗️ Triagem Operacional</span>
@@ -188,9 +177,7 @@
             <div>Sede: <span id="sede-name" style="color:white; font-weight:800">🏚️ Barraco</span></div>
             <div>Lvl: <span id="lvl-val" style="color:white; font-weight:800">1</span></div>
             <div class="energy-info">
-                <div class="energy-bar-wrap">
-                    E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span>
-                </div>
+                <div class="energy-bar-wrap">E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span></div>
                 <small id="energy-timer-strip">⏳ 03:00</small>
             </div>
             <div>💰 <span id="ecp-val" style="color:var(--accent); font-weight:800">0</span></div>
@@ -202,11 +189,10 @@
         <div class="terminal" id="logs"></div>
     </div>
 
-    <!-- MODAL DA LOJA COMPLETA COM ABAS SEPARADAS E DOIS BOTÕES -->
+    <!-- LOJA COM ABAS E BOTOES DIVIDIDOS -->
     <div id="modal-shop" class="modal">
         <div class="modal-header"><h2>🛒 Loja de Melhorias Web3</h2><button onclick="showTab('patio')">✕</button></div>
 
-        <!-- Abas Internas da Loja -->
         <div class="shop-tabs">
             <div class="shop-tab active" onclick="showShopTab('energy')">⚡ Energia</div>
             <div class="shop-tab" onclick="showShopTab('staff')">👷 Equipe</div>
@@ -215,187 +201,158 @@
             <div class="shop-tab" onclick="showShopTab('boosters')">🚀 Boosters</div>
         </div>
 
-        <!-- Seção Energia -->
+        <!-- ENERGIA -->
         <div id="shop-energy" class="shop-content active">
             <div class="shop-grid">
                 <div class="shop-item">
                     <h4>⚡ +50 Energia</h4>
-                    <p>Recarga instantânea</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy50', 'eco', 100)">💰 100 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('energy50', 'bnb', 0.00002)">🦊 0.00002 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('energy50', 100)">💰 100 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00002, 'energy50')">🦊 0.00002 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <h4>⚡ +100 Energia</h4>
-                    <p>Recarga completa</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy100', 'eco', 180)">💰 180 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('energy100', 'bnb', 0.00004)">🦊 0.00004 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('energy100', 180)">💰 180 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00004, 'energy100')">🦊 0.00004 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <h4>⚡ +500 Energia</h4>
-                    <p>Super estoque reserva</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('energy500', 'eco', 800)">💰 800 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('energy500', 'bnb', 0.00015)">🦊 0.00015 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('energy500', 800)">💰 800 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00015, 'energy500')">🦊 0.00015 BNB</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seção Funcionários -->
+        <!-- EQUIPE -->
         <div id="shop-staff" class="shop-content">
             <div class="shop-grid">
                 <div class="shop-item">
                     <h4>👷 Catador Adicional</h4>
-                    <p>Aumenta taxa de triagem</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_add', 'eco', 500)">💰 500 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('staff_add', 'bnb', 0.00010)">🦊 0.00010 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('staff_add', 500)">💰 500 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00010, 'staff_add')">🦊 0.00010 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <h4>👷 Catador Profissional</h4>
-                    <p>Mais agilidade na coleta</p>
+                    <h4>👷 Profissional</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_pro', 'eco', 2500)">💰 2500 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('staff_pro', 'bnb', 0.00050)">🦊 0.00050 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('staff_pro', 2500)">💰 2500 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00050, 'staff_pro')">🦊 0.00050 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <h4>👷 Supervisor</h4>
-                    <p>Otimiza os multiplicadores</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('staff_super', 'eco', 10000)">💰 10000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('staff_super', 'bnb', 0.00200)">🦊 0.00200 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('staff_super', 10000)">💰 10000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00200, 'staff_super')">🦊 0.00200 BNB</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seção Robôs -->
+        <!-- ROBÔS -->
         <div id="shop-robots" class="shop-content">
             <div class="shop-grid">
                 <div class="shop-item">
                     <h4>🤖 Robô Básico</h4>
-                    <p>+5 materiais automáticos</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_basic', 'eco', 5000)">💰 5000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('robot_basic', 'bnb', 0.00100)">🦊 0.00100 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('robot_basic', 5000)">💰 5000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00100, 'robot_basic')">🦊 0.00100 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <h4>🤖 Robô Superior</h4>
-                    <p>Triagem inteligente passiva</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_super', 'eco', 15000)">💰 15000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('robot_super', 'bnb', 0.00300)">🦊 0.00300 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('robot_super', 15000)">💰 15000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00300, 'robot_super')">🦊 0.00300 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <h4>🤖 Robô Industrial</h4>
-                    <p>Máxima eficiência Web3</p>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('robot_ind', 'eco', 50000)">💰 50000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('robot_ind', 'bnb', 0.01000)">🦊 0.01000 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('robot_ind', 50000)">💰 50000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.01000, 'robot_ind')">🦊 0.01000 BNB</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seção Esteiras -->
+        <!-- ESTEIRAS -->
         <div id="shop-belts" class="shop-content">
             <div class="shop-grid">
                 <div class="shop-item">
-                    <h4>⚙️ Esteira Nível 2</h4>
-                    <p>Velocidade aprimorada</p>
+                    <h4>⚙️ Nível 2</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_lvl2', 'eco', 1000)">💰 1000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('belt_lvl2', 'bnb', 0.00020)">🦊 0.00020 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('belt_lvl2', 1000)">💰 1000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00020, 'belt_lvl2')">🦊 0.00020 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <h4>⚙️ Esteira Nível 3</h4>
-                    <p>Fluxo contínuo rápido</p>
+                    <h4>⚙️ Nível 3</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_lvl3', 'eco', 5000)">💰 5000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('belt_lvl3', 'bnb', 0.00100)">🦊 0.00100 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('belt_lvl3', 5000)">💰 5000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00100, 'belt_lvl3')">🦊 0.00100 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <h4>⚙️ Esteira Industrial</h4>
-                    <p>Processamento imediato</p>
+                    <h4>⚙️ Industrial</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('belt_ind', 'eco', 20000)">💰 20000 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('belt_ind', 'bnb', 0.00400)">🦊 0.00400 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('belt_ind', 20000)">💰 20000 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00400, 'belt_ind')">🦊 0.00400 BNB</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seção Boosters -->
+        <!-- BOOSTERS -->
         <div id="shop-boosters" class="shop-content">
             <div class="shop-grid">
                 <div class="shop-item">
-                    <h4>🚀 Produção 2x (30 min)</h4>
-                    <p>Duplica bônus recebidos</p>
+                    <h4>🚀 2x (30 min)</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_2x_30m', 'eco', 300)">💰 300 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('boost_2x_30m', 'bnb', 0.00006)">🦊 0.00006 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('boost_2x_30m', 300)">💰 300 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00006, 'boost_2x_30m')">🦊 0.00006 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <h4>🚀 Produção 2x (1h)</h4>
-                    <p>Mais tempo em alta velocidade</p>
+                    <h4>🚀 2x (1h)</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_2x_1h', 'eco', 500)">💰 500 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('boost_2x_1h', 'bnb', 0.00010)">🦊 0.00010 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('boost_2x_1h', 500)">💰 500 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00010, 'boost_2x_1h')">🦊 0.00010 BNB</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <h4>🚀 Produção 3x (1h)</h4>
-                    <p>Multiplicador triplo insano</p>
+                    <h4>🚀 3x (1h)</h4>
                     <div class="btn-group">
-                        <button class="eco-btn" onclick="buyItem('boost_3x_1h', 'eco', 1500)">💰 1500 ECO</button>
-                        <button class="bnb-btn" onclick="buyItem('boost_3x_1h', 'bnb', 0.00030)">🦊 0.00030 BNB</button>
+                        <button class="eco-btn" onclick="buyItem('boost_3x_1h', 1500)">💰 1500 ECO</button>
+                        <button class="bnb-btn" onclick="buyWithBNB(0.00030, 'boost_3x_1h')">🦊 0.00030 BNB</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PROFILE -->
+    <!-- MODAL PERFIL -->
     <div id="modal-profile" class="modal">
         <div class="modal-header"><h2>👤 Perfil do Operador</h2><button onclick="showTab('patio')">✕</button></div>
         <div style="background:var(--panel); padding:15px; border-radius:12px; border:1px solid var(--border);">
             <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #ffffff10; padding-bottom:10px;">
-                <div style="font-weight:800; font-size:1.1rem;">♻️ RECICLY CITY</div>
+                <div style="font-weight:800; font-size:1.1rem;" id="prof-user">OPERADOR</div>
                 <small id="prof-id" style="color:var(--muted)">ID: -</small>
             </div>
-
-            <p><strong>💼 Wallet Ecopacto:</strong> <span id="prof-eco-bal" style="color:var(--accent)">0 ECO</span></p>
+            <p><strong>📦 Processados:</strong> <span id="processed-items">0</span></p>
             <p><strong>🦊 MetaMask:</strong> <span id="metamask-status" style="color:var(--orange)">Não conectada</span></p>
-            <p><strong>📦 Materiais Processados:</strong> <span id="processed-items">0</span></p>
-            <p><strong>Nível:</strong> <span id="prof-lvl">1</span></p>
-
-            <hr style="border:1px solid #ffffff05; margin:15px 0;">
-            <div style="text-align:center;">
-                <small style="color:var(--muted)">RENDA PASSIVA</small>
-                <div id="passive-income" style="font-weight:800; color:var(--accent); font-size:1.2rem;">0.05 ECP/h</div>
-            </div>
-
-            <hr style="border:1px solid #ffffff05; margin:15px 0;">
             <p><strong>👥 Convidados:</strong> <span id="invite-count">0</span></p>
-            <div style="background:#000; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:.6rem; word-break:break-all; margin-top:5px; color:var(--rare);">
-                <span id="invite-link">-</span>
-            </div>
-            <button onclick="copyInvite()" class="shop-btn" style="background:var(--orange); color:white; margin-top:8px; width:100%; border:none; padding:8px; font-weight:800; border-radius:6px; cursor:pointer;">📋 COPIAR LINK</button>
+            <div style="background:#000; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:.6rem; word-break:break-all; color:var(--rare);" id="invite-link">-</div>
+            <button onclick="copyInvite()" class="shop-btn" style="background:var(--orange); color:white; margin-top:8px; width:100%; border:none; padding:8px; border-radius:6px; font-weight:800; cursor:pointer;">📋 COPIAR LINK</button>
         </div>
     </div>
 
-    <!-- MODAL RANKING -->
     <div id="modal-ranking" class="modal">
         <div class="modal-header"><h2>🏆 Ranking Global</h2><button onclick="showTab('patio')">✕</button></div>
         <div style="background:var(--panel); padding:15px; border-radius:12px; border:1px solid var(--border);">
@@ -409,13 +366,8 @@
     const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
     if(wallet) document.getElementById('lock-screen').style.display = 'none';
 
-    let state = {
-        level: 1, energy: 100, ecp: 0, items: 0, invites: 0,
-        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 }
-    };
-    let autoRunning = false;
-    let countdown = 180;
-    let metamaskWallet = null;
+    let state = { level: 1, energy: 100, ecp: 0, items: 0, invites: 0, inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, lithium: 0, parts: 0, phone: 0, board: 0, chip: 0 } };
+    let autoRunning = false, countdown = 180, metamaskWallet = null;
 
     const MATERIAL_DATA = [
         { id: 'plastic', name: "Plástico", icon: "🧴", chance: 60, speed: 2000, reward: 1 },
@@ -438,210 +390,128 @@
         document.getElementById('header-eco').innerText = state.ecp.toLocaleString();
         document.getElementById('processed-items').innerText = state.items;
 
-        for(let key in state.inventory) {
-            const el = document.getElementById(`count-${key}`);
-            if(el) el.innerText = state.inventory[key].toLocaleString();
-        }
-
-        const sede = document.getElementById('sede-name');
-        const box = document.getElementById('main-box');
+        const sede = document.getElementById('sede-name'), box = document.getElementById('main-box');
         if(state.level >= 100) { sede.innerText = "🌎 Ecopacto City"; box.innerText = "🤖"; }
         else if(state.level >= 50) { sede.innerText = "🌆 Recicly City"; box.innerText = "🏭"; }
         else if(state.level >= 20) { sede.innerText = "🏭 Galpão"; box.innerText = "♻️"; }
         else { sede.innerText = "🏚️ Barraco"; box.innerText = "📦"; }
 
         if(wallet) {
-            document.getElementById('prof-id').innerText = "ID: " + wallet.address.slice(0,10) + "...";
+            document.getElementById('prof-user').innerText = (wallet.name || "OPERADOR").toUpperCase();
+            document.getElementById('prof-id').innerText = "ID: " + wallet.address.slice(0,12) + "...";
             document.getElementById('user-name').innerText = "👤 " + (wallet.name || "Operador");
-            document.getElementById('prof-eco-bal').innerText = state.ecp.toLocaleString() + " ECO";
             document.getElementById('invite-link').innerText = `https://hub.ecopacto/ref/${wallet.address}`;
-            document.getElementById('prof-lvl').innerText = state.level;
-
-            // Renda passiva baseada em convites
-            let passive = 0.05;
-            if(state.invites >= 50) passive = 1.00;
-            else if(state.invites >= 25) passive = 0.50;
-            else if(state.invites >= 10) passive = 0.20;
-            else if(state.invites >= 5) passive = 0.10;
-            document.getElementById('passive-income').innerText = passive.toFixed(2) + " ECO/h";
-            document.getElementById('invite-count').innerText = state.invites;
         }
 
         if(metamaskWallet) {
             document.getElementById('btn-metamask').innerText = "🟢 " + metamaskWallet.slice(0,6) + "..." + metamaskWallet.slice(-4);
-            document.getElementById('metamask-status').innerText = "Conectada (" + metamaskWallet.slice(0,4) + ")";
+            document.getElementById('metamask-status').innerText = "Conectada (" + metamaskWallet.slice(0,6) + ")";
             document.getElementById('metamask-status').style.color = "var(--accent)";
         }
     }
 
     async function connectMetaMask(){
-        if(typeof window.ethereum === 'undefined') return addLog("MetaMask não encontrada.", "var(--orange)");
+        if(!window.ethereum) return addLog("MetaMask não encontrada.", "var(--orange)");
         try{
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            metamaskWallet = accounts[0];
-            updateUI();
-            addLog("MetaMask conectada.");
+            metamaskWallet = accounts[0]; updateUI(); addLog("MetaMask conectada.");
         } catch(e){ addLog("Conexão cancelada."); }
     }
 
-    function toggleAuto() {
-        if (autoRunning) {
-            autoRunning = false;
-            document.getElementById("proc-btn").innerText = "▶ INICIAR PRODUÇÃO";
-            document.getElementById("auto-status").innerText = "AUTO: OFF";
-        } else {
-            if (state.energy <= 0) return addLog("Sem energia!", "var(--orange)");
-            autoRunning = true;
-            document.getElementById("proc-btn").innerText = "⏸ PARAR PRODUÇÃO";
-            document.getElementById("auto-status").innerText = "AUTO: ON";
-            startBatch();
+    async function buyWithBNB(priceBNB, itemId) {
+        try {
+            if (!window.ethereum) return alert("MetaMask não encontrada!");
+            const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+            const sender = accounts[0];
+            addLog("🦊 Abrindo MetaMask...", "var(--rare)");
+
+            const tx = await ethereum.request({
+                method: "eth_sendTransaction",
+                params: [{
+                    from: sender,
+                    to: "0x1234567890123456789012345678901234567890", // Endereço da Pool
+                    value: "0x" + BigInt(Math.floor(priceBNB * 1e18)).toString(16)
+                }]
+            });
+
+            addLog("⏳ Transação enviada: " + tx.slice(0,12) + "...");
+            processReward(itemId);
+            addLog("✅ Compra aprovada na rede!", "var(--accent)");
+            alert("✅ Item comprado com sucesso!");
+        } catch (err) { addLog("❌ Compra cancelada.", "var(--orange)"); }
+    }
+
+    function buyItem(itemId, price) {
+        if (state.ecp < price) return addLog("Saldo ECO insuficiente!", "var(--orange)");
+        state.ecp -= price;
+        processReward(itemId);
+        addLog(`🛍️ Comprado: ${itemId} por ${price} ECO`);
+    }
+
+    function processReward(itemId) {
+        if (itemId.includes('energy')) {
+            const amount = parseInt(itemId.replace('energy', ''));
+            state.energy = Math.min(getMaxEnergy(), state.energy + amount);
+        } else if (itemId.includes('staff')) {
+            addLog("👷 Membro da equipe contratado!");
+        } else if (itemId.includes('robot')) {
+            addLog("🤖 Robô de automação ativado!");
+        } else if (itemId.includes('belt')) {
+            addLog("⚙️ Esteira aprimorada!");
+        } else if (itemId.includes('boost')) {
+            addLog("🚀 Booster de produção ativado!");
         }
+        updateUI();
+    }
+
+    function toggleAuto() {
+        autoRunning = !autoRunning;
+        document.getElementById("proc-btn").innerText = autoRunning ? "⏸ PARAR PRODUÇÃO" : "▶ INICIAR PRODUÇÃO";
+        document.getElementById("auto-status").innerText = "AUTO: " + (autoRunning ? "ON" : "OFF");
+        if(autoRunning) startBatch();
     }
 
     function startBatch() {
-        if(state.energy <= 0) { autoRunning = false; return updateUI(); }
-
+        if(!autoRunning || state.energy <= 0) return;
         let r = Math.random() * 100, acc = 0, sel = MATERIAL_DATA[0];
         for(let m of MATERIAL_DATA) { acc += m.chance; if(r <= acc) { sel = m; break; } }
 
         const sprite = document.getElementById('item-active');
+        sprite.innerText = sel.icon; sprite.style.left = "-40px";
         document.getElementById('belt-info').innerText = "TRIAGEM: " + sel.name.toUpperCase();
-        sprite.innerText = sel.icon;
-        sprite.style.left = "-40px";
-
-        if(sel.chance <= 0.01) {
-            addLog(`🚨 ALERTA DE ITEM LENDÁRIO 🚨`, "var(--legendary)");
-        } else if(sel.chance <= 5) {
-            addLog(`✨ ITEM RARO DETECTADO ✨`, "var(--rare)");
-        }
 
         let start = null;
         function frame(t) {
             if(!start) start = t;
             let p = (t - start) / sel.speed;
-            if(p < 1) {
-                sprite.style.left = `calc(${p * 100}% - 40px)`;
-                requestAnimationFrame(frame);
-            } else {
+            if(p < 1) { sprite.style.left = `calc(${p * 100}% - 40px)`; requestAnimationFrame(frame); }
+            else {
                 state.energy--; state.inventory[sel.id]++; state.items++;
-
-                if (sel.id === 'chip') {
-                    addLog(`✨✨✨✨✨ 📦 recebeu item lendário ⚡ CHIP (+100 ECO extra)`, "var(--legendary)");
-                    state.ecp += 100;
-                } else if (sel.chance <= 5) {
-                    addLog(`✨ CAIXA DE TRIAGEM ✨ 🔋 ${sel.name} armazenado`, "var(--rare)");
-                } else {
-                    addLog(`+1 ${sel.name}`);
-                }
-
-                if(sel.id === 'chip' && wallet) {
-                    fetch(`${API_URL}/mine?address=${wallet.address}`)
-                        .then(r => r.json())
-                        .then(data => addLog("✨ BLOCO MINERADO! +100 ECO REAIS.", "var(--accent)"));
-                }
-
                 if(state.items % 15 === 0) state.level++;
-                updateUI();
-                if(autoRunning && state.energy > 0) setTimeout(startBatch, 500);
-                else toggleAuto();
+                updateUI(); if(autoRunning && state.energy > 0) setTimeout(startBatch, 500);
+                else if(state.energy <= 0) toggleAuto();
             }
         }
         requestAnimationFrame(frame);
     }
 
-    function buyItem(itemId, currency, price) {
-        if (currency === 'eco') {
-            if (state.ecp < price) {
-                addLog(`❌ Saldo insuficiente de ECO!`, "var(--orange)");
-                return;
-            }
-            state.ecp -= price;
-            processPurchaseReward(itemId);
-            addLog(`🛍️ Comprado: ${itemId} por ${price} ECO!`, "var(--accent)");
-            updateUI();
-        } else {
-            if (!metamaskWallet) {
-                addLog(`🦊 Conecte sua MetaMask primeiro!`, "var(--orange)");
-                return;
-            }
-            addLog(`⏳ Transação MetaMask iniciada: ${price} BNB...`, "var(--rare)");
-
-            // Simulação de transação Web3
-            setTimeout(() => {
-                processPurchaseReward(itemId);
-                addLog(`✅ Sucesso! ${itemId} desbloqueado via BNB!`, "var(--legendary)");
-                updateUI();
-            }, 1500);
-        }
-    }
-
-    function processPurchaseReward(itemId) {
-        if (itemId === 'energy50') state.energy = Math.min(getMaxEnergy(), state.energy + 50);
-        else if (itemId === 'energy100') state.energy = Math.min(getMaxEnergy(), state.energy + 100);
-        else if (itemId === 'energy500') state.energy = Math.min(getMaxEnergy(), state.energy + 500);
-        // Implementação futura de boosts e automação real...
-    }
-
-    function getMaxEnergy() {
-        if(state.level >= 50) return 200;
-        if(state.level >= 25) return 150;
-        if(state.level >= 10) return 120;
-        return 100;
-    }
-
-    function addLog(msg, color = "") {
-        const logs = document.getElementById('logs');
-        logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML;
-    }
-
-    function sellItems() {
-        let total = 0;
-        MATERIAL_DATA.forEach(m => { total += state.inventory[m.id] * m.reward; state.inventory[m.id] = 0; });
-        state.ecp += total;
-        addLog(`💰 Venda realizada: +${total} ECO`, "var(--accent)");
-        updateUI();
-    }
-
-    function copyInvite(){
-        navigator.clipboard.writeText(document.getElementById('invite-link').innerText);
-        addLog("🔗 Link de convite copiado!");
-    }
-
-    function showTab(id) {
-        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        if(id === 'patio') document.querySelectorAll('.tab')[0].classList.add('active');
-        else {
-            document.getElementById('modal-' + id).classList.add('active');
-            if(id === 'shop') document.querySelectorAll('.tab')[1].classList.add('active');
-            if(id === 'profile') document.querySelectorAll('.tab')[2].classList.add('active');
-            if(id === 'ranking') document.querySelectorAll('.tab')[3].classList.add('active');
-        }
-    }
-
-    function showShopTab(subTabId) {
-        document.querySelectorAll('.shop-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
-
-        document.getElementById('shop-' + subTabId).classList.add('active');
-        event.currentTarget.classList.add('active');
-    }
+    function getMaxEnergy() { return state.level >= 50 ? 200 : state.level >= 25 ? 150 : state.level >= 10 ? 120 : 100; }
+    function addLog(msg, color = "") { const logs = document.getElementById('logs'); logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML; }
+    function sellItems() { let t = 0; MATERIAL_DATA.forEach(m => { t += state.inventory[m.id] * m.reward; state.inventory[m.id] = 0; }); state.ecp += t; updateUI(); addLog("💰 Materiais vendidos!"); }
+    function copyInvite() { navigator.clipboard.writeText(document.getElementById('invite-link').innerText); addLog("🔗 Link copiado."); }
+    function showShopTab(id) { document.querySelectorAll('.shop-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active')); document.getElementById('shop-' + id).classList.add('active'); event.currentTarget.classList.add('active'); }
+    function showTab(id) { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); if(id !== 'patio') { document.getElementById('modal-' + id).classList.add('active'); let tabIdx = id === 'shop' ? 1 : id === 'profile' ? 2 : 3; document.querySelectorAll('.tabs .tab')[tabIdx].classList.add('active'); } else { document.querySelectorAll('.tabs .tab')[0].classList.add('active'); } updateUI(); }
 
     const grid = document.getElementById('inv-grid');
     grid.innerHTML = MATERIAL_DATA.map(m => `<div class="inv-slot"><div class="inv-icon">${m.icon}</div><div class="inv-count" id="count-${m.id}">0</div><div class="inv-name">${m.name}</div></div>`).join('');
     updateUI();
 
     setInterval(() => {
-        if(state.energy >= getMaxEnergy()){
-            document.getElementById("energy-timer-header").innerText = "✅ Energia Máxima";
-            document.getElementById("energy-timer-strip").innerText = "✅ Cheio";
-            return;
-        }
-        countdown--;
-        let m = Math.floor(countdown / 60), s = countdown % 60;
-        const timeStr = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        document.getElementById("energy-timer-header").innerText = timeStr;
-        document.getElementById("energy-timer-strip").innerText = timeStr;
+        if(state.energy >= getMaxEnergy()) { document.getElementById("energy-timer-header").innerText = "✅ Energia Máxima"; document.getElementById("energy-timer-strip").innerText = "✅ Cheio"; return; }
+        countdown--; let m = Math.floor(countdown / 60), s = countdown % 60;
+        const ts = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        document.getElementById("energy-timer-header").innerText = ts;
+        document.getElementById("energy-timer-strip").innerText = ts;
         if(countdown <= 0){ state.energy++; updateUI(); countdown = 180; }
     }, 1000);
 </script>
