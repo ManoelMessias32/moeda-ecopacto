@@ -363,6 +363,7 @@
         const newName = document.getElementById('edit-username').value.trim().replace(/[^a-zA-Z0-9]/g, "");
         if(newName.length < 3) return;
         state.username = newName;
+        addLog("👤 Nome salvo com sucesso: " + newName, "var(--accent)");
         updateUI(); saveGame();
     }
 
@@ -388,17 +389,37 @@
         else if(state.level >= 20) box.innerText = "♻️";
         else box.innerText = "📦";
 
-        if(wallet) {
-            const dispName = state.username || wallet.name || "Operador";
-            document.getElementById('prof-user-disp').innerText = dispName;
-            document.getElementById('prof-user').innerText = dispName;
-            document.getElementById('user-name').innerText = "👤 " + dispName;
-            const userCode = state.username || wallet.address.slice(0,10);
-            document.getElementById('invite-link').innerText = `https://hub.ecopacto/ref/${userCode}`;
-            document.getElementById('invite-count').innerText = state.invites;
-            document.getElementById('invite-count-disp').innerText = state.invites;
-            let passive = state.invites >= 50 ? 1.00 : state.invites >= 25 ? 0.50 : state.invites >= 10 ? 0.20 : state.invites >= 5 ? 0.10 : 0.05;
-            document.getElementById('passive-income').innerText = passive.toFixed(2) + " ECO/h";
+        const dispName = state.username || (wallet && wallet.name) || "Operador";
+        const profUserEl = document.getElementById('prof-user');
+        if(profUserEl) profUserEl.innerText = dispName;
+
+        const userNameEl = document.getElementById('user-name');
+        if(userNameEl) userNameEl.innerText = "👤 " + dispName;
+
+        const profIdEl = document.getElementById('prof-id');
+        if(profIdEl) {
+            profIdEl.innerText = wallet ? "ID: " + wallet.address : "ID: ECO_GUEST";
+        }
+
+        const userCode = state.username || (wallet ? wallet.address.slice(0,10) : "GUEST");
+        const inviteLinkEl = document.getElementById('invite-link');
+        if(inviteLinkEl) inviteLinkEl.innerText = `https://hub.ecopacto/ref/${userCode}`;
+
+        document.getElementById('invite-count').innerText = state.invites;
+        document.getElementById('invite-count-disp').innerText = state.invites;
+
+        let passive = state.invites >= 50 ? 1.00 : state.invites >= 25 ? 0.50 : state.invites >= 10 ? 0.20 : state.invites >= 5 ? 0.10 : 0.05;
+        document.getElementById('passive-income').innerText = passive.toFixed(2) + " ECO/h";
+
+        const metamaskStatusEl = document.getElementById('metamask-status');
+        if(metamaskStatusEl) {
+            if(metamaskWallet) {
+                metamaskStatusEl.innerText = "Conectada (" + metamaskWallet.slice(0,6) + "..." + metamaskWallet.slice(-4) + ")";
+                metamaskStatusEl.style.color = "var(--accent)";
+            } else {
+                metamaskStatusEl.innerText = "Não conectada";
+                metamaskStatusEl.style.color = "var(--orange)";
+            }
         }
 
         for(let key in state.inventory) {
