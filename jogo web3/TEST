@@ -534,4 +534,177 @@ Produção 2x (30 min)	300 ECO	0,00006 BNB
 Produção 2x (1h)	500 ECO	0,00010 BNB
 Produção 3x (1h)	1.500 ECO	0,00030 BNB
 
+correçao
+
+cabeçalho em todas as telas
+♻️ RECICLY CITY
+
+👤 Usuario | 💰 ECO | ⚡ Energia
+
+🏭 Pátio | 🛒 Loja | 👤 Perfil | 🏆 Ranking
+
+<div class="top-header">
+    <div class="logo">♻️ RECICLY CITY</div>
+
+    <div class="player-info">
+        <span id="user-name">👤 Operador</span>
+        <span>💰 ECO: <strong id="header-eco">0</strong></span>
+        <span>⚡ <strong id="header-energy">100/100</strong></span>
+    </div>
+</div>
+
+adicionar mais css
+.top-header{
+    background:#151921;
+    border:1px solid #30363d;
+    border-radius:10px;
+    padding:10px;
+}
+
+.logo{
+    text-align:center;
+    font-size:1.3rem;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:6px;
+}
+
+.player-info{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    font-size:.75rem;
+    color:#c9d1d9;
+    flex-wrap:wrap;
+}
+
+mais essa correçao
+<div id="item-active"></div>
+
+funçao das abas
+function showTab(id) {
+    document.getElementById('modal-shop').classList.remove('active');
+    document.getElementById('modal-profile').classList.remove('active');
+
+    document.querySelectorAll('.tab').forEach(tab=>{
+        tab.classList.remove('active');
+    });
+
+    if(id === 'patio'){
+        document.querySelectorAll('.tab')[0].classList.add('active');
+    }
+
+    if(id === 'shop'){
+        document.getElementById('modal-shop').classList.add('active');
+        document.querySelectorAll('.tab')[1].classList.add('active');
+    }
+
+    if(id === 'profile'){
+        document.getElementById('modal-profile').classList.add('active');
+        document.querySelectorAll('.tab')[2].classList.add('active');
+    }
+}
+
+corrigir update ui
+function updateUI() {
+
+    document.getElementById('lvl-val').innerText = state.level;
+
+    document.getElementById('energy-val').innerText =
+        state.energy + "/" + getMaxEnergy();
+
+    document.getElementById('energy-fill').style.width =
+        (state.energy / getMaxEnergy() * 100) + "%";
+
+    document.getElementById('ecp-val').innerText =
+        state.ecp.toLocaleString();
+
+    document.getElementById('header-eco').innerText =
+        state.ecp.toLocaleString();
+
+    document.getElementById('header-energy').innerText =
+        state.energy + "/" + getMaxEnergy();
+
+    for(let key in state.inventory){
+        const el = document.getElementById(`count-${key}`);
+        if(el){
+            el.innerText = state.inventory[key].toLocaleString();
+        }
+    }
+
+    const sede = document.getElementById('sede-name');
+
+    if(state.level >= 100){
+        sede.innerText = "🌎 Ecopacto City";
+    }
+    else if(state.level >= 50){
+        sede.innerText = "🌆 Recicly City";
+    }
+    else if(state.level >= 25){
+        sede.innerText = "🏭 Galpão";
+    }
+    else if(state.level >= 10){
+        sede.innerText = "🏠 Centro";
+    }
+    else{
+        sede.innerText = "🏚️ Barraco";
+    }
+
+    if(wallet){
+
+        document.getElementById('prof-id').innerText =
+            wallet.address || "Sem Carteira";
+
+        document.getElementById('user-name').innerText =
+            "👤 " + (wallet.name || "Operador");
+
+        document.getElementById('prof-lvl').innerText =
+            state.level;
+    }
+}
+diminuir os card dos materias
+.inventory-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+.inv-slot{
+    min-height:70px;
+    padding:4px;
+}
+
+melhorar o visual da esteira
+<div class="drop-box">📦</div>
+.drop-box{
+    position:absolute;
+    right:10px;
+    font-size:1.5rem;
+}
+
+oque acha de fazermos assim
+
+♻️ RECICLY CITY
+
+👤 MANOEL
+💰 ECO: 1250
+⚡ 100/100
+
+🏭 PÁTIO
+🛒 LOJA
+👤 PERFIL
+🏆 RANKING
+
+═══════════════════
+
+ESTEIRA
+
+═══════════════════
+
+MATERIAIS
+
+═══════════════════
+
+VENDER
+
+═══════════════════
+
+LOGS
 
