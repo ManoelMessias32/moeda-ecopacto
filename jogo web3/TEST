@@ -936,5 +936,89 @@ qndo cheio
 
 ✅ Energia Máxima
 
+no cabeçalho
+
+♻️ RECICLY CITY
+
+👤 Operador
+
+💰 ECO: 1250
+
+⚡ 100/100
+⏳ 02:15
+
+🦊 Wallet
+
+👤 Operador
+
+💰 ECO: 1250
+
+⚡ 100/100
+
+🦊 Conectar MetaMask
+
+🟢 MetaMask Conectada
+botao metamesk
+<button
+id="btn-metamask"
+onclick="connectMetaMask()"
+class="wallet-btn"
+>
+🦊 MetaMask
+</button>
+css
+.wallet-btn{
+    background:#f97316;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:6px 10px;
+    font-size:.7rem;
+    font-weight:700;
+    cursor:pointer;
+}
+js
+async function connectMetaMask(){
+
+    if(typeof window.ethereum === 'undefined'){
+
+        addLog("MetaMask não encontrada.");
+
+        return;
+    }
+
+    try{
+
+        const accounts =
+            await ethereum.request({
+                method:'eth_requestAccounts'
+            });
+
+        const wallet =
+            accounts[0];
+
+        document.getElementById("btn-metamask")
+            .innerText =
+            "🟢 " +
+            wallet.slice(0,6) +
+            "..." +
+            wallet.slice(-4);
+
+        addLog("MetaMask conectada.");
+
+    }
+    catch(err){
+
+        addLog("Conexão cancelada.");
+
+    }
+}
+
+o jogador ver
+💼 Wallet Ecopacto
+Saldo: 1250 ECO
+
+🦊 MetaMask
+Não conectada
 
 
