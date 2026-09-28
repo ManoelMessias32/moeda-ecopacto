@@ -3,38 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ecopacto Hub | HUB</title>
+    <title>Ecopacto Network | Wallet</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
 
-        .wallet-card { background: var(--card); width: 100%; max-width: 360px; padding: 25px; border-radius: 20px; border: 1px solid #ffffff10; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; display: flex; flex-direction: column; position: relative; overflow: hidden; min-height: 480px; justify-content: space-between; }
-        .card-top { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        h1 { font-size: 1.2rem; font-weight: 800; margin-top: 0; margin-bottom: 20px; letter-spacing: -1px; }
-        .balance-label { color: var(--muted); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; }
-        .balance-amount { font-size: 2.5rem; font-weight: 800; color: var(--accent); margin: 5px 0; }
+        .wallet-card {
+            background: var(--card);
+            width: 100%;
+            max-width: 360px;
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #ffffff10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            justify-content: flex-start;
+        }
 
-        .nav-actions { display: flex; gap: 8px; margin-bottom: 15px; }
-        .nav-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.75rem; }
+        .network-title { font-size: 1rem; font-weight: 800; margin-top: 0; margin-bottom: 25px; letter-spacing: 1.5px; color: var(--muted); }
+        .network-title span { color: var(--accent); }
+
+        .user-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ffffff08;
+            display: none;
+            text-align: center;
+        }
+        #disp-name { font-weight: 800; font-size: 1.2rem; color: #fff; display: block; }
+        #disp-email { font-size: 0.75rem; color: var(--muted); display: block; margin-top: 2px; }
+
+        .balance-label { color: var(--muted); font-size: 0.65rem; font-weight: 800; letter-spacing: 1px; }
+        .balance-amount { font-size: 3rem; font-weight: 800; color: #fff; margin: 10px 0; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+        .balance-amount span:first-child { color: var(--accent); }
+        .currency { font-size: 1.2rem; color: var(--muted); font-weight: 600; }
+
+        .nav-actions { display: flex; gap: 10px; margin: 25px 0; }
+        .nav-btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid #ffffff10; }
         .btn-send { background: var(--accent); color: #000; }
+        .btn-send:hover { background: #1eb34b; transform: translateY(-1px); }
 
-        .view-panel { background: #00000040; padding: 12px; border-radius: 12px; margin-top: 10px; display: none; text-align: left; animation: slideUp 0.3s ease; }
+        .view-panel { background: #00000060; padding: 15px; border-radius: 16px; margin-top: 10px; display: none; text-align: left; animation: slideUp 0.3s ease; border: 1px solid #ffffff05; }
         .view-panel.active { display: block; }
-        input { width: 100%; background: #000; border: 1px solid #ffffff10; padding: 8px; border-radius: 8px; color: white; margin: 4px 0; box-sizing: border-box; font-size: 0.8rem; }
-        .address-box { background: #000; padding: 8px; border-radius: 8px; font-family: monospace; font-size: 0.65rem; color: #3b82f6; word-break: break-all; cursor: pointer; border: 1px dashed #3b82f650; }
 
-        /* RODAPÉ DO CARD ADICIONADO ABAIXO */
-        .card-footer { margin-top: auto; padding-top: 15px; border-top: 1px solid #ffffff10; width: 100%; }
-        .btn-play {
-            width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #fff;
-            border: none; padding: 12px; border-radius: 12px; font-weight: 800; text-decoration: none;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; font-size: 0.85rem;
-            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.2); box-sizing: border-box;
-        }
-        .btn-play:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4); }
+        input { width: 100%; background: #000; border: 1px solid #ffffff10; padding: 12px; border-radius: 10px; color: white; margin: 6px 0; box-sizing: border-box; font-size: 0.85rem; outline: none; }
+        input:focus { border-color: var(--accent); }
+
+        .address-box { background: #000; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; color: #3b82f6; word-break: break-all; cursor: pointer; border: 1px dashed #3b82f650; text-align: center; }
+
+        #login-view { margin: auto 0; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -42,35 +65,42 @@
 <body>
 
     <div class="wallet-card">
-        <div class="card-top">
-            <h1>ECOPACTO <span style="color:var(--accent)">HUB</span></h1>
+        <div class="network-title">ECOPACTO <span>NETWORK</span></div>
 
-            <div id="login-view">
-                <p style="color:var(--muted); font-size: 0.8rem; margin-bottom: 20px;">Conecte sua conta para gerenciar e jogar.</p>
-                <div id="g_id_onload" data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-                <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
-            </div>
-
-            <div id="wallet-view" style="display: none;">
-                <div class="balance-label">SALDO DISPONÍVEL</div>
-                <div class="balance-amount" id="disp-balance">0</div>
-
-                <div class="nav-actions">
-                    <button class="nav-btn btn-receive" onclick="showPanel('receive')">Receber</button>
-                    <button class="nav-btn btn-send" onclick="showPanel('send')">Enviar</button>
-                </div>
-
-                <div id="panel-receive" class="view-panel"><div class="address-box" id="disp-addr" onclick="copyAddress()">...</div></div>
-                <div id="panel-send" class="view-panel">
-                    <input type="text" id="send-to" placeholder="Destino (ECO_...)">
-                    <input type="number" id="send-amount" placeholder="Quantidade">
-                    <button class="nav-btn btn-send" style="width:100%" onclick="doTransfer()">Enviar ECO</button>
-                </div>
-            </div>
+        <div id="login-view">
+            <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 25px;">Acesse sua carteira para gerenciar seus ativos.</p>
+            <div id="g_id_onload" data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
+            <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
         </div>
 
-        <div id="game-entrance" class="card-footer" style="display: none;">
-            <a href="game.html" class="btn-play">🎮 JOGAR RECICLY CITY</a>
+        <div id="wallet-view" style="display: none;">
+            <!-- CABEÇALHO DO USUÁRIO -->
+            <div class="user-header" id="user-header">
+                <span id="disp-name">Usuário</span>
+                <span id="disp-email">email@exemplo.com</span>
+            </div>
+
+            <div class="balance-label">SALDO DISPONÍVEL</div>
+            <div class="balance-amount">
+                <span id="disp-balance">0</span>
+                <span class="currency">ECO</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="nav-btn btn-receive" onclick="togglePanel('receive')">Receber</button>
+                <button class="nav-btn btn-send" onclick="togglePanel('send')">Enviar</button>
+            </div>
+
+            <div id="panel-receive" class="view-panel">
+                <div class="address-box" id="disp-addr" onclick="copyAddress()">ECO_...</div>
+                <small style="color:var(--muted); font-size:0.6rem; display:block; text-align:center; margin-top:8px;">Clique para copiar o endereço</small>
+            </div>
+
+            <div id="panel-send" class="view-panel">
+                <input type="text" id="send-to" placeholder="Endereço de destino (ECO_...)">
+                <input type="number" id="send-amount" placeholder="Quantidade">
+                <button class="nav-btn btn-send" style="width:100%; margin-top:10px;" onclick="doTransfer()">Enviar ECO</button>
+            </div>
         </div>
     </div>
 
@@ -78,11 +108,10 @@
     const API_URL = "https://ecopacto-api-production.up.railway.app";
     let walletData = null;
 
-    // Se já estiver logado previamente, recupera os dados
-    const cachedWallet = localStorage.getItem('eco_wallet');
-    if (cachedWallet) {
+    const cached = localStorage.getItem('eco_wallet');
+    if (cached) {
         try {
-            walletData = JSON.parse(cachedWallet);
+            walletData = JSON.parse(cached);
             setupWalletUI(walletData);
         } catch(e) {}
     }
@@ -90,8 +119,10 @@
     function setupWalletUI(data) {
         document.getElementById('login-view').style.display = 'none';
         document.getElementById('wallet-view').style.display = 'block';
-        document.getElementById('game-entrance').style.display = 'block';
+        document.getElementById('user-header').style.display = 'block';
 
+        document.getElementById('disp-name').innerText = data.name || "Manoel";
+        document.getElementById('disp-email').innerText = data.email || "";
         document.getElementById('disp-balance').innerText = data.balance.toLocaleString();
         document.getElementById('disp-addr').innerText = data.address;
     }
@@ -102,21 +133,23 @@
         fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: payload.email })
+            body: JSON.stringify({ email: payload.email, name: payload.name })
         })
         .then(res => res.json())
         .then(data => {
             walletData = data;
-            localStorage.setItem('eco_wallet', JSON.stringify(data));
-            setupWalletUI(data);
+            if(!walletData.name) walletData.name = payload.name;
+            if(!walletData.email) walletData.email = payload.email;
+
+            localStorage.setItem('eco_wallet', JSON.stringify(walletData));
+            setupWalletUI(walletData);
         })
-        .catch(err => alert("Erro de conexão."));
+        .catch(err => alert("Erro ao conectar com a rede."));
     }
 
-    function showPanel(type) {
+    function togglePanel(type) {
         const pRec = document.getElementById('panel-receive');
         const pSend = document.getElementById('panel-send');
-
         if(type === 'receive') {
             pRec.classList.toggle('active');
             pSend.classList.remove('active');
@@ -129,7 +162,7 @@
     function copyAddress() {
         if(walletData) {
             navigator.clipboard.writeText(walletData.address);
-            alert("Endereço copiado para a área de transferência!");
+            alert("Endereço copiado!");
         }
     }
 
@@ -147,11 +180,11 @@
         if(data.status === "Success") {
             walletData.balance = data.new_balance;
             document.getElementById('disp-balance').innerText = data.new_balance.toLocaleString();
-            // Atualiza também o cache
             localStorage.setItem('eco_wallet', JSON.stringify(walletData));
-            alert("Transferência realizada com sucesso!");
+            alert("Transferência realizada!");
+            togglePanel('send');
         } else {
-            alert(data.message || "Erro ao transferir.");
+            alert(data.message);
         }
     }
 </script>

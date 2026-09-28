@@ -19,14 +19,14 @@
             overflow: hidden; transition: background-color 0.5s;
         }
 
-        /* HEADER (LINHA 1308) */
+        /* HEADER COMPACTO (TEST LINHA 282) */
         .top-header {
             background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        .logo { text-align: center; font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+        .logo { text-align: center; font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
         .player-info {
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
             font-size: .75rem; color: #c9d1d9; flex-wrap: nowrap; white-space: nowrap;
         }
         .wallet-btn {
@@ -34,80 +34,74 @@
             padding: 2px 6px; font-size: .7rem; cursor: pointer; display: flex; align-items: center;
         }
 
-        /* TABS (LINHA 1303 - 38PX) */
+        /* TABS GLOBAIS (38PX) */
         .tabs { display: flex; gap: 2px; height: 38px; min-height: 38px; }
         .tab {
             flex: 1; text-align: center; font-size: 0.8rem; font-weight: 700;
             cursor: pointer; border-radius: 8px; background: var(--panel); color: var(--muted);
             border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
-            height: 38px;
         }
         .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
         /* VIEW CONTAINER */
-        .page { display: none; flex-direction: column; flex: 1; overflow: hidden; gap: 8px; }
+        .page { display: none; flex-direction: column; flex: 1; overflow: hidden; gap: 10px; }
         .page.active { display: flex; }
 
-        /* ESTEIRA (LINHA 1326 - 60PX) */
+        /* ESTEIRA AJUSTADA (40PX) */
         .belt-area { padding: 8px; background: var(--panel); border-radius: 12px; border: 1px solid var(--border); }
         .belt-container {
-            width: 100%; height: 60px; background: #000; border-radius: 10px; border: 1px dashed var(--border);
+            width: 100%; height: 40px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
             position: relative; overflow: hidden; display: flex; align-items: center;
         }
-        /* ITEM ESTEIRA (LINHA 1331 - 2.4REM) */
-        #item-active { position: absolute; font-size: 2.4rem; left: -50px; z-index: 10; transition: left 0.1s linear; }
-        .drop-box { position: absolute; right: 10px; font-size: 32px; z-index: 5; transition: 0.2s; }
+        #item-active { position: absolute; font-size: 24px; left: -40px; z-index: 10; transition: left 0.1s linear; }
+        .drop-box { position: absolute; right: 8px; font-size: 24px; z-index: 5; transition: 0.2s; }
         .drop-box.received { transform: scale(1.3); }
 
-        /* BOTAO PROCESSO (LINHA 1294 - 45PX) */
+        /* BOTAO PROCESSO (32PX / .85REM) */
         .btn-process {
-            width: 100%; background: var(--accent); color: #000; border: none; height: 45px;
-            border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer;
-            box-shadow: 0 4px 0 #166534; margin-top: 5px; display: flex; align-items: center; justify-content: center;
+            width: 100%; background: var(--accent); color: #000; border: none; height: 32px;
+            border-radius: 8px; font-weight: 800; font-size: .85rem; cursor: pointer;
+            box-shadow: 0 3px 0 #166534; margin-top: 8px; display: flex; align-items: center; justify-content: center;
         }
 
-        /* INVENTÁRIO (LINHA 1285 - 70PX) */
+        /* INVENTÁRIO MINI QUADROS (42PX / 1.5REM ICON) */
         .inventory-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px;
             background: #00000020; border-radius: 8px; overflow-y: auto;
         }
         .inv-slot {
             background: #111827; border: 1px solid var(--border); border-radius: 6px;
-            padding: 4px; text-align: center; min-height: 70px; display: flex; flex-direction: column; justify-content: center;
+            padding: 2px; text-align: center; min-height: 42px; display: flex; flex-direction: column; justify-content: center;
         }
-        .inv-header { display: flex; align-items: center; gap: 4px; justify-content: center; }
-        .inv-icon { font-size: 1.8rem; }
-        .inv-count { font-size: 1.2rem; font-weight: 800; color: #fff; }
-        .inv-name { font-size: 0.35rem; color: var(--muted); text-transform: uppercase; margin-top: 1px; }
+        .inv-icon { font-size: 1.5rem; }
+        .inv-count { font-size: 0.8rem; font-weight: 800; color: #fff; }
 
-        .btn-sell { background: #f59e0b; color: #000; border: none; padding: 6px; border-radius: 6px; font-weight: 800; font-size: 0.65rem; margin: 2px 10px; cursor: pointer; transition: 0.2s; height: 35px; min-height: 35px; }
-
-        /* TERMINAL LOGS (LINHA 1353 - 140PX) */
-        .terminal {
-            background: #000; margin: 0 5px; padding: 8px; border-radius: 10px;
-            font-family: monospace; font-size: 0.7rem; color: #64748b; height: 140px; overflow-y: auto;
-            border: 1px solid var(--border); line-height: 1.3;
-        }
-
-        /* LOJA CARDS (LINHA 1362) */
+        /* LOJA COMPACTA */
         .shop-tabs { display: flex; gap: 4px; padding: 6px; overflow-x: auto; border-bottom: 1px solid var(--border); }
-        .shop-tab { height: 34px; padding: 0 10px; font-size: .75rem; font-weight: 700; cursor: pointer; border-radius: 5px; background: var(--panel); border: 1px solid var(--border); display: flex; align-items: center; white-space: nowrap; color: var(--muted); }
+        .shop-tab { height: 24px; padding: 0 10px; font-size: .65rem; font-weight: 700; cursor: pointer; border-radius: 5px; background: var(--panel); border: 1px solid var(--border); display: flex; align-items: center; white-space: nowrap; color: var(--muted); }
         .shop-tab.active { background: var(--panel-h); color: #fff; border-color: #fff; }
 
         .shop-grid { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 6px; overflow-y: auto; flex: 1; }
-        .shop-item { background: #111827; padding: 8px; border-radius: 10px; border: 1px solid var(--border); min-height: 110px; display: flex; flex-direction: column; justify-content: space-between; }
-        .item-name { font-size: 1rem; font-weight: 700; color: #fff; margin: 0; }
-        .item-desc { font-size: .75rem; color: var(--muted); margin: 2px 0; }
+        .shop-item { background: #111827; padding: 8px; border-radius: 10px; border: 1px solid var(--border); min-height: 55px; display: flex; flex-direction: column; justify-content: space-between; }
+        .item-name { font-size: .85rem; font-weight: 700; color: #fff; margin: 0; }
+        .item-desc { font-size: .55rem; color: var(--muted); margin: 2px 0; }
         .price-row { display: flex; gap: 4px; margin-top: 4px; }
-        .buy-btn { height: 32px; flex: 1; border: none; border-radius: 4px; font-size: .8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .buy-btn { height: 22px; flex: 1; border: none; border-radius: 4px; font-size: .60rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .eco-btn { background: var(--accent); color: #000; }
         .bnb-btn { background: var(--orange); color: #fff; }
+
+        /* LOGS (180PX) */
+        .terminal {
+            background: #000; margin: 5px; padding: 8px; border-radius: 10px;
+            font-family: monospace; font-size: 0.7rem; color: #64748b; height: 180px; overflow-y: auto;
+            border: 1px solid var(--border); line-height: 1.3;
+        }
 
         /* PERFIL */
         .profile-card { background: var(--panel); padding: 15px; border-radius: 15px; border: 1px solid var(--border); }
         .profile-info { margin-bottom: 12px; font-size: 0.8rem; }
         .profile-info div { margin-bottom: 6px; display: flex; justify-content: space-between; border-bottom: 1px solid #ffffff05; padding-bottom: 3px; }
-        .input-text { width: 100%; background: #000; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; margin: 8px 0; box-sizing: border-box; font-size: 0.8rem; }
+        .input-text { width: 100%; background: #000; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; margin: 8px 0; box-sizing: border-box; font-size: 0.75rem; }
 
         /* EFEITOS RARIDADE */
         @keyframes rare-glow { from { background: #05070a; } to { background: #0a1b3a; } }
@@ -136,7 +130,7 @@
         <div class="player-info">
             <span id="header-user">👤 Operador</span>
             <span>💰 <strong id="header-eco">0</strong> ECO</span>
-            <span>⚡ <strong id="header-energy">0/0</strong></span>
+            <span>⚡ <strong id="header-energy">100/100</strong></span>
             <span id="energy-timer-header" style="color:var(--muted)">⏳ 03:00</span>
             <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">🦊</button>
         </div>
@@ -163,7 +157,7 @@
 
         <div class="inventory-grid" id="inventory-grid"></div>
 
-        <button class="btn-sell" onclick="sellAll()">💰 VENDER MATERIAIS</button>
+        <button class="btn-process" style="background:var(--legendary); margin: 0 10px; width:auto;" onclick="sellAll()">💰 VENDER MATERIAIS</button>
 
         <div class="terminal" id="logs"></div>
     </div>
@@ -216,7 +210,7 @@
 
     let state = {
         eco: 0, energy: 100, level: 1, items: 0, invites: 0, username: "",
-        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, battery: 0, lithium: 0, keyboard: 0, mouse: 0, phone: 0, dvd: 0, parts: 0, printer: 0, camera: 0, board: 0, tv: 0, chip: 0 },
+        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, battery: 0, lithium: 0, keyboard: 0, mouse: 0, fone: 0, dvd: 0, parts: 0, phone: 0, printer: 0, camera: 0, board: 0, tv: 0, chip: 0 },
         upgrades: { staff: 0, robots: 0, belt: 1 }
     };
 
@@ -226,8 +220,8 @@
         { id: 'plastic', name: 'Plástico', icon: '🧴', chance: 60, speed: 1500, reward: 1, type: 'common' },
         { id: 'paper', name: 'Papelão', icon: '📦', chance: 20, speed: 1500, reward: 2, type: 'common' },
         { id: 'alum', name: 'Alumínio', icon: '🥫', chance: 12, speed: 1500, reward: 5, type: 'common' },
-        { id: 'copper', name: 'Cobre', icon: '🔌', chance: 5, speed: 3000, reward: 15, type: 'uncommon' },
-        { id: 'battery', name: 'Bateria', icon: '🔋', chance: 2, speed: 3000, reward: 30, type: 'uncommon' },
+        { id: 'copper', name: 'Cobre', icon: '🔌', chance: 5, speed: 3000, reward: 15, type: 'rare' },
+        { id: 'battery', name: 'Bateria', icon: '🔋', chance: 2, speed: 3000, reward: 30, type: 'rare' },
         { id: 'lithium', name: 'Lítio', icon: '🔋', chance: 1, speed: 4000, reward: 100, type: 'rare' },
         { id: 'keyboard', name: 'Teclado', icon: '⌨️', chance: 0.8, speed: 4000, reward: 150, type: 'epic' },
         { id: 'mouse', name: 'Mouse', icon: '🖱️', chance: 0.7, speed: 4000, reward: 180, type: 'epic' },
@@ -238,35 +232,35 @@
 
     const STORE = {
         energy: [
-            { id: 'e1', name: '+50 Energia', eco: 100, bnb: 0.00002, desc: 'Recarga imediata' },
-            { id: 'e2', name: '+100 Energia', eco: 180, bnb: 0.00004, desc: 'Recarga média' },
-            { id: 'e3', name: '+500 Energia', eco: 800, bnb: 0.00015, desc: 'Recarga industrial' },
-            { id: 'ebat', name: 'Bateria Industrial', eco: 3000, bnb: 0.00050, desc: '+1000 Energia total' }
+            { name: '+50 Energia', eco: 100, bnb: 0.00002, id: 'e1', desc: 'Recarga imediata' },
+            { name: '+100 Energia', eco: 180, bnb: 0.00004, id: 'e2', desc: 'Recarga média' },
+            { name: '+500 Energia', eco: 800, bnb: 0.00015, id: 'e3', desc: 'Recarga industrial' },
+            { name: 'Bateria Industrial', eco: 3000, bnb: 0.00050, id: 'ebat', desc: '+1000 Energia total' }
         ],
         staff: [
-            { id: 's1', name: 'Catador Adicional', eco: 500, bnb: 0.00010, desc: '+1 mat/ciclo' },
-            { id: 's2', name: 'Catador Profissional', eco: 2500, bnb: 0.00050, desc: '+2 mat/ciclo' },
-            { id: 's3', name: 'Supervisor', eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%' },
-            { id: 's4', name: 'Gerente de Pátio', eco: 20000, bnb: 0.00400, desc: 'Eficiência +50%' }
+            { name: 'Catador Adicional', eco: 500, bnb: 0.00010, desc: '+1 mat/ciclo', id: 's1' },
+            { name: 'Catador Profissional', eco: 2500, bnb: 0.00050, desc: '+2 mat/ciclo', id: 's2' },
+            { name: 'Supervisor', eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3' },
+            { name: 'Gerente de Pátio', eco: 20000, bnb: 0.00400, desc: 'Eficiência +50%', id: 's4' }
         ],
         robots: [
-            { id: 'r1', name: 'Robô Básico', eco: 5000, bnb: 0.00100, desc: 'Automação leve' },
-            { id: 'r2', name: 'Robô Superior', eco: 15000, bnb: 0.00300, desc: 'Automação média' },
-            { id: 'r3', name: 'Robô Industrial', eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo' },
-            { id: 'r4', name: 'Robô IA', eco: 100000, bnb: 0.02000, desc: 'Automação total' }
+            { name: 'Robô Básico', eco: 5000, bnb: 0.00100, desc: 'Automação leve', id: 'r1' },
+            { name: 'Robô Superior', eco: 15000, bnb: 0.00300, desc: 'Automação média', id: 'r2' },
+            { name: 'Robô Industrial', eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo', id: 'r3' },
+            { name: 'Robô IA', eco: 100000, bnb: 0.02000, desc: 'Automação total', id: 'r4' }
         ],
         belts: [
-            { id: 'b2', name: 'Esteira Nível 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%' },
-            { id: 'b3', name: 'Esteira Nível 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%' },
-            { id: 'b4', name: 'Esteira Industrial', eco: 20000, bnb: 0.00400, desc: 'Velocidade x2' },
-            { id: 'b5', name: 'Esteira Magnética', eco: 60000, bnb: 0.01200, desc: 'Sorte x2' }
+            { name: 'Esteira Nível 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2' },
+            { name: 'Esteira Nível 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3' },
+            { name: 'Esteira Industrial', eco: 20000, bnb: 0.00400, desc: 'Velocidade x2', id: 'b4' },
+            { name: 'Esteira Magnética', eco: 60000, bnb: 0.01200, desc: 'Sorte x2', id: 'b5' }
         ],
         boosters: [
-            { id: 'boost1', name: 'Produção 2x (30 min)', eco: 300, bnb: 0.00006 },
-            { id: 'boost2', name: 'Produção 3x (1h)', eco: 1500, bnb: 0.00030 },
-            { id: 'boost3', name: 'Sorte 2x (30 min)', eco: 500, bnb: 0.00010 },
-            { id: 'boost4', name: 'Sorte 5x (1h)', eco: 2500, bnb: 0.00050 },
-            { id: 'boost5', name: 'Energia Infinita (30 min)', eco: 5000, bnb: 0.00100 }
+            { name: 'Produção 2x (30 min)', eco: 300, bnb: 0.00006, id: 'boost1' },
+            { name: 'Produção 3x (1h)', eco: 1500, bnb: 0.00030, id: 'boost2' },
+            { name: 'Sorte 2x (30 min)', eco: 500, bnb: 0.00010, id: 'boost3' },
+            { name: 'Sorte 5x (1h)', eco: 2500, bnb: 0.00050, id: 'boost4' },
+            { name: 'Energia Infinita (30 min)', eco: 5000, bnb: 0.00100, id: 'boost5' }
         ]
     };
 
@@ -278,9 +272,8 @@
     }
 
     function updateUI() {
-        const maxE = 100;
         document.getElementById('header-eco').innerText = Math.floor(state.eco).toLocaleString();
-        document.getElementById('header-energy').innerText = state.energy + "/" + maxE;
+        document.getElementById('header-energy').innerText = state.energy + "/100";
         const name = state.username || (wallet ? wallet.name : "Operador");
         document.getElementById('header-user').innerText = "👤 " + name;
         document.getElementById('prof-name').innerText = name;
@@ -291,11 +284,8 @@
         const grid = document.getElementById('inventory-grid');
         grid.innerHTML = MATERIALS.map(m => `
             <div class="inv-slot">
-                <div class="inv-header">
-                    <div class="inv-icon">${m.icon}</div>
-                    <div class="inv-count" id="count-${m.id}">${state.inventory[m.id] || 0}</div>
-                </div>
-                <div class="inv-name">${m.name}</div>
+                <div class="inv-icon">${m.icon}</div>
+                <div class="inv-count" id="count-${m.id}">${state.inventory[m.id] || 0}</div>
             </div>
         `).join('');
 
