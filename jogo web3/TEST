@@ -1282,3 +1282,195 @@ banco de dados para salvar login
   "level": 10
 }
 `
+diminuir os tamnhos dos quadros
+┌─────────────┐
+│ 🧴  2       │
+│ PLÁSTICO    │
+└─────────────┘
+aumentar os iiconis dos materiais
+.inv-icon{
+    font-size:1.8rem;
+}
+
+.inv-count{
+    font-size:1.2rem;
+}
+diminuir botoes
+▶ INICIAR PRODUÇÃO
+.btn-process{
+    height:45px;
+    font-size:1rem;
+}
+
+diminuir as abas
+🏭 Pátio
+🛒 Loja
+👤 Perfil
+🏆 Ranking
+.tab{
+    height:38px;
+    font-size:.8rem;
+}
+aumentar o nome do jogo
+♻️ RECICLY CITY
+.logo{
+    font-size:1.8rem;
+    font-weight:800;
+}
+melhorando o topo
+♻️ RECICLY CITY
+
+👤 manoel
+💰 ECO: 0
+⚡ 98/100
+⏳ 00:48
+🦊 MetaMask
+
+reduzir a esteria
+.belt-container{
+    height:60px;
+}
+aumentar os itens da esteira
+#item-active{
+    font-size:2.4rem;
+}
+🧴 ------------------- 📦
+
+visualizaçao
+♻️ RECICLY CITY
+
+👤 manoel  💰0  ⚡98/100  ⏳00:48 🦊
+
+🏭 Pátio | 🛒 Loja | 👤 Perfil | 🏆 Ranking
+
+━━━━━━━━━━━━━━━━━━
+
+ESTEIRA
+
+🧴 ----------------→ 📦
+
+[▶ PRODUZIR]
+
+━━━━━━━━━━━━━━━━━━
+
+🧴 2   📦 0   🥫 0   🔌 0
+🔋 0   💻 0   📱 0   🖥️ 0
+
+━━━━━━━━━━━━━━━━━━
+
+💰 VENDER
+area dos logs
+.terminal{
+    height:140px;
+    overflow-y:auto;
+    font-size:0.75rem;
+    line-height:1.5;
+    padding:12px;
+}
+
+ajuste da loja
+/* Cards da loja menores */
+.shop-item{
+    background: #151921;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Nome do item */
+.shop-item h3,
+.shop-item .item-name{
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+/* Descrição do item */
+.shop-item .item-desc{
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-bottom: 8px;
+}
+
+/* Área dos preços */
+.price-row{
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+}
+
+/* Botão ECO */
+.eco-btn{
+    flex: 1;
+    background: #22c55e;
+    border: none;
+    border-radius: 6px;
+    height: 32px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #000;
+}
+
+/* Botão BNB */
+.bnb-btn{
+    flex: 1;
+    background: #f97316;
+    border: none;
+    border-radius: 6px;
+    height: 32px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* Abas da loja */
+.shop-tabs{
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.shop-tab{
+    flex: 1;
+    height: 34px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Grid da loja */
+.shop-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 10px;
+}
+e os cards
+<div class="shop-item">
+
+    <div class="item-name">
+        👷 Catador Adicional
+    </div>
+
+    <div class="item-desc">
+        +1 material por ciclo
+    </div>
+
+    <div class="price-row">
+
+        <button class="eco-btn">
+            💰 500 ECO
+        </button>
+
+        <button class="bnb-btn">
+            🦊 0.00010 BNB
+        </button>
+
+    </div>
+
+</div>
