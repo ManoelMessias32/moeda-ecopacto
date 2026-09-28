@@ -20,25 +20,25 @@
             transition: background-color 0.5s;
         }
 
-        /* CABEÇALHO SUPER COMPACTO */
+        /* CABEÇALHO UNIFICADO */
         .top-header {
-            background: #151921; border: 1px solid #30363d; border-radius: 8px; padding: 4px 10px;
+            background: #151921; border: 1px solid #30363d; border-radius: 10px; padding: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
-        .logo { text-align: center; font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 1px; }
+        .logo { text-align: center; font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
         .player-info {
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            font-size: .65rem; color: #c9d1d9; flex-wrap: wrap;
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            font-size: .75rem; color: #c9d1d9; flex-wrap: wrap;
         }
         .wallet-btn {
-            background: #f97316; color: white; border: none; border-radius: 5px;
-            padding: 2px 6px; font-size: .6rem; font-weight: 700; cursor: pointer;
+            background: #f97316; color: white; border: none; border-radius: 8px;
+            padding: 6px 10px; font-size: .7rem; font-weight: 700; cursor: pointer;
         }
 
-        /* TABS COMPACTAS */
-        .tabs { display: flex; gap: 2px; height: 28px; }
+        /* TABS */
+        .tabs { display: flex; gap: 2px; height: 38px; }
         .tab {
-            flex: 1; text-align: center; font-size: 0.55rem; font-weight: 700;
+            flex: 1; text-align: center; font-size: 0.8rem; font-weight: 700;
             cursor: pointer; border-radius: 5px; background: var(--panel); color: var(--muted);
             border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
         }
@@ -59,23 +59,23 @@
             text-align: center; font-size: 0.55rem; font-weight: 800; color: var(--muted); margin: 1px 0; text-transform: uppercase;
         }
 
-        /* ESTEIRA SUPER COMPACTA */
+        /* ESTEIRA */
         .belt-area {
             padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 4px;
             background: linear-gradient(180deg, #111827 0%, #0d1117 100%);
         }
         .belt-container {
-            width: 100%; height: 35px; background: #000; border-radius: 6px; border: 1px dashed var(--border);
+            width: 100%; height: 60px; background: #000; border-radius: 6px; border: 1px dashed var(--border);
             position: relative; overflow: hidden; display: flex; align-items: center;
         }
-        #item-active { position: absolute; font-size: 1.4rem; left: -40px; z-index: 10; transition: left 0.1s linear; }
-        .drop-box { position: absolute; right: 8px; font-size: 1.2rem; transition: 0.3s; z-index: 5; }
+        #item-active { position: absolute; font-size: 2.4rem; left: -40px; z-index: 10; transition: left 0.1s linear; }
+        .drop-box { position: absolute; right: 10px; font-size: 1.5rem; transition: 0.3s; z-index: 5; }
         .belt-label { position: absolute; top: 1px; font-size: 0.4rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
 
         .btn-process {
             width: 100%; background: var(--accent); color: #000; border: none; padding: 6px;
-            border-radius: 6px; font-weight: 800; font-size: 0.75rem; cursor: pointer;
-            box-shadow: 0 2px 0 #166534;
+            border-radius: 6px; font-weight: 800; font-size: 1rem; cursor: pointer;
+            box-shadow: 0 2px 0 #166534; height: 45px;
         }
 
         /* STATUS STRIP */
@@ -84,31 +84,32 @@
             font-size: 0.5rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
             align-items: center; gap: 6px;
         }
-        .energy-info { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+        .energy-info { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .energy-bar-wrap { display: flex; align-items: center; gap: 3px; }
         .energy-bar { width: 30px; height: 4px; background: #1e293b; border-radius: 10px; overflow: hidden; }
         #energy-fill { height: 100%; background: #3b82f6; width: 100%; transition: 0.3s; }
+        #energy-timer-strip { font-size: .55rem; color: var(--muted); }
 
-        /* INVENTÁRIO GRID COMPACTO */
+        /* INVENTÁRIO GRID */
         .inventory-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding: 4px;
             background: #00000020; flex: 1; overflow-y: auto;
         }
         .inv-slot {
             background: #0b0e14; border: 1px solid var(--border); border-radius: 5px;
-            padding: 2px; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 50px; justify-content: center;
+            padding: 4px; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 70px; justify-content: center;
         }
-        .inv-icon { font-size: 0.8rem; }
-        .inv-count { font-size: 0.6rem; font-weight: 800; color: #fff; }
+        .inv-icon { font-size: 1.8rem; }
+        .inv-count { font-size: 1.2rem; font-weight: 800; color: #fff; }
         .inv-name { font-size: 0.35rem; color: var(--muted); text-transform: uppercase; }
 
         .btn-sell { background: #f59e0b; color: #000; border: none; padding: 6px; border-radius: 6px; font-weight: 800; font-size: 0.65rem; margin: 2px 10px; cursor: pointer; transition: 0.2s; }
 
         /* TERMINAL LOGS */
         .terminal {
-            background: #000; margin: 0 10px 4px 10px; padding: 4px; border-radius: 6px;
-            font-family: monospace; font-size: 0.45rem; color: #64748b; height: 35px; overflow-y: auto;
-            border: 1px solid var(--border);
+            background: #000; margin: 0 10px 4px 10px; padding: 12px; border-radius: 6px;
+            font-family: monospace; font-size: 0.75rem; color: #64748b; height: 140px; overflow-y: auto;
+            border: 1px solid var(--border); line-height: 1.5;
         }
 
         /* MODALS */
@@ -122,37 +123,77 @@
         .modal-header button { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; }
 
         /* LOJA ABAS */
-        .shop-tabs { display: flex; gap: 3px; margin-bottom: 8px; background: #0b0e14; padding: 3px; border-radius: 6px; border: 1px solid var(--border); }
-        .shop-tab { flex: 1; padding: 5px 0; text-align: center; font-size: 0.5rem; font-weight: 700; cursor: pointer; border-radius: 5px; color: var(--muted); transition: 0.2s; }
+        .shop-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+        .shop-tab { flex: 1; height: 34px; text-align: center; font-size: 0.75rem; font-weight: 700; cursor: pointer; border-radius: 5px; color: var(--muted); transition: 0.2s; display: flex; align-items: center; justify-content: center; background: #0b0e14; border: 1px solid var(--border); }
         .shop-tab.active { background: var(--panel-h); color: #fff; }
+
+        /* GRID DA LOJA */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .shop-item {
+            background: #151921;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .shop-item .item-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .shop-item .item-desc {
+            font-size: 0.75rem;
+            color: #8b949e;
+            margin-bottom: 8px;
+        }
+        .price-row {
+            display: flex;
+            gap: 6px;
+            margin-top: auto;
+        }
+        .eco-btn {
+            flex: 1;
+            background: #22c55e;
+            border: none;
+            border-radius: 6px;
+            height: 32px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #000;
+        }
+        .bnb-btn {
+            flex: 1;
+            background: #f97316;
+            border: none;
+            border-radius: 6px;
+            height: 32px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #fff;
+        }
 
         .shop-content { display: none; flex-direction: column; gap: 6px; }
         .shop-content.active { display: flex; }
-
-        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; }
-        .shop-item { background: var(--panel); padding: 8px; border-radius: 8px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; min-height: 100px; }
-        .shop-item h4 { margin: 0 0 2px 0; font-size: 0.65rem; color: white; }
-        .shop-item p { margin: 0 0 4px 0; font-size: 0.45rem; color: var(--muted); }
-
-        .btn-group { display: flex; flex-direction: column; gap: 3px; margin-top: auto; }
-        .eco-btn { width: 100%; padding: 4px; border: none; border-radius: 5px; background: #22c55e; color: #000; font-weight: 800; font-size: 0.5rem; cursor: pointer; }
-        .bnb-btn { width: 100%; padding: 4px; border: none; border-radius: 5px; background: #f97316; color: #fff; font-weight: 800; font-size: 0.5rem; cursor: pointer; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .btn-auth-trigger { background: var(--orange); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; cursor: pointer; text-decoration: none; margin-top: 15px; font-size: 0.75rem; }
 
         .input-text { width: 100%; background: #000; border: 1px solid var(--border); color: white; padding: 6px; border-radius: 6px; box-sizing: border-box; font-size: 0.7rem; margin-bottom: 8px; }
-
-        /* RARITY EFFECTS */
-        .rare-flash { animation: rare-bg 0.5s infinite alternate; }
-        @keyframes rare-bg { from { background-color: #0b0e14; } to { background-color: #0a1b3a; } }
-        .legendary-flash { animation: legendary-bg 0.5s infinite alternate; }
-        @keyframes legendary-bg { from { background-color: #0b0e14; } to { background-color: #3d2a00; } }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO UNIFICADO COMPACTO -->
+    <!-- CABEÇALHO -->
     <div class="top-header">
         <div class="logo">♻️ RECICLY CITY</div>
         <div class="player-info">
@@ -164,7 +205,7 @@
         </div>
     </div>
 
-    <!-- NAVEGAÇÃO PRINCIPAL -->
+    <!-- TABS -->
     <div class="tabs">
         <div class="tab active" onclick="showTab('patio')">🏭 Pátio</div>
         <div class="tab" onclick="showTab('shop')">🛒 Loja</div>
@@ -186,7 +227,7 @@
             <span style="color:var(--muted); font-size:0.5rem;" id="auto-status">AUTO: OFF</span>
         </div>
 
-        <div class="section-divider">═══════════════════</div>
+        <div class="section-divider">━━━━━━━━━━━━━━━━━━</div>
         <div class="patio-label">ESTEIRA</div>
 
         <div class="belt-area">
@@ -203,23 +244,23 @@
             <div>Lvl: <span id="lvl-val" style="color:white; font-weight:800">1</span></div>
             <div class="energy-info">
                 <div class="energy-bar-wrap">E: <div class="energy-bar"><div id="energy-fill"></div></div> <span id="energy-val">100/100</span></div>
-                <small id="energy-timer-strip" style="font-size: 0.45rem;">⏳ 03:00</small>
+                <small id="energy-timer-strip">⏳ 03:00</small>
             </div>
             <div>💰 <span id="ecp-val" style="color:var(--accent); font-weight:800">0</span></div>
             <button class="tab" style="padding:2px 6px; font-size:0.5rem; background:#f97316; color:white; border:none; flex:none; height:14px;" onclick="window.location.href='index.html'">Hub</button>
         </div>
 
-        <div class="section-divider">═══════════════════</div>
+        <div class="section-divider">━━━━━━━━━━━━━━━━━━</div>
         <div class="patio-label">MATERIAIS</div>
 
         <div class="inventory-grid" id="inv-grid"></div>
 
-        <div class="section-divider">═══════════════════</div>
+        <div class="section-divider">━━━━━━━━━━━━━━━━━━</div>
         <div class="patio-label">VENDER</div>
 
         <button class="btn-sell" onclick="sellItems()">💰 VENDER MATERIAIS POR ECO</button>
 
-        <div class="section-divider">═══════════════════</div>
+        <div class="section-divider">━━━━━━━━━━━━━━━━━━</div>
         <div class="patio-label">LOGS</div>
 
         <div class="terminal" id="logs"></div>
@@ -240,41 +281,41 @@
         <!-- ENERGIA -->
         <div id="shop-energy" class="shop-content active">
             <div class="shop-grid">
-                <div class="shop-item"><h4>⚡ +50 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy50', 100)">💰 100 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00002, 'energy50')">🦊 0.00002 BNB</button></div></div>
-                <div class="shop-item"><h4>⚡ +100 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy100', 180)">💰 180 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00004, 'energy100')">🦊 0.00004 BNB</button></div></div>
-                <div class="shop-item"><h4>⚡ +500 Energia</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('energy500', 800)">💰 800 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00015, 'energy500')">🦊 0.00015 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚡ +50 Energia</div><div class="item-desc">Recarrega 50 de energia</div><div class="price-row"><button class="eco-btn" onclick="buyItem('energy50', 100)">💰 100 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00002, 'energy50')">🦊 0.00002 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚡ +100 Energia</div><div class="item-desc">Recarrega 100 de energia</div><div class="price-row"><button class="eco-btn" onclick="buyItem('energy100', 180)">💰 180 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00004, 'energy100')">🦊 0.00004 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚡ +500 Energia</div><div class="item-desc">Recarrega 500 de energia</div><div class="price-row"><button class="eco-btn" onclick="buyItem('energy500', 800)">💰 800 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00015, 'energy500')">🦊 0.00015 BNB</button></div></div>
             </div>
         </div>
         <!-- EQUIPE -->
         <div id="shop-staff" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item"><h4>👷 Catador Adicional</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('staff_add', 500)">💰 500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00010, 'staff_add')">🦊 0.00010 BNB</button></div></div>
-                <div class="shop-item"><h4>👷 Catador Profissional</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('staff_pro', 2500)">💰 2500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00050, 'staff_pro')">🦊 0.00050 BNB</button></div></div>
-                <div class="shop-item"><h4>👷 Supervisor</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('staff_super', 10000)">💰 10000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00200, 'staff_super')">🦊 0.00200 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">👷 Catador Adicional</div><div class="item-desc">+1 material por ciclo</div><div class="price-row"><button class="eco-btn" onclick="buyItem('staff_add', 500)">💰 500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00010, 'staff_add')">🦊 0.00010 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">👷 Catador Profissional</div><div class="item-desc">+2 materiais por ciclo</div><div class="price-row"><button class="eco-btn" onclick="buyItem('staff_pro', 2500)">💰 2500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00050, 'staff_pro')">🦊 0.00050 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">👷 Supervisor</div><div class="item-desc">Aumenta eficiência geral</div><div class="price-row"><button class="eco-btn" onclick="buyItem('staff_super', 10000)">💰 10000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00200, 'staff_super')">🦊 0.00200 BNB</button></div></div>
             </div>
         </div>
         <!-- ROBÔS -->
         <div id="shop-robots" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item"><h4>🤖 Robô Básico</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('robot_basic', 5000)">💰 5000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00100, 'robot_basic')">🦊 0.00100 BNB</button></div></div>
-                <div class="shop-item"><h4>🤖 Robô Superior</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('robot_super', 15000)">💰 15000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00300, 'robot_super')">🦊 0.00300 BNB</button></div></div>
-                <div class="shop-item"><h4>🤖 Robô Industrial</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('robot_ind', 50000)">💰 50000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.01000, 'robot_ind')">🦊 0.01000 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🤖 Robô Básico</div><div class="item-desc">Automação nível 1</div><div class="price-row"><button class="eco-btn" onclick="buyItem('robot_basic', 5000)">💰 5000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00100, 'robot_basic')">🦊 0.00100 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🤖 Robô Superior</div><div class="item-desc">Automação nível 2</div><div class="price-row"><button class="eco-btn" onclick="buyItem('robot_super', 15000)">💰 15000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00300, 'robot_super')">🦊 0.00300 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🤖 Robô Industrial</div><div class="item-desc">Automação máxima</div><div class="price-row"><button class="eco-btn" onclick="buyItem('robot_ind', 50000)">💰 50000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.01000, 'robot_ind')">🦊 0.01000 BNB</button></div></div>
             </div>
         </div>
         <!-- ESTEIRAS -->
         <div id="shop-belts" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item"><h4>⚙️ Esteira Nível 2</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('belt_lvl2', 1000)">💰 1000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00020, 'belt_lvl2')">🦊 0.00020 BNB</button></div></div>
-                <div class="shop-item"><h4>⚙️ Esteira Nível 3</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('belt_lvl3', 5000)">💰 5000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00100, 'belt_lvl3')">🦊 0.00100 BNB</button></div></div>
-                <div class="shop-item"><h4>⚙️ Esteira Industrial</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('belt_ind', 20000)">💰 20000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00400, 'belt_ind')">🦊 0.00400 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚙️ Esteira Nível 2</div><div class="item-desc">Aumenta velocidade</div><div class="price-row"><button class="eco-btn" onclick="buyItem('belt_lvl2', 1000)">💰 1000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00020, 'belt_lvl2')">🦊 0.00020 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚙️ Esteira Nível 3</div><div class="item-desc">Velocidade industrial</div><div class="price-row"><button class="eco-btn" onclick="buyItem('belt_lvl3', 5000)">💰 5000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00100, 'belt_lvl3')">🦊 0.00100 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">⚙️ Esteira Industrial</div><div class="item-desc">Velocidade máxima</div><div class="price-row"><button class="eco-btn" onclick="buyItem('belt_ind', 20000)">💰 20000 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00400, 'belt_ind')">🦊 0.00400 BNB</button></div></div>
             </div>
         </div>
         <!-- BOOSTERS -->
         <div id="shop-boosters" class="shop-content">
             <div class="shop-grid">
-                <div class="shop-item"><h4>🚀 Turbo 2x (30m)</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('boost_2x_30m', 300)">💰 300 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00006, 'boost_2x_30m')">🦊 0.00006 BNB</button></div></div>
-                <div class="shop-item"><h4>🚀 Turbo 2x (1h)</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('boost_2x_1h', 500)">💰 500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00010, 'boost_2x_1h')">🦊 0.00010 BNB</button></div></div>
-                <div class="shop-item"><h4>🚀 Turbo 3x (1h)</h4><div class="btn-group"><button class="eco-btn" onclick="buyItem('boost_3x_1h', 1500)">💰 1500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00030, 'boost_3x_1h')">🦊 0.00030 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🚀 Turbo 2x (30m)</div><div class="item-desc">2x pontos por 30 min</div><div class="price-row"><button class="eco-btn" onclick="buyItem('boost_2x_30m', 300)">💰 300 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00006, 'boost_2x_30m')">🦊 0.00006 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🚀 Turbo 2x (1h)</div><div class="item-desc">2x pontos por 1 hora</div><div class="price-row"><button class="eco-btn" onclick="buyItem('boost_2x_1h', 500)">💰 500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00010, 'boost_2x_1h')">🦊 0.00010 BNB</button></div></div>
+                <div class="shop-item"><div class="item-name">🚀 Turbo 3x (1h)</div><div class="item-desc">3x pontos por 1 hora</div><div class="price-row"><button class="eco-btn" onclick="buyItem('boost_3x_1h', 1500)">💰 1500 ECO</button><button class="bnb-btn" onclick="buyWithBNB(0.00030, 'boost_3x_1h')">🦊 0.00030 BNB</button></div></div>
             </div>
         </div>
     </div>
@@ -283,30 +324,30 @@
     <div id="modal-profile" class="modal">
         <div class="modal-header"><h2>👤 Perfil</h2><button onclick="showTab('patio')">✕</button></div>
         <div style="background:var(--panel); padding:10px; border-radius:10px; border:1px solid var(--border);">
-            <div style="background:#151921; padding:8px; border-radius:10px; margin-bottom:10px; text-align:center; border:1px solid var(--border);">
-                <div style="font-size:0.9rem; font-weight:800; color:white;">♻️ RECICLY CITY</div>
-                <div style="font-size:.65rem; color:var(--muted);">Perfil Operacional</div>
+            <div style="background:#151921; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid var(--border);">
+                <div style="font-size:1rem; font-weight:800; color:white;">♻️ RECICLY CITY</div>
+                <div style="font-size:.7rem; margin-top:5px; color:var(--muted);">Perfil do Operador</div>
             </div>
 
             <div style="text-align:center; margin-bottom:10px; border-bottom:1px solid #ffffff10; padding-bottom:8px;">
-                <div style="font-weight:800; font-size:1rem;" id="prof-user">OPERADOR</div>
-                <small id="prof-id" style="font-size:0.6rem; color:var(--muted)">ID: -</small>
+                <div style="font-weight:800; font-size:1.2rem;" id="prof-user">OPERADOR</div>
+                <small id="prof-id" style="font-size:0.6rem; color:var(--muted); word-break:break-all;">ID: -</small>
             </div>
 
-            <p style="font-size:0.7rem;"><strong>📦 Processados:</strong> <span id="processed-items">0</span></p>
-            <p style="font-size:0.7rem;"><strong>🦊 MetaMask:</strong> <span id="metamask-status" style="color:var(--orange)">Não conectada</span></p>
-            <p style="font-size:0.7rem;"><strong>👥 Convidados:</strong> <span id="invite-count">0</span></p>
+            <p style="font-size:0.8rem;"><strong>📦 Processados:</strong> <span id="processed-items">0</span></p>
+            <p style="font-size:0.8rem;"><strong>🦊 MetaMask:</strong> <span id="metamask-status" style="color:var(--orange)">Não conectada</span></p>
+            <p style="font-size:0.8rem;"><strong>👥 Convidados:</strong> <span id="invite-count">0</span></p>
 
-            <p style="margin-top:10px; font-size:0.7rem;"><strong>👤 Definir Nome (convites):</strong></p>
+            <p style="margin-top:10px; font-size:0.8rem;"><strong>👤 Definir Nome (convites):</strong></p>
             <input type="text" id="edit-username" placeholder="Seu apelido..." class="input-text">
-            <button onclick="saveUsername()" class="eco-btn" style="padding:6px;">💾 SALVAR NOME</button>
+            <button onclick="saveUsername()" class="eco-btn" style="padding:6px; height: 35px; width: 100%;">💾 SALVAR NOME</button>
             <hr style="border:1px solid #ffffff05; margin:15px 0;">
-            <p style="font-size:0.7rem;"><strong>👥 Convidados:</strong> <span id="invite-count-disp">0</span></p>
-            <div style="background:#000; padding:6px; border-radius:6px; font-size:.5rem; word-break:break-all; color:var(--rare);" id="invite-link">-</div>
-            <button onclick="copyInvite()" class="bnb-btn" style="margin-top:6px; padding:6px; width: 100%;">📋 COPIAR LINK</button>
+            <p style="font-size:0.8rem;"><strong>👥 Convidados:</strong> <span id="invite-count-disp">0</span></p>
+            <div style="background:#0b0e14; border:1px solid var(--border); padding:10px; border-radius:8px; font-size:.65rem; word-break:break-all; color:var(--rare);" id="invite-link">-</div>
+            <button onclick="copyInvite()" class="bnb-btn" style="margin-top:10px; padding:6px; width: 100%; height: 35px;">📋 COPIAR LINK</button>
             <div style="text-align:center; margin-top:10px;">
                 <small style="color:var(--muted); font-size:0.6rem;">RENDA PASSIVA ATUAL</small>
-                <div id="passive-income" style="font-weight:800; color:var(--accent); font-size:1rem;">0.05 ECO/h</div>
+                <div id="passive-income" style="font-weight:800; color:var(--accent); font-size:1.2rem;">0.05 ECO/h</div>
             </div>
         </div>
     </div>
@@ -314,7 +355,7 @@
     <!-- MODAL RANKING -->
     <div id="modal-ranking" class="modal">
         <div class="modal-header"><h2>🏆 Ranking Global</h2><button onclick="showTab('patio')">✕</button></div>
-        <div style="background:var(--panel); padding:10px; border-radius:10px; border:1px solid var(--border); font-size: 0.7rem;">
+        <div style="background:var(--panel); padding:10px; border-radius:10px; border:1px solid var(--border); font-size: 0.8rem;">
             <p>1. 👑 CatadorDaFavela - Lvl 25</p>
             <p>2. 🤖 ReciclyMaster - Lvl 21</p>
         </div>
@@ -433,24 +474,35 @@
         try{
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
             metamaskWallet = accounts[0]; updateUI();
-        } catch(e){ }
+            addLog("MetaMask conectada.");
+        } catch(e){
+            addLog("Conexão cancelada.");
+        }
     }
 
     async function buyWithBNB(priceBNB, itemId) {
         if (!confirm(`Comprar por ${priceBNB} BNB?`)) return;
         try {
             const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-            await ethereum.request({
+            const tx = await ethereum.request({
                 method: "eth_sendTransaction",
                 params: [{ from: accounts[0], to: "0x6E4467d5e468202581622340689C82fF40E00000", value: "0x" + BigInt(Math.floor(priceBNB * 1e18)).toString(16) }]
             });
+            addLog("✅ Compra confirmada! TX: " + tx);
             processReward(itemId);
-        } catch (err) { }
+        } catch (err) {
+            addLog("❌ Compra cancelada");
+        }
     }
 
     function buyItem(itemId, price) {
-        if (state.ecp < price) return;
-        state.ecp -= price; processReward(itemId);
+        if (state.ecp < price) {
+            addLog("ECO insuficiente", "var(--orange)");
+            return;
+        }
+        state.ecp -= price;
+        addLog("✅ Item comprado com ECO!", "var(--accent)");
+        processReward(itemId);
     }
 
     function processReward(itemId) {
@@ -466,7 +518,13 @@
     }
 
     function startBatch() {
-        if(!autoRunning || state.energy <= 0) { if(state.energy <= 0 && autoRunning) toggleAuto(); return; }
+        if(!autoRunning || state.energy <= 0) {
+            if(state.energy <= 0 && autoRunning) {
+                toggleAuto();
+                addLog("Sem energia!", "var(--orange)");
+            }
+            return;
+        }
         let r = Math.random() * 100, acc = 0, sel = MATERIAL_DATA[0];
         for(let m of MATERIAL_DATA) { acc += m.chance; if(r <= acc) { sel = m; break; } }
         const sprite = document.getElementById('item-active');
@@ -492,7 +550,7 @@
 
     function getMaxEnergy() { return state.level >= 50 ? 200 : state.level >= 25 ? 150 : state.level >= 10 ? 120 : 100; }
     function addLog(msg, color = "") { const logs = document.getElementById('logs'); logs.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + logs.innerHTML; }
-    function sellItems() { let t = 0; MATERIAL_DATA.forEach(m => { t += (state.inventory[m.id] || 0) * m.reward; state.inventory[m.id] = 0; }); state.ecp += t; updateUI(); saveGame(); }
+    function sellItems() { let t = 0; MATERIAL_DATA.forEach(m => { t += (state.inventory[m.id] || 0) * m.reward; state.inventory[m.id] = 0; }); state.ecp += t; updateUI(); saveGame(); addLog("💰 Materiais vendidos!"); }
     function copyInvite() { navigator.clipboard.writeText(document.getElementById('invite-link').innerText); addLog("🔗 Link copiado."); }
     function showShopTab(id) { document.querySelectorAll('.shop-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active')); document.getElementById('shop-' + id).classList.add('active'); event.currentTarget.classList.add('active'); }
     function showTab(id) {
@@ -512,7 +570,11 @@
     updateUI();
 
     setInterval(() => {
-        if(state.energy >= getMaxEnergy()) return;
+        if(state.energy >= getMaxEnergy()){
+            document.getElementById("energy-timer-header").innerText = "⚡ CHEIO";
+            document.getElementById("energy-timer-strip").innerText = "✅ Energia Máxima";
+            return;
+        }
         countdown--; let m = Math.floor(countdown / 60), s = countdown % 60;
         document.getElementById("energy-timer-header").innerText = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         document.getElementById("energy-timer-strip").innerText = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
