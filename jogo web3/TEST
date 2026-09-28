@@ -1,1476 +1,340 @@
-recicly city
-🏚️ Barraco de Triagem
-
-↓
-
-🏠 Centro de Coleta
-
-↓
-
-🏭 Galpão de Reciclagem
-
-↓
-
-🌆 Recicly City
-
-↓
-
-🌎 Ecopacto City
-
-🏭 Pátio de Coleta
-
-🛒 Loja & Upgrades
-
-👤 Perfil & Convites
-
-🏆 Ranking
-
-Sede: Barraco de Triagem
-
-Nível: 5
-
-Energia: 100/100
-
-ECP: 1250
-
-🦊 Conectar Carteira
-
-👤 PERFIL
-
-Nome:
-CatadorDaFavela
-
-Nível:
-25
-
-Saldo:
-15.500 ECP
-
-Materiais Coletados:
-58.000
-
-Ranking:
-#14
-
-Indicações:
-8 amigos
-
-Carteira:
-0x1234...89AB
-
-Data de Cadastro:
-
-indiicaçoes
-
-CONVIDE AMIGOS
-
-Seu código:
-
-RECICLY123
-
-Seu link:
-
-recicly.com/ref/RECICLY123
-
-recompensas
-
-1 amigo = 100 ECP
-
-5 amigos = 1.000 ECP
-
-10 amigos = Robô Básico
-
-50 amigos = Esteira Especial
-
-materiais
-
-Comuns
-
-🧴 Plástico
-📦 Papelão
-🥫 Alumínio
-
-Raros
-
-🔌 Cobre
-
-Épicos
-
-🔋 Lítio
-
-Lendários
-
-💻 Peças Eletrônicas
-📱 Smartphone
-🖥️ Placa-Mãe
-
-porcentagem por itens
-
-Plástico: 60%
-
-Papelão: 20%
-
-Alumínio: 12%
-
-Cobre: 5%
-
-Lítio: 2%
-
-Peças Eletrônicas: 0,8%
-
-Smartphone: 0,15%
-
-Placa-Mãe: 0,05%
-
-Chip: 0,01%
-
-Nível 1
-🏚️ Barraco de Triagem
-
-Nível 10
-🏠 Centro de Coleta
-
-Nível 25
-🏭 Galpão de Reciclagem
-
-Nível 50
-🌆 Recicly City
-
-Nível 100
-🌎 Ecopacto City
-
-abas da loja
-
-🏭 Melhorias
-👷 Catador Adicional
-
-100 ECP
-ou
-0,00005 BNB
-
-⚡ Energia
-⚡ +50 Energia
-
-⚡ +100 Energia
-
-⚡ Energia Infinita 1h
-
-🚀 Turbo 2x Produção
-
-30 minutos
-
-0,00005 BNB
-
-🤖 Automação
-🤖 Robô Superior
-
-400 ECP
-ou
-0,00015 BNB
-
-💎 Premium
-🎨 Skin da Esteira
-
-🏭 Skin Industrial
-
-🚚 Caminhão Especial
-
-🤖 Robô Dourado
-
-sistema da esteira
-
-fluxo
-GERADOR DE ITENS
-      ↓
-ESTEIRA
-      ↓
-TRIAGEM
-      ↓
-ARMAZÉM
-
-animaçao
-
-╔════════════════════════════╗
-║ 🧴                         ║
-║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
-╚════════════════════════════╝
-╔════════════════════════════╗
-║          🧴                ║
-║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
-╚════════════════════════════╝
-╔════════════════════════════╗
-║                     🧴     ║
-║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
-╚════════════════════════════╝
-itens comuns
-🧴 Plástico
-📦 Papelão
-🥫 Alumínio
-2 segundos para atravessar
-
-raros
-🔌 Cobre
-🔋 Lítio
-4 segundos para atravessar
-
-sistema de itens raros
-a tela escurece levemente
-✨ ITEM RARO DETECTADO ✨
-
-esterira continua
-╔════════════════════════════╗
-║            🔋              ║
-║ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶   ║
-╚════════════════════════════╝
-* brilho *
-
-sistema de peças eletronicas
-💻
-chances
-0,8%
-6 segundos
-
-📱 smartphone
-chances
-0,15%
-
-🖥️ placa mae
-chances
-0,05%
-
-itens lendarios
-⚡ CHIP
-chances
-0,01%
-quando aparecer
-🚨 ALERTA DE ITEM LENDÁRIO 🚨
-a esteira desacelera
-⚡
-efeito viiisual
-✨✨✨✨✨✨✨✨
-
-⚡ CHIP ENCONTRADO
-
-+100 ECP
-
-✨✨✨✨✨✨✨✨
-
-controle de geraçao
-nunca gerar dois intens
-Item atual termina
-↓
-Processa
-↓
-Gera próximo item
-exemplo
-🧴
-↓
-Processado
-
-🥫
-↓
-Processado
-
-🧴
-↓
-Processado
-
-🔋
-↓
-Processado
-
-📦
-↓
-Processado
-
-nivel 1
-1 item por vez
-nivel 10
-visual mais rápida
-nivel 25
-esteira industrial
-nivel 50
-robôs aparecem trabalhando
-nivel 100
-cidade automatizada
-
-melhorias esteira
-┌────────────────────────────────────┐
-│                                    │
-│  🧴                               │
-│  ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶     │
-│                                    │
-│                              📦    │
-└────────────────────────────────────┘
-quando o iten chegar no final
-🧴
-      ↓
-📦
- e entao
- +1 Plástico
-
- para itens raros
- ele corre na esteira normalmente
- ✨ CAIXA DE TRIAGEM ✨
-
- 🔋 Lítio armazenado
-
- +1 Lítio
-
- animaçao da caixa
- normal
- 📦
- recebendo itens
- 📦💨
-
- itens lendarios
- ⚡ chip
- quando chegar na caiixa
- ✨✨✨✨✨
-
- 📦 recebeu item lendário
-
- ⚡ CHIP
-
- ✨✨✨✨✨
- evoluçao da caixa
-
- Nível 1
- 📦 Caixa de madeira
-
- Nível 20
- ♻️ Centro de Triagem
-
- Nível 50
- 🏭 Prensa Industrial
-
- Nível 100
- 🤖 Sistema Automatizado
-
- recompensas
-
- 1 amigo = 50 ECP
-
- 5 amigos = 500 ECP
-
- 10 amigos = Catador Especial
-
- 25 amigos = Robô Básico
-
- 50 amigos = Skin Exclusiva
-
- ranking
- Maior ECP
-
- Mais Materiais
-
- Mais Convites
-
- Maior Nível
-
- Maior Produção
-
- pagina perfil
-
- 👤 João
-
- ID: ECO_3048c16df4c51e70ff5ff2e4
-
- 💰 ECP: 1250
-
- ⚡ Energia: 85/100
-
- 🦊 MetaMask: Conectada
-
- 💰 ECP: 1250
-
- 💼 Wallet
-
- 🦊 MetaMask
-
- login
-Recicly City
-       ↕
-Ecopacto Wallet
-
-eu teria que criar um botao na wallet ecopacto para o jogo web3
-e para vc logar no jogo um botao que ja te manda para a wallet
-o botao na wallet eu colocaria no roda pe em baixo
-
-pagina tap on
-
-0 convites
-0,05 ECP/h
-
-5 convites
-0,10 ECP/h
-
-10 convites
-0,20 ECP/h
-
-25 convites
-0,50 ECP/h
-
-50 convites
-1,00 ECP/h
-
-valores dos itens com eco
-
-🧴 Plástico
-60%
-1 ECO
-
-📦 Papelão
-20%
-2 ECO
-
-🥫 Alumínio
-12%
-5 ECO
-
-🔌 Cobre
-5%
-15 ECO
-
-🔋 Lítio
-2%
-50 ECO
-
-💻 Peça Eletrônica
-0,8%
-120 ECO
-
-📱 Smartphone
-0,15%
-300 ECO
-
-🖥️ Placa-Mãe
-0,05%
-800 ECO
-
-⚡ Chip
-0,01%
-2500 ECO
-
-valor medioi por itens
-(0,60×1) +
-(0,20×2) +
-(0,12×5) +
-(0,05×15) +
-(0,02×50) +
-(0,008×120) +
-(0,0015×300) +
-(0,0005×800) +
-(0,0001×2500)
-
-= 5,41 ECO por item
-1 item a cada 20 segundos
-
-≈ 1.300 ECO/hora
-
-energia
-100 energia
-
-1 energia = 1 item
-
-100 itens
-
-
-recarga de energia
-
-Energia máxima:
-100
-
-Recarga:
-1 energia a cada 3 minutos
-
-Máximo:
-100
-
-nveis de energia
-
-Nível 1
-100 Energia
-
-Nível 10
-120 Energia
-
-Nível 25
-150 Energia
-
-Nível 50
-200 Energia
-
-preço dos iten da loja com abas separando
-Energia
-
-Energia
-Item	ECO  	BNB
-+50 Energia	    100 ECO  	0,00002 BNB
-+100 Energia	180 ECO	 0,00004 BNB
-+500 Energia	800 ECO	 0,00015 BNB
-
-Funcionários
-Item	ECO	    BNB
-Catador Adicional	500 ECO 	0,00010 BNB
-Catador Profissional	2.500 ECO	 0,00050 BNB
-Supervisor	10.000 ECO	0,00200 BNB
-
-Robôs
-Item	ECO	BNB
-Robô Básico	5.000 ECO	0,00100 BNB
-Robô Superior	15.000 ECO	0,00300 BNB
-Robô Industrial	50.000 ECO	0,01000 BNB
-
-Esteiras
-Item	ECO	BNB
-Esteira Nível 2	1.000 ECO	0,00020 BNB
-Esteira Nível 3	5.000 ECO	0,00100 BNB
-Esteira Industrial	20.000 ECO	0,00400 BNB
-
-Boosters
-Item	ECO	BNB
-Produção 2x (30 min)	300 ECO	0,00006 BNB
-Produção 2x (1h)	500 ECO	0,00010 BNB
-Produção 3x (1h)	1.500 ECO	0,00030 BNB
-
-correçao
-
-cabeçalho em todas as telas
 ♻️ RECICLY CITY
 
-👤 Usuario | 💰 ECO | ⚡ Energia
-
-🏭 Pátio | 🛒 Loja | 👤 Perfil | 🏆 Ranking
-
-<div class="top-header">
-    <div class="logo">♻️ RECICLY CITY</div>
-
-    <div class="player-info">
-        <span id="user-name">👤 Operador</span>
-        <span>💰 ECO: <strong id="header-eco">0</strong></span>
-        <span>⚡ <strong id="header-energy">100/100</strong></span>
-    </div>
-</div>
-
-adicionar mais css
-.top-header{
-    background:#151921;
-    border:1px solid #30363d;
-    border-radius:10px;
-    padding:10px;
-}
-
-.logo{
-    text-align:center;
-    font-size:1.3rem;
-    font-weight:800;
-    color:#fff;
-    margin-bottom:6px;
-}
-
-.player-info{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    font-size:.75rem;
-    color:#c9d1d9;
-    flex-wrap:wrap;
-}
-
-mais essa correçao
-<div id="item-active"></div>
-
-funçao das abas
-function showTab(id) {
-    document.getElementById('modal-shop').classList.remove('active');
-    document.getElementById('modal-profile').classList.remove('active');
-
-    document.querySelectorAll('.tab').forEach(tab=>{
-        tab.classList.remove('active');
-    });
-
-    if(id === 'patio'){
-        document.querySelectorAll('.tab')[0].classList.add('active');
-    }
-
-    if(id === 'shop'){
-        document.getElementById('modal-shop').classList.add('active');
-        document.querySelectorAll('.tab')[1].classList.add('active');
-    }
-
-    if(id === 'profile'){
-        document.getElementById('modal-profile').classList.add('active');
-        document.querySelectorAll('.tab')[2].classList.add('active');
-    }
-}
-
-corrigir update ui
-function updateUI() {
-
-    document.getElementById('lvl-val').innerText = state.level;
-
-    document.getElementById('energy-val').innerText =
-        state.energy + "/" + getMaxEnergy();
-
-    document.getElementById('energy-fill').style.width =
-        (state.energy / getMaxEnergy() * 100) + "%";
-
-    document.getElementById('ecp-val').innerText =
-        state.ecp.toLocaleString();
-
-    document.getElementById('header-eco').innerText =
-        state.ecp.toLocaleString();
-
-    document.getElementById('header-energy').innerText =
-        state.energy + "/" + getMaxEnergy();
-
-    for(let key in state.inventory){
-        const el = document.getElementById(`count-${key}`);
-        if(el){
-            el.innerText = state.inventory[key].toLocaleString();
-        }
-    }
-
-    const sede = document.getElementById('sede-name');
-
-    if(state.level >= 100){
-        sede.innerText = "🌎 Ecopacto City";
-    }
-    else if(state.level >= 50){
-        sede.innerText = "🌆 Recicly City";
-    }
-    else if(state.level >= 25){
-        sede.innerText = "🏭 Galpão";
-    }
-    else if(state.level >= 10){
-        sede.innerText = "🏠 Centro";
-    }
-    else{
-        sede.innerText = "🏚️ Barraco";
-    }
-
-    if(wallet){
-
-        document.getElementById('prof-id').innerText =
-            wallet.address || "Sem Carteira";
-
-        document.getElementById('user-name').innerText =
-            "👤 " + (wallet.name || "Operador");
-
-        document.getElementById('prof-lvl').innerText =
-            state.level;
-    }
-}
-diminuir os card dos materias
-.inventory-grid {
-    grid-template-columns: repeat(4, 1fr);
-}
-.inv-slot{
-    min-height:70px;
-    padding:4px;
-}
-
-melhorar o visual da esteira
-<div class="drop-box">📦</div>
-.drop-box{
-    position:absolute;
-    right:10px;
-    font-size:1.5rem;
-}
-
-oque acha de fazermos assim
-
-♻️ RECICLY CITY
-
-👤 MANOEL
-💰 ECO: 1250
-⚡ 100/100
-
-🏭 PÁTIO
-🛒 LOJA
-👤 PERFIL
-🏆 RANKING
-
-═══════════════════
-
-ESTEIRA
-
-═══════════════════
-
-MATERIAIS
-
-═══════════════════
-
-VENDER
-
-═══════════════════
-
-LOGS
-
-atualizaçao da pargina de perfil
-
-<hr style="border:1px solid #ffffff05; margin:15px 0;">
-
-<p><strong>👥 Convidados:</strong>
-<span id="invite-count">0</span>
-</p>
-
-<p style="margin-top:10px;">
-<strong>🔗 Link de Convite</strong>
-</p>
-
-<div style="
-    background:#0b0e14;
-    border:1px solid var(--border);
-    padding:10px;
-    border-radius:8px;
-    font-size:.65rem;
-    word-break:break-all;
-    color:var(--rare);
-">
-    <span id="invite-link">
-        https://hub.ecopacto/ref/SEM_ID
-    </span>
-</div>
-
-<button
-    onclick="copyInvite()"
-    class="shop-btn"
-    style="margin-top:10px;"
->
-📋 COPIAR LINK
-</button>
-
-funçao java
-
-function copyInvite(){
-
-    const link =
-        document.getElementById('invite-link').innerText;
-
-    navigator.clipboard.writeText(link);
-
-    addLog("🔗 Link copiado.");
-}
-
-dentro do updadeui
-if(wallet){
-
-    const inviteLink =
-    `https://hub.ecopacto/ref/${wallet.address}`;
-
-    document.getElementById('invite-link').innerText =
-    inviteLink;
-}
-
-cabeçalho tambem no perfil
-<div style="
-background:#151921;
-padding:12px;
-border-radius:10px;
-margin-bottom:15px;
-text-align:center;
-border:1px solid var(--border);
-">
-
-<div style="
-font-size:1rem;
-font-weight:800;
-color:white;
-">
-♻️ RECICLY CITY
-</div>
-
-<div style="
-font-size:.7rem;
-margin-top:5px;
-color:var(--muted);
-">
-Perfil do Operador
-</div>
-
-</div>
-
-adicionar uma estatisticas
-
-📦 Materiais Processados
-
-1250
-
-automatizar a esteira
-
-▶ INICIAR PRODUÇÃO
-
-↓
-
-🧴
-🥫
-🧴
-🔋
-🧴
-💻
-
-↓
-
-Energia vai diminuindo
-
-↓
-
-0 energia
-
-↓
-
-Produção parada
-
-criar variavel
-let autoRunning = false;
-botao
-<button
-id="proc-btn"
-class="btn-process"
-onclick="toggleAuto()">
-▶ INICIAR PRODUÇÃO
-</button>
-
-funçao estarbatch
-if(autoRunning && state.energy > 0){
-
-    setTimeout(()=>{
-        startBatch();
-    },500);
-
-}else{
-
-    autoRunning = false;
-
-    document.getElementById("proc-btn").innerText =
-    "▶ INICIAR PRODUÇÃO";
-
-}
-
-contador de energia
+👤 Manoel
+💰 1250 ECO
 ⚡ 98/100
-⏳ 02:31
-<div class="energy-info">
-
-    <div class="energy-bar-wrap">
-        E:
-        <div class="energy-bar">
-            <div id="energy-fill"></div>
-        </div>
-
-        <span id="energy-val">
-            100/100
-        </span>
-    </div>
-
-    <small id="energy-timer">
-        ⏳ 03:00
-    </small>
-
-</div>
-css
-.energy-info{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:2px;
-}
-
-#energy-timer{
-    font-size:.55rem;
-    color:var(--muted);
-}
-
-temporizador real
-let countdown = 180;
-como usar
-1 energia = 3 minutos
-
-sao
-180 segundos
-``
-setInterval(()=>{
-
-    if(state.energy >= getMaxEnergy()){
-
-        document.getElementById("energy-timer")
-        .innerText = "⚡ CHEIO";
-
-        return;
-    }
-
-    countdown--;
-
-    let m =
-    Math.floor(countdown / 60);
-
-    let s =
-    countdown % 60;
-
-    document.getElementById("energy-timer")
-    .innerText =
-    `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-
-    if(countdown <= 0){
-
-        state.energy++;
-
-        updateUI();
-
-        countdown = 180;
-    }
-
-},1000);
-o topo ficaria assim
-👤 Operador
-
-💰 ECO: 1250
-
-⚡ 98/100
-
-⏳ 02:41
-qndo cheio
-⚡ 100/100
-
-✅ Energia Máxima
-
-no cabeçalho
-
-♻️ RECICLY CITY
-
-👤 Operador
-
-💰 ECO: 1250
-
-⚡ 100/100
 ⏳ 02:15
-
-🦊 Wallet
-
-👤 Operador
-
-💰 ECO: 1250
-
-⚡ 100/100
-
-🦊 Conectar MetaMask
-
-🟢 MetaMask Conectada
-botao metamesk
-<button
-id="btn-metamask"
-onclick="connectMetaMask()"
-class="wallet-btn"
->
 🦊 MetaMask
-</button>
-css
-.wallet-btn{
-    background:#f97316;
-    color:white;
-    border:none;
-    border-radius:8px;
-    padding:6px 10px;
-    font-size:.7rem;
-    font-weight:700;
-    cursor:pointer;
-}
-js
-async function connectMetaMask(){
 
-    if(typeof window.ethereum === 'undefined'){
+────────────────────
 
-        addLog("MetaMask não encontrada.");
-
-        return;
-    }
-
-    try{
-
-        const accounts =
-            await ethereum.request({
-                method:'eth_requestAccounts'
-            });
-
-        const wallet =
-            accounts[0];
-
-        document.getElementById("btn-metamask")
-            .innerText =
-            "🟢 " +
-            wallet.slice(0,6) +
-            "..." +
-            wallet.slice(-4);
-
-        addLog("MetaMask conectada.");
-
-    }
-    catch(err){
-
-        addLog("Conexão cancelada.");
-
-    }
-}
-
-o jogador ver
-💼 Wallet Ecopacto
-Saldo: 1250 ECO
-
-🦊 MetaMask
-Não conectada
-
-botoes eco / metasmask
-<div class="shop-item">
-
-    <h4>🤖 Robô Básico</h4>
-
-    <p>+5 materiais/s</p>
-
-    <button class="eco-btn">
-        💰 5000 ECO
-    </button>
-
-    <button class="bnb-btn">
-        🦊 0.001 BNB
-    </button>
-
-</div>
-comprar com eco
-function buyRobotEco(){
-
-    if(state.eco < 5000){
-        alert("ECO insuficiente");
-        return;
-    }
-
-    state.eco -= 5000;
-
-    state.robot++;
-}
-
-comprar com bnb
-function buyRobotBNB(){
-    // abre MetaMask
-    // envia BNB
-    // libera item
-}
-
-energia
-⚡ +50 Energia
-
-💰 100 ECO
-🦊 0.00002 BNB
-
-catador
-👷 Catador
-
-💰 500 ECO
-🦊 0.0001 BNB
-
-robo
-🤖 Robô Superior
-
-💰 5000 ECO
-🦊 0.001 BNB
-
-esteira
-⚙️ Esteira Industrial
-
-💰 20000 ECO
-🦊 0.004 BNB
-
-cor diferente
-💰 ECO = Verde
-
-🦊 BNB = Laranja
-
-
-<div class="shop-item">
-
-    <h4>🤖 Robô Básico</h4>
-
-    <p>+5 materiais/s</p>
-
-    <button class="eco-btn">
-        💰 5000 ECO
-    </button>
-
-    <button class="bnb-btn">
-        🦊 0.001 BNB
-    </button>
-
-</div>
-reço dos iten da loja com abas separando
-Energia
-
-Energia
-Item	ECO  	BNB
-+50 Energia	    100 ECO  	0,00002 BNB
-+100 Energia	180 ECO	 0,00004 BNB
-+500 Energia	800 ECO	 0,00015 BNB
-
-Funcionários
-Item	ECO	    BNB
-Catador Adicional	500 ECO 	0,00010 BNB
-Catador Profissional	2.500 ECO	 0,00050 BNB
-Supervisor	10.000 ECO	0,00200 BNB
-
-Robôs
-Item	ECO	BNB
-Robô Básico	5.000 ECO	0,00100 BNB
-Robô Superior	15.000 ECO	0,00300 BNB
-Robô Industrial	50.000 ECO	0,01000 BNB
-
-Esteiras
-Item	ECO	BNB
-Esteira Nível 2	1.000 ECO	0,00020 BNB
-Esteira Nível 3	5.000 ECO	0,00100 BNB
-Esteira Industrial	20.000 ECO	0,00400 BNB
-
-Boosters
-Item	ECO	BNB
-Produção 2x (30 min)	300 ECO	0,00006 BNB
-Produção 2x (1h)	500 ECO	0,00010 BNB
-Produção 3x (1h)	1.500 ECO	0,00030 BNB
-
-ajustar metamesk compra
-
-deve mostrar assim
-Recicly City quer enviar:
-
-0.001 BNB
-
-Para:
-0xSEU_ENDERECO
-
-Taxa de Rede:
-0.0000xxxx BNB
-
-Total:
-0.001xxxx BNB
-
-[Cancelar]
-[Confirmar]
-
-adiicionar funçao
-async function buyWithBNB(priceBNB, itemId){
-
-    try{
-
-        if(!window.ethereum){
-            alert("MetaMask não encontrada!");
-            return;
-        }
-
-        const accounts = await ethereum.request({
-            method: "eth_requestAccounts"
-        });
-
-        const sender = accounts[0];
-
-        addLog("🦊 Abrindo MetaMask...");
-
-        const tx = await ethereum.request({
-            method: "eth_sendTransaction",
-            params: [{
-                from: sender,
-
-                to: "0xSEU_ENDERECO_BNB",
-
-                value: "0x" +
-                BigInt(
-                    Math.floor(
-                        priceBNB * 1000000000000000000
-                    )
-                ).toString(16)
-            }]
-        });
-
-        addLog("⏳ Transação enviada...");
-        addLog("TX: " + tx);
-
-        unlockItem(itemId);
-
-        addLog("✅ Compra confirmada!");
-        alert("✅ Item comprado com sucesso!");
-
-    }catch(err){
-
-        addLog("❌ Compra cancelada");
-
-        console.error(err);
-
-    }
-}
-
-a funçao
-
-unlockItem(itemId);
-
-await ethereum.request({
-   method:'eth_sendTransaction'
-})
-
-corrigir pagina patiio
-
-console.log(
-   state.inventory[sel.id]
-);
-state.inventory[sel.id]++;
-
-salvamento automatico
-function saveGame(){
-
-   localStorage.setItem(
-      "reciclyCitySave",
-      JSON.stringify(state)
-   );
-
-}
-
-funcçao carregar
-function loadGame(){
-
-   const save =
-      localStorage.getItem(
-         "reciclyCitySave"
-      );
-
-   if(save){
-
-      state =
-      JSON.parse(save);
-
-      updateUI();
-
-   }
-
-}
-chamar ao niicia
-loadGame();
-
-perfil
-Nome de usuário:
-manoel
-
-Carteira:
-ECO_85dd80d4bb33988cf430b8ec
-
-convites
-Seu link:
-
-https://reciclycity.com/ref/manoel
-
-Regras
-
-No cadastro:
-
-✅ mínimo 3 caracteres
-
-✅ máximo 20 caracteres
-
-✅ sem espaços
-
-✅ único
-banco de dados para salvar login
-{
-  "username": "manoel",
-  "wallet": "ECO_85dd80d4bb33988cf430b8ec",
-  "eco": 1250,
-  "level": 10
-}
-`
-diminuir os tamnhos dos quadros
-┌─────────────┐
-│ 🧴  2       │
-│ PLÁSTICO    │
-└─────────────┘
-aumentar os iiconis dos materiais
-.inv-icon{
-    font-size:1.8rem;
-}
-
-.inv-count{
-    font-size:1.2rem;
-}
-diminuir botoes
-▶ INICIAR PRODUÇÃO
-.btn-process{
-    height:45px;
-    font-size:1rem;
-}
-
-diminuir as abas
 🏭 Pátio
 🛒 Loja
 👤 Perfil
 🏆 Ranking
-.tab{
-    height:38px;
-    font-size:.8rem;
-}
-aumentar o nome do jogo
-♻️ RECICLY CITY
-.logo{
-    font-size:1.8rem;
-    font-weight:800;
-}
-melhorando o topo
-♻️ RECICLY CITY
 
-👤 manoel
-💰 ECO: 0
-⚡ 98/100
-⏳ 00:48
-🦊 MetaMask
+────────────────────
 
-reduzir a esteria
+🧴 ----------- 📦
+
+▶ Produção Automática
+
+────────────────────
+
+🧴 12
+📦 6
+🥫 3
+🔌 1
+🔋 0
+💻 0
+📱 0
+⚡ 0
+
+────────────────────
+
+💰 Vender
+
+────────────────────
+
+📜 Logs
+
+itens da esteira
+
+comun
+🧴 Plástico
+📦 Papelão
+🥫 Alumínio
+
+incomun
+🔌 Cobre
+🔋 Bateria
+
+raros
+🔋 Lítio
+⌨️ Teclado
+🖱️ Mouse
+🎧 Fone
+💿 DVD
+
+epicos
+💻 Peças Eletrônicas
+📱 Smartphone
+🖨️ Impressora
+📷 Câmera
+
+lendarios
+🖥️ Placa-Mãe
+📺 TV
+
+mitico
+⚡ Chip
+
+fluxo da esteira
+GERADOR
+   ↓
+
+🧴
+
+════════════════════► 📦
+itens nasce da esquerda
+
+materiais comuns
+🧴 Plástico
+📦 Papelão
+🥫 Alumínio
+tempo
+1,5 segundos
+
+🧴 ----------- 📦
+
+↓
+
+      🧴 ------ 📦
+
+↓
+
+             🧴 📦
+
+↓
+
+✅ +1 Plástico
+
+materiass incomuns
+🔌 Cobre
+🔋 Bateria
+tempo
+3 segundos
+
+qndo chegam
+
+✨ RECICLÁVEL VALIOSO
+
++15 ECO
+
+materiais raros
+⌨️ Teclado
+🖱️ Mouse
+🎧 Fone
+💿 DVD
+🔋 Lítio
+
+a esteria reduz a velocidade
+🔋 ---------- 📦
+
+↓
+
+      🔋------ 📦
+
+↓
+
+            🔋 📦
+
+✨ ITEM RARO
+
+materiais epicos
+💻 Peça Eletrônica
+📱 Smartphone
+🖨️ Impressora
+📷 Câmera
+
+quando aparece
+✨ ENCONTRADO ✨
+
+📱 Smartphone
+
+a caixa brilha
+📦✨
+
+materiais lendarios
+🖥️ Placa-Mãe
+📺 TV
+
+a esteira desacelera
+🚨 ITEM LENDÁRIO 🚨
+cor do fundo
+roxo
+
+item mitico
+⚡ CHIP
+0,01% de chances
+quando churgir
+🚨 ALERTA MÁXIMO 🚨
+
+⚡ CHIP ENCONTRADO
+a esteira para por dois segundos
+⚡ ---------- 📦
+ao chegar
+📦✨✨✨✨
+
++2500 ECO
+
+evoluçao da esteira
+nivel 1
+🧴 ---------- 📦
+nivel 10
+🧴 >>>>>>>>> 📦
+nivel 25
+⚙️⚙️⚙️>>>>>> 📦
+nivel 50
+🤖 Automatizada
+nivel 100
+🏭 Esteira Industrial
+
+robos aparecendo
+conforme comprar robos
+🤖        🧴
+
+══════════════► 📦
+depois
+🤖 🤖    🧴
+
+══════════════► 📦
+eles fican jogando os itens nas esteira visualmente
+
+o siclo seria
+Item aparece
+↓
+Anda pela esteira
+↓
+Cai na caixa
+↓
+Contador aumenta
+↓
+Próximo item
+
+loja completa
+energia
+⚡ +50 Energia
+100 ECO
+0.00002 BNB
+
+⚡ +100 Energia
+180 ECO
+0.00004 BNB
+
+⚡ +500 Energia
+800 ECO
+0.00015 BNB
+
+🔋 Bateria Industrial
+3000 ECO
+0.00050 BNB
+
+equipe
+
+👷Item               ECO  BNB
+Catador Adicional    500 0.00010
+Catador Profissional  2.500 0.00050
+Supervisor           10.000 0.00200
+Gerente de Pátio     20.000 0.00400
+
+robos
+Item   ECO    BNB
+Básico   5.000 0.00100
+Robô Superior 15.000 0.00300
+Robô Industrial 50.0000.01000
+Robô IA     100.000   0.02000
+
+esterias
+Item             ECO    BNB
+Esteira Nível 2  1.000 0.00020
+Esteira Nível 3   5.000 0.00100
+Esteira Industrial  20.000 0.00400
+Esteira Magnética   60.000  0.01200
+
+boosters
+Item               ECO     BNB
+Produção 2x (30 min)   300 0.00006
+Produção 3x (1h)    1.500  0.00030
+Sorte 2x (30 min)   500  0.00010
+Sorte 5x (1h)      2.500   0.00050
+Energia Infinita (30 min) 5.000  0.00100
+
+acrescentar no card
+🤖 Robô Industrial
+
++50 materiais/ciclo
+
+💰 50000 ECO
+🦊 0.01000 BNB
+
+✅ COMPRADO
+
+pagina perfil
+
+👤 Nome
+
+ID Wallet
+
+👥 Convidados
+
+🔗 Link:
+
+reciclycity.com/ref/manoel
+
+📋 Copiar
+
+💸 Renda:
+0.05 ECO/h
+
+melhorias visuais
+
+estereira
+
 .belt-container{
-    height:60px;
+    height:40px;
 }
-aumentar os itens da esteira
-#item-active{
-    font-size:2.4rem;
+botao da esteira
+.btn-process{
+    height:32px;
+    font-size:.85rem;
 }
-🧴 ------------------- 📦
-
-visualizaçao
-♻️ RECICLY CITY
-
-👤 manoel  💰0  ⚡98/100  ⏳00:48 🦊
-
-🏭 Pátio | 🛒 Loja | 👤 Perfil | 🏆 Ranking
-
-━━━━━━━━━━━━━━━━━━
-
-ESTEIRA
-
-🧴 ----------------→ 📦
-
-[▶ PRODUZIR]
-
-━━━━━━━━━━━━━━━━━━
-
-🧴 2   📦 0   🥫 0   🔌 0
-🔋 0   💻 0   📱 0   🖥️ 0
-
-━━━━━━━━━━━━━━━━━━
-
-💰 VENDER
-area dos logs
-.terminal{
-    height:140px;
-    overflow-y:auto;
-    font-size:0.75rem;
-    line-height:1.5;
-    padding:12px;
+os materiais
+.inv-slot{
+   min-height:42px;
+   padding:2px;
 }
-
-ajuste da loja
-/* Cards da loja menores */
+os iconis
+.inv-icon{
+   font-size:1.5rem;
+}
+loja
+itens
 .shop-item{
-    background: #151921;
-    border: 1px solid #30363d;
-    border-radius: 10px;
-    padding: 10px;
-    min-height: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    min-height:55px;
+    padding:8px;
 }
-
-/* Nome do item */
-.shop-item h3,
-.shop-item .item-name{
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 6px;
+titulo
+.item-name{
+    font-size:.85rem;
 }
-
-/* Descrição do item */
-.shop-item .item-desc{
-    font-size: 0.75rem;
-    color: #8b949e;
-    margin-bottom: 8px;
+descriçao
+.item-desc{
+    font-size:.55rem;
 }
-
-/* Área dos preços */
-.price-row{
-    display: flex;
-    gap: 6px;
-    margin-top: auto;
-}
-
-/* Botão ECO */
-.eco-btn{
-    flex: 1;
-    background: #22c55e;
-    border: none;
-    border-radius: 6px;
-    height: 32px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    color: #000;
-}
-
-/* Botão BNB */
+botoes
+.eco-btn,
 .bnb-btn{
-    flex: 1;
-    background: #f97316;
-    border: none;
-    border-radius: 6px;
-    height: 32px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    color: #fff;
+
+    height:22px;
+    font-size:.60rem;
+
 }
 
-/* Abas da loja */
-.shop-tabs{
-    display: flex;
-    gap: 4px;
-    margin-bottom: 10px;
-}
-
+abas da loja
+⚡ Energia
+👷 Equipe
+🤖 Robôs
+⚙️ Esteiras
+🚀 Boosters
 .shop-tab{
-    flex: 1;
-    height: 34px;
-    font-size: 0.75rem;
-    font-weight: 700;
+
+    height:24px;
+
+    font-size:.65rem;
+
 }
 
-/* Grid da loja */
-.shop-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-    gap: 10px;
-}
-e os cards
-<div class="shop-item">
 
-    <div class="item-name">
-        👷 Catador Adicional
-    </div>
 
-    <div class="item-desc">
-        +1 material por ciclo
-    </div>
 
-    <div class="price-row">
-
-        <button class="eco-btn">
-            💰 500 ECO
-        </button>
-
-        <button class="bnb-btn">
-            🦊 0.00010 BNB
-        </button>
-
-    </div>
-
-</div>
