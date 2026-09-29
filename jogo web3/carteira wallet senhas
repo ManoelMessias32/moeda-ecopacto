@@ -1,0 +1,44 @@
+### 🛡️ ECOPACTO NETWORK - CREDENCIAIS E CONFIGURAÇÃO ###
+
+⚠️ ATENÇÃO: NUNCA SUBTA ESTE ARQUIVO COM CHAVES REAIS PARA O GITHUB PÚBLICO! ⚠️
+Se for salvar no GitHub para backup, mantenha apenas os XXXXXX (placeholders).
+
+---
+
+#### 1. 🔑 CREDENCIAIS DA CARTEIRA (WALLET)
+- Endereço ECO:  ECO_xxxxxxxxxxxxxxxxxxxxxxxxxx
+- Chave Privada: PVT_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- Senha/Seed:    [SUA_SENHA_AQUI]
+
+---
+
+#### 2. 🆔 IDENTIDADE DO NÓ (NODE IDENTITY)
+- Node ID:       NODE_xxxxxxxxxxxx
+- Public Key:    PUB_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- Private Key:   PVT_NODE_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+---
+
+#### 3. 🌐 ENDPOINTS E URL RPC
+A sua URL RPC é o endpoint da API que responde pelas transações e blocos:
+- RPC Local:      http://localhost:8080
+- RPC Produção:   https://ecopacto-api-production.up.railway.app
+- Rede P2P:       http://localhost:30303
+- Painel Admin:   http://localhost:30304
+
+---
+
+#### 4. ⛏️ EXEMPLO DE CONFIGURAÇÃO PARA MINERAÇÃO (config.json)
+{
+  "miner_address": "ECO_xxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "node_id": "NODE_xxxxxxxxxxxx",
+  "p2p_url": "http://localhost:30303",
+  "rpc_url": "https://ecopacto-api-production.up.railway.app",
+  "threads": 4,
+  "auto_start": true
+}
+
+---
+
+#### 5. 🚀 COMANDO DE MINERAÇÃO (EXEMPLO CONCEITUAL)
+./ecopacto-miner --rpc-url https://ecopacto-api-production.up.railway.app --wallet ECO_xxxxxxxx --key PVT_xxxx --port 30303

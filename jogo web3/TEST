@@ -1,340 +1,440 @@
-♻️ RECICLY CITY
 
-👤 Manoel
-💰 1250 ECO
-⚡ 98/100
-⏳ 02:15
-🦊 MetaMask
-
-────────────────────
-
-🏭 Pátio
-🛒 Loja
-👤 Perfil
-🏆 Ranking
-
-────────────────────
-
-🧴 ----------- 📦
-
-▶ Produção Automática
-
-────────────────────
-
-🧴 12
-📦 6
-🥫 3
-🔌 1
-🔋 0
-💻 0
-📱 0
-⚡ 0
-
-────────────────────
-
-💰 Vender
-
-────────────────────
-
-📜 Logs
-
-itens da esteira
-
-comun
-🧴 Plástico
-📦 Papelão
-🥫 Alumínio
-
-incomun
-🔌 Cobre
-🔋 Bateria
-
-raros
-🔋 Lítio
-⌨️ Teclado
-🖱️ Mouse
-🎧 Fone
-💿 DVD
-
-epicos
-💻 Peças Eletrônicas
-📱 Smartphone
-🖨️ Impressora
-📷 Câmera
-
-lendarios
-🖥️ Placa-Mãe
-📺 TV
-
-mitico
-⚡ Chip
-
-fluxo da esteira
-GERADOR
-   ↓
-
-🧴
-
-════════════════════► 📦
-itens nasce da esquerda
-
-materiais comuns
-🧴 Plástico
-📦 Papelão
-🥫 Alumínio
-tempo
-1,5 segundos
-
-🧴 ----------- 📦
-
-↓
-
-      🧴 ------ 📦
-
-↓
-
-             🧴 📦
-
-↓
-
-✅ +1 Plástico
-
-materiass incomuns
-🔌 Cobre
-🔋 Bateria
-tempo
-3 segundos
-
-qndo chegam
-
-✨ RECICLÁVEL VALIOSO
-
-+15 ECO
-
-materiais raros
-⌨️ Teclado
-🖱️ Mouse
-🎧 Fone
-💿 DVD
-🔋 Lítio
-
-a esteria reduz a velocidade
-🔋 ---------- 📦
-
-↓
-
-      🔋------ 📦
-
-↓
-
-            🔋 📦
-
-✨ ITEM RARO
-
-materiais epicos
-💻 Peça Eletrônica
-📱 Smartphone
-🖨️ Impressora
-📷 Câmera
-
-quando aparece
-✨ ENCONTRADO ✨
-
-📱 Smartphone
-
-a caixa brilha
-📦✨
-
-materiais lendarios
-🖥️ Placa-Mãe
-📺 TV
-
-a esteira desacelera
-🚨 ITEM LENDÁRIO 🚨
-cor do fundo
-roxo
-
-item mitico
-⚡ CHIP
-0,01% de chances
-quando churgir
-🚨 ALERTA MÁXIMO 🚨
-
-⚡ CHIP ENCONTRADO
-a esteira para por dois segundos
-⚡ ---------- 📦
-ao chegar
-📦✨✨✨✨
-
-+2500 ECO
-
-evoluçao da esteira
-nivel 1
-🧴 ---------- 📦
-nivel 10
-🧴 >>>>>>>>> 📦
-nivel 25
-⚙️⚙️⚙️>>>>>> 📦
-nivel 50
-🤖 Automatizada
-nivel 100
-🏭 Esteira Industrial
-
-robos aparecendo
-conforme comprar robos
-🤖        🧴
-
-══════════════► 📦
-depois
-🤖 🤖    🧴
-
-══════════════► 📦
-eles fican jogando os itens nas esteira visualmente
-
-o siclo seria
-Item aparece
-↓
-Anda pela esteira
-↓
-Cai na caixa
-↓
-Contador aumenta
-↓
-Próximo item
-
-loja completa
-energia
-⚡ +50 Energia
-100 ECO
-0.00002 BNB
-
-⚡ +100 Energia
-180 ECO
-0.00004 BNB
-
-⚡ +500 Energia
-800 ECO
-0.00015 BNB
-
-🔋 Bateria Industrial
-3000 ECO
-0.00050 BNB
-
-equipe
-
-👷Item               ECO  BNB
-Catador Adicional    500 0.00010
-Catador Profissional  2.500 0.00050
-Supervisor           10.000 0.00200
-Gerente de Pátio     20.000 0.00400
-
-robos
-Item   ECO    BNB
-Básico   5.000 0.00100
-Robô Superior 15.000 0.00300
-Robô Industrial 50.0000.01000
-Robô IA     100.000   0.02000
-
-esterias
-Item             ECO    BNB
-Esteira Nível 2  1.000 0.00020
-Esteira Nível 3   5.000 0.00100
-Esteira Industrial  20.000 0.00400
-Esteira Magnética   60.000  0.01200
-
-boosters
-Item               ECO     BNB
-Produção 2x (30 min)   300 0.00006
-Produção 3x (1h)    1.500  0.00030
-Sorte 2x (30 min)   500  0.00010
-Sorte 5x (1h)      2.500   0.00050
-Energia Infinita (30 min) 5.000  0.00100
-
-acrescentar no card
-🤖 Robô Industrial
-
-+50 materiais/ciclo
-
-💰 50000 ECO
-🦊 0.01000 BNB
-
-✅ COMPRADO
-
-pagina perfil
-
-👤 Nome
-
-ID Wallet
-
-👥 Convidados
-
-🔗 Link:
-
-reciclycity.com/ref/manoel
-
-📋 Copiar
-
-💸 Renda:
-0.05 ECO/h
-
-melhorias visuais
-
-estereira
-
-.belt-container{
-    height:40px;
-}
-botao da esteira
-.btn-process{
-    height:32px;
-    font-size:.85rem;
-}
-os materiais
-.inv-slot{
-   min-height:42px;
-   padding:2px;
-}
-os iconis
-.inv-icon{
-   font-size:1.5rem;
-}
-loja
-itens
-.shop-item{
-    min-height:55px;
-    padding:8px;
-}
-titulo
-.item-name{
-    font-size:.85rem;
-}
-descriçao
-.item-desc{
-    font-size:.55rem;
-}
-botoes
-.eco-btn,
-.bnb-btn{
-
-    height:22px;
-    font-size:.60rem;
-
-}
-
-abas da loja
-⚡ Energia
-👷 Equipe
-🤖 Robôs
-⚙️ Esteiras
-🚀 Boosters
-.shop-tab{
-
-    height:24px;
-
-    font-size:.65rem;
 
 }
 
 
 git commit -m "Atualiza perfil,  correção dos tamnhos  jogo da esteira"
 
+
+exempla da arquitetura dos nos
+
+ecopacto network
+
+                    INTERNET
+                        │
+                        ▼
+               API ECOPACTO
+                  Porta 8080
+                        │
+      ┌─────────────────┼─────────────────┐
+      │                 │                 │
+      ▼                 ▼                 ▼
+
+  Wallet Web       Explorer        App Android
+
+                        │
+                        ▼
+
+                 Blockchain Core
+                        │
+            ┌───────────┴───────────┐
+            │                       │
+            ▼                       ▼
+
+       Porta P2P              Porta Admin
+       30303                  30304
+
+
+
+
+Porta 30303 (Rede P2P)
+somente nos
+Sincronizar blocos
+Anunciar transações
+Compartilhar blocos
+Descobrir peers
+
+exemplo
+Node A
+ ↓
+Node B
+ ↓
+Node C
+mensagens
+
+{
+  "type": "NEW_BLOCK"
+}
+{
+  "type": "NEW_TRANSACTION"
+}
+
+Porta 30304 (Admin)
+Monitoramento
+Logs
+Métricas
+Backup
+
+protegido por
+Token
+IP whitelist
+
+identidade dos nos
+cada no recebe
+
+NODE_7ab892...
+mais
+Public Key
+Private Key
+
+autenticaçao por nos
+NODE_A
+↓
+Envia chave pública
+↓
+Assina desafio
+↓
+Rede verifica
+↓
+Conecta
+
+fluxo
+HELLO
+↓
+CHALLENGE
+↓
+SIGNATURE
+↓
+ACCEPT
+
+arquitetura dos nos
+
+Node
+│
+├── Wallet
+├── Blockchain
+├── Mempool
+├── Miner
+├── P2P
+└── API
+
+descoberta de nos
+seed1.ecopacto.net
+seed2.ecopacto.net
+seed3.ecopacto.net
+
+no bootstrap
+Novo Nó
+↓
+Conecta ao Seed
+↓
+Recebe lista de peers
+↓
+Conecta aos outros
+
+mineraçao
+
+Minerador
+↓
+Encontra bloco
+↓
+Rede valida
+↓
+10 ECO
+↓
+Carteira do minerador
+
+carteira
+ela conversa apenas com
+8080
+nunca diretamente com p2p
+Wallet
+ ↓
+API
+ ↓
+Blockchain
+
+qndo um no conecta
+HELLO
+↓
+CHALLENGE
+↓
+ASSINATURA
+↓
+VALIDAÇÃO
+↓
+CONECTADO
+
+
+conecçao segura
+
+arquitetura final
+
+                 INTERNET
+                      │
+                      ▼
+              API 8080
+                      │
+      ┌───────────────┼───────────────┐
+      │               │               │
+      ▼               ▼               ▼
+
+   Wallet        Explorer        App
+
+                      │
+                      ▼
+
+               Blockchain
+
+                      │
+
+           P2P 30303
+      ┌───────┼───────┐
+      ▼       ▼       ▼
+
+    NodeA   NodeB   NodeC
+`
+
+Porta 8080 - API Pública
+
+A carteira conversa apenas com ela.
+
+Plain Text
+Internet
+│
+▼
+API Ecopacto
+Porta 8080
+Mostrar mais linhas
+
+Funções:
+
+Plain Text
+/login
+/tokenomics
+/wallet
+/send
+/history
+/block
+/nodes
+Mostrar mais linhas
+
+Fluxo:
+
+Plain Text
+Wallet
+↓
+Login
+↓
+Recebe saldo
+↓
+Envia transações
+↓
+Recebe confirmação
+Mostrar mais linhas
+🔗 Porta 30303 - P2P
+
+Apenas nós da rede.
+
+Plain Text
+Node A
+↕
+Node B
+↕
+Node C
+Mostrar mais linhas
+
+Mensagens:
+
+Plain Text
+NEW_BLOCK
+NEW_TRANSACTION
+GET_BLOCKCHAIN
+PING
+PONG
+Mostrar mais linhas
+
+Nenhuma carteira acessa essa porta.
+
+🔑 Autenticação dos Nós
+
+Cada nó possui:
+
+Plain Text
+Node ID
+Public Key
+Private Key
+Mostrar mais linhas
+
+Exemplo:
+
+Plain Text
+NODE_f4c81e70ff5f
+Mostrar mais linhas
+Conexão Segura
+Passo 1
+
+Nó entra na rede.
+
+Plain Text
+Node B
+↓
+HELLO
+ 
+Mostrar mais linhas
+Passo 2
+
+Nó principal responde.
+
+Plain Text
+CHALLENGE
+Mostrar mais linhas
+
+Exemplo:
+
+Plain Text
+8f72ac91
+Mostrar mais linhas
+Passo 3
+
+O nó assina usando sua chave privada.
+
+Plain Text
+SIGNATURE
+``
+Mostrar mais linhas
+Passo 4
+
+A rede valida usando a chave pública.
+
+Plain Text
+VALID
+Mostrar mais linhas
+
+ou
+
+Plain Text
+INVALID
+Mostrar mais linhas
+Passo 5
+
+Se válido:
+
+Plain Text
+Peer conectado
+Mostrar mais linhas
+
+e entra na lista:
+
+Plain Text
+Known Peers
+Mostrar mais linhas
+Lista de Nós
+JSON
+{
+"node_id":"NODE_A",
+"ip":"x.x.x.x",
+"port":30303,
+"status":"online"
+}
+``
+Mostrar mais linhas
+Wallet
+
+A wallet nunca vê a porta P2P.
+
+Fluxo:
+
+Plain Text
+Wallet
+↓
+8080
+↓
+Blockchain
+↓
+30303
+↓
+Outros Nós
+``
+Mostrar mais linhas
+Endereço da Carteira
+
+Você já tem algo parecido com:
+
+Plain Text
+ECO_3048c16df4c51e70ff5ff2e4
+Mostrar mais linhas
+
+Receber:
+
+Plain Text
+Copia endereço
+``
+Mostrar mais linhas
+
+Enviar:
+
+Plain Text
+Destino
++
+Quantidade
+↓
+POST /send
+Mostrar mais linhas
+
+Criaria apenas endpoints protegidos:
+
+Plain Text
+/admin/nodes
+/admin/stats
+/admin/rewards
+Mostrar mais linhas
+
+Proteção:
+
+Plain Text
+X-Admin-Key
+Mostrar mais linhas
+
+ou
+
+Plain Text
+Bearer Token
+Mostrar mais linhas
+
+exemplo:
+
+HTTP
+Authorization: Bearer SUA_CHAVE_ADMIN
+Mostrar mais linhas
+
+implementaria:
+
+Plain Text
+Halving a cada 5 anos
+Mostrar mais linhas
+
+Porque isso traz duas vantagens:
+
+✅ Recompensa previsível para os primeiros mineradores.
+
+✅ Escassez crescente ao longo do tempo.
+
+Outra ideia interessante
+
+Em vez de reduzir apenas a recompensa, aumentar a dificuldade junto:
+
+Plain Text
+Ano 0-5
+10 ECO
+Dificuldade 4
+ 
+Ano 5-10
+5 ECO
+Dificuldade 5
+ 
+Ano 10-15
+2,5 ECO
+Dificuldade 6
+Mostrar mais linhas
+
+Assim a rede fica mais forte com o crescimento.
+
+Se fosse minha decisão hoje
+
+Para uma rede nova eu escolheria:
+
+Plain Text
+10 ECO/bloco
+Halving: 5 anos
+Taxa: 0,5%
