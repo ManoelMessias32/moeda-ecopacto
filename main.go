@@ -113,6 +113,7 @@ func initSystem() {
 
 func main() {
 	loadState()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
@@ -123,15 +124,16 @@ func main() {
 		json.NewEncoder(w).Encode(state.Blockchain)
 	})
 
-	// DOWNLOAD DO PACOTE ZIP (BIN + EXE)
+	// DOWNLOAD DO NOVO PACOTE VISUAL (BIN + APP)
 	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/zip")
 		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-network.zip")
 
 		zw := zip.NewWriter(w)
-		f, err := zw.Create("bin/ecopacto-launcher.exe")
+		f, err := zw.Create("bin/ecopacto-app.exe")
 		if err == nil {
-			file, err := os.Open("./ecopacto-launcher.exe")
+			// Nota: Certifique-se de que o arquivo ecopacto-app.exe existe na raiz antes do push
+			file, err := os.Open("./ecopacto-app.exe")
 			if err == nil {
 				io.Copy(f, file)
 				file.Close()
@@ -150,6 +152,6 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" { port = "8080" }
-	fmt.Printf("🚀 API ECOPACTO ONLINE NA PORTA %s\n", port)
+	fmt.Printf("🚀 API ECOPACTO MASTER ONLINE NA PORTA %s\n", port)
 	http.ListenAndServe("0.0.0.0:"+port, handler)
 }
