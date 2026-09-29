@@ -2,99 +2,121 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecopacto Network | Master Wallet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ecopacto Network | Wallet</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
 
         .wallet-card {
-            background: var(--card); width: 100%; max-width: 400px; padding: 30px; border-radius: 28px;
-            border: 1px solid #ffffff10; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center;
+            background: var(--card);
+            width: 100%;
+            max-width: 360px;
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #ffffff10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            justify-content: flex-start;
+            box-sizing: border-box;
         }
 
-        .network-badge { font-size: 0.65rem; font-weight: 800; color: var(--accent); letter-spacing: 2px; margin-bottom: 20px; display: block; }
+        .network-title { font-size: 1rem; font-weight: 800; margin-top: 0; margin-bottom: 25px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+        .network-title span { color: var(--accent); }
 
-        .user-info { margin-bottom: 30px; }
-        #disp-name { font-size: 1.4rem; font-weight: 800; display: block; }
-        #disp-email { font-size: 0.8rem; color: var(--muted); }
+        .user-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ffffff08;
+            text-align: center;
+        }
+        #disp-name { font-weight: 800; font-size: 1.2rem; color: #fff; display: block; }
+        #disp-email { font-size: 0.75rem; color: var(--muted); display: block; margin-top: 2px; word-break: break-all; }
 
-        .balance-box { background: #000; padding: 25px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #ffffff05; }
-        .balance-label { font-size: 0.7rem; color: var(--muted); font-weight: 700; }
-        .balance-amount { font-size: 2.5rem; font-weight: 800; color: #fff; margin: 5px 0; }
-        .balance-amount span { color: var(--accent); font-size: 1.2rem; margin-left: 5px; }
+        .balance-label { color: var(--muted); font-size: 0.65rem; font-weight: 800; letter-spacing: 1px; margin-top: 5px; }
+        .balance-amount { font-size: 3rem; font-weight: 800; color: #fff; margin: 10px 0; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+        .balance-amount span:first-child { color: var(--accent); }
+        .currency { font-size: 1.2rem; color: var(--muted); font-weight: 600; }
 
-        .btn-group { display: flex; gap: 12px; margin-bottom: 20px; }
-        .btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .nav-actions { display: flex; gap: 10px; margin: 25px 0; }
+        .nav-btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid #ffffff10; }
         .btn-send { background: var(--accent); color: #000; }
-        .btn-receive { background: #ffffff08; color: #fff; border: 1px solid #ffffff10; }
+        .btn-send:hover { background: #1eb34b; transform: translateY(-1px); }
 
-        .input-group { background: #000; padding: 15px; border-radius: 15px; margin-top: 15px; display: none; text-align: left; }
-        .input-group.active { display: block; }
-        input { width: 100%; background: transparent; border: 1px solid #ffffff20; padding: 12px; border-radius: 8px; color: #fff; margin: 8px 0; box-sizing: border-box; outline: none; }
+        .view-panel { background: #00000060; padding: 15px; border-radius: 16px; margin-top: 10px; display: none; text-align: left; border: 1px solid #ffffff05; }
+        .view-panel.active { display: block; }
 
-        .node-status { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ffffff10; text-align: left; }
-        .node-status h4 { font-size: 0.7rem; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; }
-        .node-item { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; }
-        .status-online { color: var(--accent); }
+        input { width: 100%; background: #000; border: 1px solid #ffffff10; padding: 12px; border-radius: 10px; color: white; margin: 6px 0; box-sizing: border-box; font-size: 0.85rem; outline: none; }
+        input:focus { border-color: var(--accent); }
 
-        #login-view { padding: 40px 0; }
+        .address-box { background: #000; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.72rem; color: var(--accent); word-break: break-all; cursor: pointer; border: 1px dashed #22c55e50; text-align: center; margin-top: 5px; }
+
+        .node-status { margin-top: auto; padding-top: 15px; border-top: 1px solid #ffffff05; text-align: left; }
+        .node-status h4 { font-size: 0.6rem; color: var(--muted); margin: 0 0 8px 0; letter-spacing: 0.5px; }
+        .node-item { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 4px; color: #e2e8f0; }
+        .status-online { color: var(--accent); font-weight: 600; }
+
+        #login-view { margin: auto 0; }
     </style>
 </head>
 <body>
 
     <div class="wallet-card">
-        <span class="network-badge">ECOPACTO MAINNET</span>
+        <div class="network-title">ECOPACTO <span>NETWORK</span></div>
 
         <div id="login-view">
-            <h2 style="margin-bottom: 10px;">Bem-vindo</h2>
-            <p style="color:var(--muted); font-size: 0.9rem; margin-bottom: 30px;">Acesse sua carteira master para gerenciar a rede.</p>
+            <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 25px;">Acesse sua carteira master para gerenciar a rede.</p>
             <div id="g_id_onload" data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
         </div>
 
         <div id="wallet-view" style="display: none;">
-            <div class="user-info">
+            <!-- CABEÇALHO DO USUÁRIO IDENTICO À IMAGEM -->
+            <div class="user-header">
                 <span id="disp-name">Manoel Oliveira</span>
                 <span id="disp-email">carregando...</span>
             </div>
 
-            <div class="balance-box">
-                <div class="balance-label">SALDO TOTAL</div>
-                <div class="balance-amount" id="disp-balance">0<span>ECO</span></div>
+            <div class="balance-label">SALDO DISPONÍVEL</div>
+            <div class="balance-amount">
+                <span id="disp-balance">0</span>
+                <span class="currency">ECO</span>
             </div>
 
-            <div class="btn-group">
-                <button class="btn btn-send" onclick="toggleForm('send')">Enviar</button>
-                <button class="btn btn-receive" onclick="toggleForm('receive')">Receber</button>
+            <div class="nav-actions">
+                <button class="nav-btn btn-receive" onclick="togglePanel('receive')">Receber</button>
+                <button class="nav-btn btn-send" onclick="togglePanel('send')">Enviar</button>
             </div>
 
-            <div id="form-send" class="input-group">
-                <input type="text" id="send-to" placeholder="Endereço de destino ECO_...">
+            <div id="panel-receive" class="view-panel">
+                <p style="font-size: 0.65rem; color: var(--muted); margin: 0 0 5px 0; font-weight: 700;">SEU ENDEREÇO PÚBLICO:</p>
+                <div class="address-box" id="disp-addr" onclick="copyAddress()">ECO_...</div>
+                <small style="color:var(--muted); font-size:0.55rem; display:block; text-align:center; margin-top:6px;">Clique acima para copiar</small>
+            </div>
+
+            <div id="panel-send" class="view-panel">
+                <input type="text" id="send-to" placeholder="Endereço de destino (ECO_...)">
                 <input type="number" id="send-amount" placeholder="Quantidade">
-                <button class="btn btn-send" style="width:100%" onclick="processSend()">Confirmar Envio</button>
-            </div>
-
-            <div id="form-receive" class="input-group">
-                <p style="font-size: 0.65rem; color: var(--muted);">SEU ENDEREÇO PÚBLICO:</p>
-                <code id="disp-addr" style="font-size: 0.75rem; color: var(--accent); word-break: break-all; cursor:pointer;" onclick="copyAddr()">ECO_...</code>
+                <button class="nav-btn btn-send" style="width:100%; margin-top:8px;" onclick="doTransfer()">Enviar ECO</button>
             </div>
 
             <div class="node-status">
-                <h4>Status da Rede</h4>
-                <div id="node-list">
-                    <div class="node-item"><span>Nó Principal (Railway)</span> <span class="status-online">ONLINE</span></div>
-                    <div class="node-item"><span>Explorador de Blocos</span> <span class="status-online">ATIVO</span></div>
-                </div>
+                <h4>STATUS DA REDE</h4>
+                <div class="node-item"><span>Nó Principal (Railway)</span><span class="status-online">ONLINE</span></div>
+                <div class="node-item"><span>Explorador de Blocos</span><span class="status-online">ATIVO</span></div>
             </div>
         </div>
     </div>
 
 <script>
     const API_URL = "https://ecopacto-api-production.up.railway.app";
-    let currentUser = null;
+    let walletData = null;
 
     function handleCredentialResponse(response) {
         const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
@@ -102,55 +124,68 @@
         fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: payload.email, name: payload.name })
+            body: JSON.stringify({ email: payload.email, name: payload.name || "Manoel Oliveira" })
         })
         .then(res => res.json())
         .then(data => {
-            currentUser = data;
-            showWallet();
-        });
+            walletData = data;
+
+            // Tratamento definitivo para o nome e email vindos da resposta ou do Google
+            if(!walletData.name || walletData.name === "undefined") walletData.name = "Manoel Oliveira";
+            if(!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
+
+            setupWalletUI(walletData);
+        })
+        .catch(err => alert("Erro ao conectar com o servidor. Verifique se o backend está online."));
     }
 
-    function showWallet() {
+    function setupWalletUI(data) {
         document.getElementById('login-view').style.display = 'none';
         document.getElementById('wallet-view').style.display = 'block';
 
-        document.getElementById('disp-name').innerText = currentUser.name;
-        document.getElementById('disp-email').innerText = currentUser.email;
-        document.getElementById('disp-balance').innerHTML = `${currentUser.balance.toLocaleString()}<span>ECO</span>`;
-        document.getElementById('disp-addr').innerText = currentUser.address;
+        document.getElementById('disp-name').innerText = data.name;
+        document.getElementById('disp-email').innerText = data.email;
+        document.getElementById('disp-balance').innerText = data.balance.toLocaleString();
+        document.getElementById('disp-addr').innerText = data.address;
     }
 
-    function toggleForm(type) {
-        document.getElementById('form-send').classList.remove('active');
-        document.getElementById('form-receive').classList.remove('active');
-        document.getElementById('form-' + type).classList.add('active');
+    function togglePanel(type) {
+        const pRec = document.getElementById('panel-receive');
+        const pSend = document.getElementById('panel-send');
+        if(type === 'receive') {
+            pRec.classList.toggle('active');
+            pSend.classList.remove('active');
+        } else {
+            pSend.classList.toggle('active');
+            pRec.classList.remove('active');
+        }
     }
 
-    async function processSend() {
+    function copyAddress() {
+        if(walletData) {
+            navigator.clipboard.writeText(walletData.address);
+            alert("Endereço copiado com sucesso!");
+        }
+    }
+
+    async function doTransfer() {
         const to = document.getElementById('send-to').value;
         const amount = parseInt(document.getElementById('send-amount').value);
-
-        if(!to || !amount) return alert("Preencha todos os campos");
+        if(!to || !amount) return alert("Por favor, preencha o destino e o valor.");
 
         const res = await fetch(`${API_URL}/send`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ from: currentUser.address, to: to, amount: amount })
+            body: JSON.stringify({ from: walletData.address, to: to, amount: amount })
         });
 
-        const result = await res.json();
-        if(result.status === "Transaction Pending") {
+        if (res.status === 200) {
+            const data = await res.json();
             alert("Sucesso! Transação enviada para a rede.");
             location.reload();
         } else {
-            alert("Erro: " + result.message);
+            alert("Erro na transação. Verifique o saldo.");
         }
-    }
-
-    function copyAddr() {
-        navigator.clipboard.writeText(currentUser.address);
-        alert("Endereço copiado!");
     }
 </script>
 </body>
