@@ -6,163 +6,117 @@
     <title>Launcher Ecopacto Network</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; --border: #ffffff15; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
+        :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; --border: #ffffff10; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; }
 
-        .launcher-container {
-            width: 100%; max-width: 500px; background: var(--card); border: 2px solid var(--border); border-radius: 12px;
-            overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        .launcher-card {
+            width: 100%; max-width: 480px; background: var(--card); border-radius: 20px;
+            padding: 25px; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
-        .header { background: var(--border); padding: 12px; text-align: center; font-weight: 800; letter-spacing: 2px; font-size: 0.9rem; border-bottom: 2px solid var(--border); }
+        .header-title { text-align: center; font-weight: 800; font-size: 0.9rem; letter-spacing: 2px; color: var(--muted); margin-bottom: 25px; text-transform: uppercase; }
 
-        .section { padding: 15px; border-bottom: 1px solid var(--border); }
-        .section-title { font-size: 0.7rem; color: var(--muted); font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+        .section-box { margin-bottom: 20px; }
+        .section-header { font-size: 0.65rem; color: var(--muted); font-weight: 800; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
 
-        .data-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
-        .data-value { font-family: 'Fira Code', monospace; color: var(--accent); }
-        .wallet-addr { font-size: 0.7rem; color: var(--accent); word-break: break-all; margin-bottom: 10px; display: block; }
+        .addr-text { color: var(--accent); font-family: 'Fira Code', monospace; font-size: 0.75rem; margin-bottom: 12px; display: block; }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 15px; }
-        .btn { padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #ffffff05; color: #fff; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
-        .btn:hover { background: #ffffff10; }
-        .btn-mine { background: var(--accent); color: #000; border: none; }
-        .btn-mine.active { background: #ef4444; color: #fff; }
+        .data-grid { display: grid; gap: 8px; }
+        .data-row { display: flex; justify-content: space-between; font-size: 0.8rem; }
+        .val-eco { color: var(--accent); font-weight: 700; }
+        .status-on { color: var(--accent); font-weight: 800; }
 
-        .logs-area { background: #000; height: 180px; padding: 12px; font-family: 'Fira Code', monospace; font-size: 0.7rem; overflow-y: auto; color: #a1a1aa; line-height: 1.4; }
-        .log-entry { margin-bottom: 2px; }
-        .log-time { color: var(--muted); }
+        /* BOTOES PEQUENOS E UM DO LADO DO OUTRO */
+        .btn-row { display: flex; gap: 8px; margin: 25px 0; }
+        .btn-mini {
+            flex: 1; padding: 10px 5px; border-radius: 8px; border: 1px solid var(--border);
+            background: #ffffff05; color: #fff; font-size: 0.65rem; font-weight: 800;
+            cursor: pointer; transition: 0.2s; white-space: nowrap;
+        }
+        .btn-mini:hover { background: #ffffff10; }
+        .btn-mine-active { background: var(--accent); color: #000; border: none; }
 
-        /* Setup View */
-        #setup-view { padding: 40px 20px; text-align: center; }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 8px; color: #fff; margin: 15px 0; box-sizing: border-box; outline: none; text-align: center; }
+        .logs-title { font-size: 0.65rem; color: var(--muted); font-weight: 800; margin-bottom: 10px; }
+        .logs-container {
+            background: #000; border-radius: 10px; height: 140px; padding: 12px;
+            font-family: 'Fira Code', monospace; font-size: 0.65rem; overflow-y: auto;
+            color: #a1a1aa; border: 1px solid var(--border);
+        }
+        .log-entry { margin-bottom: 3px; }
+        .log-time { color: var(--muted); margin-right: 5px; }
 
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="launcher-container">
-        <div class="header">ECOPACTO NETWORK</div>
+    <div class="launcher-card" id="main-ui">
+        <div class="header-title">ECOPACTO NETWORK</div>
 
-        <!-- CONFIGURAÇÃO INICIAL -->
-        <div id="setup-view">
-            <h3 style="margin-top:0">Configuração do Nó</h3>
-            <p style="font-size:0.8rem; color:var(--muted)">Insira o endereço da sua carteira para começar.</p>
-            <input type="text" id="input-wallet" placeholder="ECO_2b44246bf6a15b6361379bed">
-            <button class="btn btn-mine" style="width:100%" onclick="saveAndStart()">SALVAR E INICIAR</button>
+        <div class="section-box">
+            <div class="section-header">CARTEIRA</div>
+            <span class="addr-text" id="disp-addr">ECO_2b44246bf6a15b6361379bed</span>
+            <div class="data-grid">
+                <div class="data-row"><span>Saldo ECO:</span> <span class="val-eco" id="val-balance">200.000.000.000 ECO</span></div>
+                <div class="data-row"><span>Saldo Minerado Hoje:</span> <span>42 ECO</span></div>
+                <div class="data-row"><span>Próximo Pagamento:</span> <span>00:00</span></div>
+                <div class="data-row"><span>Status:</span> <span class="status-on">ONLINE ✅</span></div>
+                <div class="data-row"><span>Nós Conectados:</span> <span>7</span></div>
+            </div>
         </div>
 
-        <!-- PAINEL PRINCIPAL -->
-        <div id="main-panel" class="hidden">
-            <div class="section">
-                <div class="section-title">Carteira</div>
-                <span class="wallet-addr" id="disp-wallet">ECO_...</span>
-                <div class="data-row"><span>Saldo ECO:</span> <span class="data-value" id="val-balance">0 ECO</span></div>
-                <div class="data-row"><span>Saldo Minerado Hoje:</span> <span class="data-value" id="val-mined">0 ECO</span></div>
-                <div class="data-row"><span>Próximo Pagamento:</span> <span class="data-value">00:00</span></div>
-                <div class="data-row"><span>Status:</span> <span class="data-value" id="val-status">ONLINE ✅</span></div>
-                <div class="data-row"><span>Nós Conectados:</span> <span class="data-value" id="val-peers">7</span></div>
+        <div class="section-box">
+            <div class="section-header">REDE</div>
+            <div class="data-grid">
+                <div class="data-row"><span>Bloco Atual:</span> <span id="val-block">1</span></div>
+                <div class="data-row"><span>Dificuldade:</span> <span>4</span></div>
+                <div class="data-row"><span>Recompensa:</span> <span>10 ECO</span></div>
+                <div class="data-row"><span>Hashrate:</span> <span id="val-hashrate">0 H/s</span></div>
             </div>
+        </div>
 
-            <div class="section">
-                <div class="section-title">Rede</div>
-                <div class="data-row"><span>Bloco Atual:</span> <span class="data-value" id="val-block">15.342</span></div>
-                <div class="data-row"><span>Dificuldade:</span> <span class="data-value">4</span></div>
-                <div class="data-row"><span>Recompensa:</span> <span class="data-value">10 ECO</span></div>
-                <div class="data-row"><span>Hashrate:</span> <span class="data-value" id="val-hashrate">0 H/s</span></div>
-            </div>
+        <!-- BOTOES UM DO LADO DO OUTRO -->
+        <div class="btn-row">
+            <button class="btn-mini btn-mine-active" id="btn-mine" onclick="toggleMine()">Iniciar Mineração</button>
+            <button class="btn-mini" onclick="window.open('https://ecopacto-api-production.up.railway.app/history')">Explorer da Rede</button>
+            <button class="btn-mini" onclick="window.location.href='index.html'">Abrir Wallet</button>
+        </div>
 
-            <div class="btn-grid">
-                <button class="btn btn-mine" id="mine-btn" onclick="toggleMining()">Iniciar Mineração</button>
-                <button class="btn" onclick="window.open('https://ecopacto-api-production.up.railway.app/history', '_blank')">Explorer da Rede</button>
-                <button class="btn" onclick="window.location.href='index.html'">Abrir Wallet</button>
-            </div>
-
-            <div class="section" style="padding:0; border:none;">
-                <div class="section-title" style="padding: 10px 15px 5px 15px;">LOGS DO NÓ</div>
-                <div class="logs-area" id="logs">
-                    <div class="log-entry"><span class="log-time">[21:15:02]</span> Conectando ao RPC...</div>
-                </div>
-            </div>
+        <div class="logs-title">LOGS DO NÓ</div>
+        <div class="logs-container" id="logs">
+            <div class="log-entry"><span class="log-time">[21:15:02]</span> Conectando ao RPC...</div>
+            <div class="log-entry"><span class="log-time">[21:16:05]</span> RPC conectado</div>
         </div>
     </div>
 
-<script>
-    const API_URL = "https://ecopacto-api-production.up.railway.app";
-    let isMining = false;
-    let miningInterval = null;
-    let walletAddr = localStorage.getItem('eco_miner_wallet');
+    <script>
+        const API_URL = "https://ecopacto-api-production.up.railway.app";
+        let mining = false;
 
-    if(walletAddr) {
-        showPanel();
-    }
-
-    function saveAndStart() {
-        const input = document.getElementById('input-wallet').value.trim();
-        if(!input.startsWith('ECO_')) return alert("Endereço inválido!");
-        walletAddr = input;
-        localStorage.setItem('eco_miner_wallet', walletAddr);
-        showPanel();
-        toggleMining(); // Inicia automaticamente como solicitado
-    }
-
-    function showPanel() {
-        document.getElementById('setup-view').classList.add('hidden');
-        document.getElementById('main-panel').classList.remove('hidden');
-        document.getElementById('disp-wallet').innerText = walletAddr;
-        addLog("RPC conectado");
-        updateStats();
-        setInterval(updateStats, 10000);
-    }
-
-    function addLog(msg) {
-        const logs = document.getElementById('logs');
-        const time = new Date().toLocaleTimeString('pt-BR', { hour12: false });
-        logs.innerHTML += `<div class="log-entry"><span class="log-time">[${time}]</span> ${msg}</div>`;
-        logs.scrollTop = logs.scrollHeight;
-    }
-
-    function toggleMining() {
-        isMining = !isMining;
-        const btn = document.getElementById('mine-btn');
-        if(isMining) {
-            btn.innerText = "Parar Mineração";
-            btn.classList.add('active');
-            addLog("Minerando...");
-            miningInterval = setInterval(() => {
-                const hashrate = Math.floor(Math.random() * 50) + 100;
-                document.getElementById('val-hashrate').innerText = hashrate + " H/s";
-                if(Math.random() > 0.9) {
-                    addLog("Hash válido encontrado");
-                    addLog("Recompensa registrada (+10 ECO)");
-                    updateStats();
-                }
-            }, 3000);
-        } else {
-            btn.innerText = "Iniciar Mineração";
-            btn.classList.remove('active');
-            clearInterval(miningInterval);
-            document.getElementById('val-hashrate').innerText = "0 H/s";
-            addLog("Mineração parada");
+        function toggleMine() {
+            mining = !mining;
+            const btn = document.getElementById('btn-mine');
+            btn.innerText = mining ? "Parar Mineração" : "Iniciar Mineração";
+            btn.style.background = mining ? "#ef4444" : "#22c55e";
+            btn.style.color = mining ? "#fff" : "#000";
+            addLog(mining ? "Minerando..." : "Mineração parada");
         }
-    }
 
-    async function updateStats() {
-        try {
-            const res = await fetch(`${API_URL}/wallet?address=${walletAddr}`);
-            const data = await res.json();
-            document.getElementById('val-balance').innerText = data.balance.toLocaleString() + " ECO";
+        function addLog(msg) {
+            const container = document.getElementById('logs');
+            const time = new Date().toLocaleTimeString('pt-BR', {hour12:false});
+            container.innerHTML += `<div class="log-entry"><span class="log-time">[${time}]</span> ${msg}</div>`;
+            container.scrollTop = container.scrollHeight;
+        }
 
-            const historyRes = await fetch(`${API_URL}/history`);
-            const history = await historyRes.json();
-            document.getElementById('val-block').innerText = history.length;
-
-            // Simulação de nós e minerado hoje baseado no histórico
-            document.getElementById('val-peers').innerText = Math.floor(Math.random() * 5) + 3;
-            document.getElementById('val-mined').innerText = "42 ECO"; // Exemplo estático ou calculado
-        } catch(e) {}
-    }
-</script>
+        // Sincronização básica
+        setInterval(async () => {
+            try {
+                const res = await fetch(`${API_URL}/history`);
+                const history = await res.json();
+                document.getElementById('val-block').innerText = history.length;
+            } catch(e) {}
+        }, 5000);
+    </script>
 </body>
 </html>

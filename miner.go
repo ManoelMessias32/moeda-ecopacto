@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -31,9 +32,9 @@ var (
 func main() {
 	setupTerminal()
 
-	fmt.Println("┌──────────────────────────────────────────────────┐")
-	fmt.Println("│                ECOPACTO NETWORK                  │")
-	fmt.Println("└──────────────────────────────────────────────────┘")
+	fmt.Println("┌──────────────────────────────────────────────────────────────┐")
+	fmt.Println("│                   LAUNCHER ECOPACTO NETWORK                  │")
+	fmt.Println("└──────────────────────────────────────────────────────────────┘")
 	fmt.Print(" > Insira o endereço da Carteira: ")
 	fmt.Scanln(&walletAddr)
 
@@ -42,16 +43,14 @@ func main() {
 	}
 
 	if !strings.HasPrefix(walletAddr, "ECO_") {
-		fmt.Println(" [!] Endereço inválido. Usando endereço padrão Master...")
+		fmt.Println(" [!] Endereço inválido. Usando padrão Master...")
 		walletAddr = "ECO_2b44246bf6a15b6361379bed"
 		time.Sleep(2 * time.Second)
 	}
 
-	addLog("Conectando ao RPC...")
+	addLog("Iniciando nó Ecopacto...")
+	addLog("Conectando aos peers P2P na porta 30303")
 	addLog("RPC conectado")
-	addLog("Peer NodeA conectado")
-	addLog("Peer NodeB conectado")
-	addLog("Minerando...")
 
 	go fetchStats()
 	go miningEngine()
@@ -62,43 +61,34 @@ func main() {
 func renderLoop() {
 	for {
 		clearTerminal()
-		fmt.Println("┌──────────────────────────────────────────────────┐")
-		fmt.Println("│                ECOPACTO NETWORK                  │")
-		fmt.Println("├──────────────────────────────────────────────────┤")
-		fmt.Println("│ Carteira                                         │")
-		fmt.Printf("│ %-48s │\n", walletAddr)
-		fmt.Println("│                                                  │")
-		fmt.Printf("│ Saldo ECO: %-37s │\n", fmt.Sprintf("%d ECO", balance))
-		fmt.Printf("│ Saldo Minerado Hoje: %-27s │\n", fmt.Sprintf("%d ECO", minedToday))
-		fmt.Printf("│ Próximo Pagamento: %-29s │\n", "00:00")
-		fmt.Println("│                                                  │")
-		fmt.Println("│ Status: ONLINE ✅                                │")
-		fmt.Printf("│ Nós Conectados: %-32d │\n", 7)
-		fmt.Println("├──────────────────────────────────────────────────┤")
-		fmt.Println("│ Rede                                             │")
-		fmt.Printf("│ Bloco Atual: %-35d │\n", blockHeight)
-		fmt.Println("│ Dificuldade: 4                                   │")
-		fmt.Println("│ Recompensa: 10 ECO                               │")
-		fmt.Printf("│ Hashrate: %-38s │\n", fmt.Sprintf("%d H/s", hashrate))
-		fmt.Println("├──────────────────────────────────────────────────┤")
-		fmt.Println("│ [ Iniciar Mineração ]                            │")
-		fmt.Println("│ [ Explorer da Rede ]                             │")
-		fmt.Println("│ [ Abrir Wallet ]                                 │")
-		fmt.Println("├──────────────────────────────────────────────────┤")
-		fmt.Println("│ LOGS DO NÓ                                       │")
-		fmt.Println("│                                                  │")
+		fmt.Println("┌──────────────────────────────────────────────────────────────┐")
+		fmt.Println("│                      LAUNCHER ECOPACTO                       │")
+		fmt.Println("├────────────────────────────────┬─────────────────────────────┤")
+		fmt.Println("│ CARTEIRA                       │ REDE                        │")
+
+		addrShort := walletAddr
+		if len(addrShort) > 22 { addrShort = addrShort[:22] + "..." }
+
+		fmt.Printf("│ • ID: %-24s │ • Bloco Atual: %-12d │\n", addrShort, blockHeight)
+		fmt.Printf("│ • Saldo: %-21d │ • Dificuldade: 4            │\n", balance, 4)
+		fmt.Printf("│ • Minerado: %-18d │ • Reward: 10 ECO            │\n", minedToday)
+		fmt.Printf("│ • Status: ONLINE ✅            │ • Hashrate: %-10d H/s │\n", hashrate)
+		fmt.Println("├────────────────────────────────┴─────────────────────────────┤")
+		fmt.Println("│ ABA DE NAVEGAÇÃO:                                            │")
+		// BOTOES LADO A LADO NA VERSÃO TERMINAL
+		fmt.Println("│ [ Iniciar ]        [ Explorer ]        [ Abrir Wallet ]      │")
+		fmt.Println("├──────────────────────────────────────────────────────────────┤")
+		fmt.Println("│ LOGS DO NÓ EM TEMPO REAL                                     │")
 
 		startIdx := len(logs) - 8
-		if startIdx < 0 {
-			startIdx = 0
-		}
+		if startIdx < 0 { startIdx = 0 }
 		for i := startIdx; i < len(logs); i++ {
-			fmt.Printf("│ %-48s │\n", logs[i])
+			fmt.Printf("│ > %-58s │\n", logs[i])
 		}
-		for i := 0; i < 8-(len(logs)-startIdx); i++ {
-			fmt.Println("│                                                  │")
+		for i := 0; i < 8 - (len(logs)-startIdx); i++ {
+			fmt.Println("│                                                              │")
 		}
-		fmt.Println("└──────────────────────────────────────────────────┘")
+		fmt.Println("└──────────────────────────────────────────────────────────────┘")
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -127,16 +117,15 @@ func fetchStats() {
 func miningEngine() {
 	for {
 		start := time.Now()
-		for i := 0; i < 150000; i++ {
+		for i := 0; i < 200000; i++ {
 			sha256.Sum256([]byte(fmt.Sprintf("%d", i)))
 		}
-		hashrate = int(150 / time.Since(start).Seconds())
+		hashrate = int(200 / time.Since(start).Seconds())
 
-		if time.Now().Second()%30 == 0 {
+		if time.Now().Second() % 40 == 0 {
 			minedToday += 10
-			addLog("Novo bloco recebido")
-			addLog("Hash válido encontrado")
-			addLog("Recompensa registrada")
+			h := sha256.Sum256([]byte(time.Now().String()))
+			addLog(fmt.Sprintf("Bloco minerado! Hash: 000%s", hex.EncodeToString(h[:4])))
 			time.Sleep(1 * time.Second)
 		}
 		time.Sleep(200 * time.Millisecond)
