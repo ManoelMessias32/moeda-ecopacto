@@ -438,3 +438,48 @@ Plain Text
 10 ECO/bloco
 Halving: 5 anos
 Taxa: 0,5%
+
+launcher de mienrador ecopacto network
+
+criar um botao na carteira ecopacto network para baixar o launchers
+com tela de confirmaçao do dowloand
+qndo o terminar ja executar o launchers
+pedindo o endereço da carteira ecopacto netwoark
+quando salvar o minerador ja começa a rodar
+seguindo o exemplo abaixo
+
+┌──────────────────────────────────────────────────┐
+│                ECOPACTO NETWORK                  │
+├──────────────────────────────────────────────────┤
+│ Carteira                                         │
+│ ECO_2b44246bf6a15b6361379bed                     │
+│                                                  │
+│ Saldo ECO: 1.250 ECO                             │
+│ Saldo Minerado Hoje: 42 ECO                      │
+│ Próximo Pagamento: 00:00                         │
+│                                                  │
+│ Status: ONLINE ✅                                │
+│ Nós Conectados: 7                                │
+├──────────────────────────────────────────────────┤
+│ Rede                                             │
+│ Bloco Atual: 15.342                              │
+│ Dificuldade: 4                                   │
+│ Recompensa: 10 ECO                               │
+│ Hashrate: 125 H/s                                │
+├──────────────────────────────────────────────────┤
+│ [ Iniciar Mineração ]                            │
+│ [ Explorer da Rede ]                             │
+│ [ Abrir Wallet ]                                 │
+├──────────────────────────────────────────────────┤
+│ LOGS DO NÓ                                       │
+│                                                  │
+│ [21:15:02] Conectando ao RPC...                  │
+│ [21:15:03] RPC conectado                         │
+│ [21:15:04] Peer NodeA conectado                  │
+│ [21:15:06] Peer NodeB conectado                  │
+│ [21:15:12] Minerando...                          │
+│ [21:16:50] Novo bloco recebido                   │
+│ [21:17:12] Hash válido encontrado                │
+│ [21:17:13] Recompensa registrada                 │
+│                                                  │
+└──────────────────────────────────────────────────┘

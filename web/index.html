@@ -43,11 +43,14 @@
         .balance-amount span:first-child { color: var(--accent); }
         .currency { font-size: 1.2rem; color: var(--muted); font-weight: 600; }
 
-        .nav-actions { display: flex; gap: 10px; margin: 25px 0; }
-        .nav-btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .nav-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; }
+        .nav-btn { flex: 1; min-width: 100px; padding: 14px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid #ffffff10; }
         .btn-send { background: var(--accent); color: #000; }
         .btn-send:hover { background: #1eb34b; transform: translateY(-1px); }
+
+        .btn-launcher { background: #3b82f6; color: white; width: 100%; flex: none; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-launcher:hover { background: #2563eb; }
 
         .view-panel { background: #00000060; padding: 15px; border-radius: 16px; margin-top: 10px; display: none; text-align: left; border: 1px solid #ffffff05; }
         .view-panel.active { display: block; }
@@ -63,6 +66,10 @@
         .status-online { color: var(--accent); font-weight: 600; }
 
         #login-view { margin: auto 0; }
+
+        /* Modal Destaque */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 300px; text-align: center; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -77,7 +84,6 @@
         </div>
 
         <div id="wallet-view" style="display: none;">
-            <!-- CABEÇALHO DO USUÁRIO IDENTICO À IMAGEM -->
             <div class="user-header">
                 <span id="disp-name">Manoel Oliveira</span>
                 <span id="disp-email">carregando...</span>
@@ -92,6 +98,9 @@
             <div class="nav-actions">
                 <button class="nav-btn btn-receive" onclick="togglePanel('receive')">Receber</button>
                 <button class="nav-btn btn-send" onclick="togglePanel('send')">Enviar</button>
+                <button class="nav-btn btn-launcher" onclick="confirmDownload()">
+                    🚀 Baixar Launcher
+                </button>
             </div>
 
             <div id="panel-receive" class="view-panel">
@@ -114,6 +123,17 @@
         </div>
     </div>
 
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <h3>🚀 Launcher Ecopacto</h3>
+            <p style="font-size: 0.8rem; color: var(--muted); margin: 15px 0;">Deseja baixar o minerador oficial para desktop?</p>
+            <div style="display: flex; gap: 10px;">
+                <button class="nav-btn btn-receive" onclick="closeModal()">Cancelar</button>
+                <button class="nav-btn btn-send" onclick="startDownload()">Baixar Agora</button>
+            </div>
+        </div>
+    </div>
+
 <script>
     const API_URL = "https://ecopacto-api-production.up.railway.app";
     let walletData = null;
@@ -129,20 +149,16 @@
         .then(res => res.json())
         .then(data => {
             walletData = data;
-
-            // Tratamento definitivo para o nome e email vindos da resposta ou do Google
             if(!walletData.name || walletData.name === "undefined") walletData.name = "Manoel Oliveira";
             if(!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
-
             setupWalletUI(walletData);
         })
-        .catch(err => alert("Erro ao conectar com o servidor. Verifique se o backend está online."));
+        .catch(err => alert("Erro ao conectar com o servidor."));
     }
 
     function setupWalletUI(data) {
         document.getElementById('login-view').style.display = 'none';
         document.getElementById('wallet-view').style.display = 'block';
-
         document.getElementById('disp-name').innerText = data.name;
         document.getElementById('disp-email').innerText = data.email;
         document.getElementById('disp-balance').innerText = data.balance.toLocaleString();
@@ -152,13 +168,25 @@
     function togglePanel(type) {
         const pRec = document.getElementById('panel-receive');
         const pSend = document.getElementById('panel-send');
-        if(type === 'receive') {
-            pRec.classList.toggle('active');
-            pSend.classList.remove('active');
-        } else {
-            pSend.classList.toggle('active');
-            pRec.classList.remove('active');
-        }
+        pRec.classList.toggle('active', type === 'receive' && !pRec.classList.contains('active'));
+        pSend.classList.toggle('active', type === 'send' && !pSend.classList.contains('active'));
+        if(type === 'receive') pSend.classList.remove('active');
+        if(type === 'send') pRec.classList.remove('active');
+    }
+
+    function confirmDownload() {
+        document.getElementById('download-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('download-modal').style.display = 'none';
+    }
+
+    function startDownload() {
+        closeModal();
+        alert("Iniciando download do Launcher Ecopacto...");
+        // Simulação de download abrindo a nova página do launcher
+        window.open('launcher.html', '_blank');
     }
 
     function copyAddress() {
@@ -171,7 +199,7 @@
     async function doTransfer() {
         const to = document.getElementById('send-to').value;
         const amount = parseInt(document.getElementById('send-amount').value);
-        if(!to || !amount) return alert("Por favor, preencha o destino e o valor.");
+        if(!to || !amount) return alert("Preencha todos os campos.");
 
         const res = await fetch(`${API_URL}/send`, {
             method: 'POST',
@@ -180,11 +208,10 @@
         });
 
         if (res.status === 200) {
-            const data = await res.json();
-            alert("Sucesso! Transação enviada para a rede.");
+            alert("Sucesso! Transação enviada.");
             location.reload();
         } else {
-            alert("Erro na transação. Verifique o saldo.");
+            alert("Erro na transação.");
         }
     }
 </script>
