@@ -1,55 +1,24 @@
 package main
 
 import (
+	"archive/zip"
 	"crypto/ed25519"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 )
 
-// --- CONSTANTES ---
 const (
 	DB_FILE    = "blockchain.db"
 	ADMIN_KEY  = "ECO_MASTER_888"
 	FEE_RATE   = 0.005
 )
-
-type Transaction struct {
-	ID        string `json:"id"`
-	From      string `json:"from"`
-	To        string `json:"to"`
-	Amount    uint64 `json:"amount"`
-	Fee       uint64 `json:"fee"`
-	Timestamp int64  `json:"timestamp"`
-}
-
-type Block struct {
-	Index        int           `json:"index"`
-	Timestamp    int64         `json:"timestamp"`
-	Transactions []Transaction `json:"transactions"`
-	PrevHash     string        `json:"prev_hash"`
-	Hash         string        `json:"hash"`
-	Nonce        int           `json:"nonce"`
-	Miner        string        `json:"miner"`
-}
-
-type NodeIdentity struct {
-	NodeID     string `json:"node_id"`
-	PublicKey  string `json:"public_key"`
-	PrivateKey []byte `json:"-"`
-}
-
-type Wallet struct {
-	Address string `json:"address"`
-	Balance uint64 `json:"balance"`
-	Email   string `json:"email"`
-	Name    string `json:"name"`
-}
 
 type AppState struct {
 	Identity   NodeIdentity       `json:"identity"`
@@ -57,6 +26,22 @@ type AppState struct {
 	Mempool    []Transaction      `json:"mempool"`
 	Wallets    map[string]*Wallet `json:"wallets"`
 	Emails     map[string]string  `json:"emails"`
+}
+
+type Transaction struct {
+	ID string `json:"id"`; From string `json:"from"`; To string `json:"to"`; Amount uint64 `json:"amount"`; Fee uint64 `json:"fee"`; Timestamp int64 `json:"timestamp"`
+}
+
+type Block struct {
+	Index int `json:"index"`; Timestamp int64 `json:"timestamp"`; Transactions []Transaction `json:"transactions"`; PrevHash string `json:"prev_hash"`; Hash string `json:"hash"`; Nonce int `json:"nonce"`; Miner string `json:"miner"`
+}
+
+type NodeIdentity struct {
+	NodeID string `json:"node_id"`; PublicKey string `json:"public_key"`; PrivateKey []byte `json:"-"`
+}
+
+type Wallet struct {
+	Address string `json:"address"`; Balance uint64 `json:"balance"`; Email string `json:"email"`; Name string `json:"name"`
 }
 
 var state AppState
@@ -106,11 +91,7 @@ func saveState() {
 
 func loadState() {
 	file, err := os.ReadFile(DB_FILE)
-	if err == nil {
-		json.Unmarshal(file, &state)
-	} else {
-		initSystem()
-	}
+	if err == nil { json.Unmarshal(file, &state) } else { initSystem() }
 }
 
 func initSystem() {
@@ -132,7 +113,6 @@ func initSystem() {
 
 func main() {
 	loadState()
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
@@ -143,10 +123,21 @@ func main() {
 		json.NewEncoder(w).Encode(state.Blockchain)
 	})
 
-	// ROTA DE DOWNLOAD DO LAUNCHER
+	// DOWNLOAD DO PACOTE ZIP (BIN + EXE)
 	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-launcher.exe")
-		http.ServeFile(w, r, "./ecopacto-launcher.exe")
+		w.Header().Set("Content-Type", "application/zip")
+		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-network.zip")
+
+		zw := zip.NewWriter(w)
+		f, err := zw.Create("bin/ecopacto-launcher.exe")
+		if err == nil {
+			file, err := os.Open("./ecopacto-launcher.exe")
+			if err == nil {
+				io.Copy(f, file)
+				file.Close()
+			}
+		}
+		zw.Close()
 	})
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

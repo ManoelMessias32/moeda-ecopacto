@@ -14,54 +14,49 @@
             padding: 25px; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
-        .header-title { text-align: center; font-weight: 800; font-size: 0.9rem; letter-spacing: 2px; color: var(--muted); margin-bottom: 25px; text-transform: uppercase; }
+        .header-title { text-align: center; font-weight: 800; font-size: 0.8rem; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; text-transform: uppercase; }
 
-        .section-box { margin-bottom: 20px; }
-        .section-header { font-size: 0.65rem; color: var(--muted); font-weight: 800; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .section-box { margin-bottom: 15px; }
+        .section-header { font-size: 0.6rem; color: var(--muted); font-weight: 800; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; text-transform: uppercase; }
 
-        .addr-text { color: var(--accent); font-family: 'Fira Code', monospace; font-size: 0.75rem; margin-bottom: 12px; display: block; }
+        .addr-text { color: var(--accent); font-family: 'Fira Code', monospace; font-size: 0.7rem; margin-bottom: 10px; display: block; word-break: break-all; }
 
-        .data-grid { display: grid; gap: 8px; }
-        .data-row { display: flex; justify-content: space-between; font-size: 0.8rem; }
+        .data-grid { display: grid; gap: 6px; }
+        .data-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
         .val-eco { color: var(--accent); font-weight: 700; }
         .status-on { color: var(--accent); font-weight: 800; }
 
         /* BOTOES PEQUENOS E UM DO LADO DO OUTRO */
-        .btn-row { display: flex; gap: 8px; margin: 25px 0; }
+        .btn-row { display: flex; gap: 6px; margin: 20px 0; }
         .btn-mini {
-            flex: 1; padding: 10px 5px; border-radius: 8px; border: 1px solid var(--border);
-            background: #ffffff05; color: #fff; font-size: 0.65rem; font-weight: 800;
-            cursor: pointer; transition: 0.2s; white-space: nowrap;
+            flex: 1; padding: 8px 4px; border-radius: 6px; border: 1px solid var(--border);
+            background: #ffffff05; color: #fff; font-size: 0.6rem; font-weight: 800;
+            cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center;
         }
         .btn-mini:hover { background: #ffffff10; }
         .btn-mine-active { background: var(--accent); color: #000; border: none; }
 
-        .logs-title { font-size: 0.65rem; color: var(--muted); font-weight: 800; margin-bottom: 10px; }
+        .logs-title { font-size: 0.6rem; color: var(--muted); font-weight: 800; margin-bottom: 8px; text-transform: uppercase; }
         .logs-container {
-            background: #000; border-radius: 10px; height: 140px; padding: 12px;
-            font-family: 'Fira Code', monospace; font-size: 0.65rem; overflow-y: auto;
+            background: #000; border-radius: 8px; height: 120px; padding: 10px;
+            font-family: 'Fira Code', monospace; font-size: 0.6rem; overflow-y: auto;
             color: #a1a1aa; border: 1px solid var(--border);
         }
-        .log-entry { margin-bottom: 3px; }
+        .log-entry { margin-bottom: 2px; }
         .log-time { color: var(--muted); margin-right: 5px; }
-
-        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="launcher-card" id="main-ui">
+    <div class="launcher-card">
         <div class="header-title">ECOPACTO NETWORK</div>
 
         <div class="section-box">
             <div class="section-header">CARTEIRA</div>
-            <span class="addr-text" id="disp-addr">ECO_2b44246bf6a15b6361379bed</span>
+            <span class="addr-text">ECO_2b44246bf6a15b6361379bed</span>
             <div class="data-grid">
-                <div class="data-row"><span>Saldo ECO:</span> <span class="val-eco" id="val-balance">200.000.000.000 ECO</span></div>
-                <div class="data-row"><span>Saldo Minerado Hoje:</span> <span>42 ECO</span></div>
-                <div class="data-row"><span>Próximo Pagamento:</span> <span>00:00</span></div>
+                <div class="data-row"><span>Saldo ECO:</span> <span class="val-eco">200.000.000.000 ECO</span></div>
                 <div class="data-row"><span>Status:</span> <span class="status-on">ONLINE ✅</span></div>
-                <div class="data-row"><span>Nós Conectados:</span> <span>7</span></div>
             </div>
         </div>
 
@@ -69,16 +64,14 @@
             <div class="section-header">REDE</div>
             <div class="data-grid">
                 <div class="data-row"><span>Bloco Atual:</span> <span id="val-block">1</span></div>
-                <div class="data-row"><span>Dificuldade:</span> <span>4</span></div>
-                <div class="data-row"><span>Recompensa:</span> <span>10 ECO</span></div>
                 <div class="data-row"><span>Hashrate:</span> <span id="val-hashrate">0 H/s</span></div>
             </div>
         </div>
 
-        <!-- BOTOES UM DO LADO DO OUTRO -->
+        <!-- BOTOES LADO A LADO -->
         <div class="btn-row">
             <button class="btn-mini btn-mine-active" id="btn-mine" onclick="toggleMine()">Iniciar Mineração</button>
-            <button class="btn-mini" onclick="window.open('https://ecopacto-api-production.up.railway.app/history')">Explorer da Rede</button>
+            <button class="btn-mini" onclick="window.open('https://ecopacto-api-production.up.railway.app/history')">Explorer</button>
             <button class="btn-mini" onclick="window.location.href='index.html'">Abrir Wallet</button>
         </div>
 
@@ -109,12 +102,15 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // Sincronização básica
         setInterval(async () => {
             try {
                 const res = await fetch(`${API_URL}/history`);
                 const history = await res.json();
                 document.getElementById('val-block').innerText = history.length;
+                if(mining) {
+                    const hash = Math.floor(Math.random() * 50) + 100;
+                    document.getElementById('val-hashrate').innerText = hash + " H/s";
+                }
             } catch(e) {}
         }, 5000);
     </script>

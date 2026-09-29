@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
 
         .wallet-card {
             background: var(--card);
@@ -67,7 +67,6 @@
 
         #login-view { margin: auto 0; }
 
-        /* Modal Destaque */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
         .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 300px; text-align: center; border: 1px solid var(--border); }
     </style>
@@ -99,7 +98,7 @@
                 <button class="nav-btn btn-receive" onclick="togglePanel('receive')">Receber</button>
                 <button class="nav-btn btn-send" onclick="togglePanel('send')">Enviar</button>
                 <button class="nav-btn btn-launcher" onclick="confirmDownload()">
-                    🚀 Baixar Launcher
+                    🚀 Baixar Launcher (PC)
                 </button>
             </div>
 
@@ -117,16 +116,16 @@
 
             <div class="node-status">
                 <h4>STATUS DA REDE</h4>
-                <div class="node-item"><span>Nó Principal (Railway)</span><span class="status-online">ONLINE</span></div>
-                <div class="node-item"><span>Explorador de Blocos</span><span class="status-online">ATIVO</span></div>
+                <div class="node-item"><span>Nó Principal</span><span class="status-online">ONLINE</span></div>
+                <div class="node-item"><span>Explorador</span><span class="status-online">ATIVO</span></div>
             </div>
         </div>
     </div>
 
     <div id="download-modal" class="modal">
         <div class="modal-content">
-            <h3>🚀 Launcher Ecopacto</h3>
-            <p style="font-size: 0.8rem; color: var(--muted); margin: 15px 0;">Deseja baixar o minerador oficial para desktop?</p>
+            <h3>🚀 Baixar Launcher</h3>
+            <p style="font-size: 0.8rem; color: var(--muted); margin: 15px 0;">O minerador será baixado em um pacote .zip profissional.</p>
             <div style="display: flex; gap: 10px;">
                 <button class="nav-btn btn-receive" onclick="closeModal()">Cancelar</button>
                 <button class="nav-btn btn-send" onclick="startDownload()">Baixar Agora</button>
@@ -174,25 +173,19 @@
         if(type === 'send') pRec.classList.remove('active');
     }
 
-    function confirmDownload() {
-        document.getElementById('download-modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('download-modal').style.display = 'none';
-    }
+    function confirmDownload() { document.getElementById('download-modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('download-modal').style.display = 'none'; }
 
     function startDownload() {
         closeModal();
-        alert("Iniciando download do Launcher Ecopacto...");
-        // Simulação de download abrindo a nova página do launcher
-        window.open('launcher.html', '_blank');
+        // BAIXA O ZIP REAL DO SERVIDOR
+        window.location.href = `${API_URL}/download-launcher`;
     }
 
     function copyAddress() {
         if(walletData) {
             navigator.clipboard.writeText(walletData.address);
-            alert("Endereço copiado com sucesso!");
+            alert("Endereço copiado!");
         }
     }
 

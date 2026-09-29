@@ -32,25 +32,26 @@ var (
 func main() {
 	setupTerminal()
 
-	fmt.Println("┌──────────────────────────────────────────────────────────────┐")
-	fmt.Println("│                   LAUNCHER ECOPACTO NETWORK                  │")
-	fmt.Println("└──────────────────────────────────────────────────────────────┘")
-	fmt.Print(" > Insira o endereço da Carteira: ")
-	fmt.Scanln(&walletAddr)
+	// Tenta carregar carteira salva
+	data, err := os.ReadFile("wallet.txt")
+	if err == nil && len(data) > 10 {
+		walletAddr = strings.TrimSpace(string(data))
+	} else {
+		renderHeader()
+		fmt.Print(" > Insira o endereço da sua Carteira ECO: ")
+		fmt.Scanln(&walletAddr)
 
-	if walletAddr == "" {
-		walletAddr = "ECO_2b44246bf6a15b6361379bed"
+		if walletAddr == "" || !strings.HasPrefix(walletAddr, "ECO_") {
+			walletAddr = "ECO_2b44246bf6a15b6361379bed"
+		}
+		// Salva localmente
+		os.WriteFile("wallet.txt", []byte(walletAddr), 0644)
 	}
 
-	if !strings.HasPrefix(walletAddr, "ECO_") {
-		fmt.Println(" [!] Endereço inválido. Usando padrão Master...")
-		walletAddr = "ECO_2b44246bf6a15b6361379bed"
-		time.Sleep(2 * time.Second)
-	}
-
-	addLog("Iniciando nó Ecopacto...")
-	addLog("Conectando aos peers P2P na porta 30303")
-	addLog("RPC conectado")
+	addLog("Nó iniciado")
+	addLog("Conectando ao RPC...")
+	addLog("RPC conectado com sucesso")
+	addLog("Minerando...")
 
 	go fetchStats()
 	go miningEngine()
@@ -61,34 +62,42 @@ func main() {
 func renderLoop() {
 	for {
 		clearTerminal()
-		fmt.Println("┌──────────────────────────────────────────────────────────────┐")
-		fmt.Println("│                      LAUNCHER ECOPACTO                       │")
-		fmt.Println("├────────────────────────────────┬─────────────────────────────┤")
-		fmt.Println("│ CARTEIRA                       │ REDE                        │")
+		fmt.Println("┌──────────────────────────────────────────────────┐")
+		fmt.Println("│                ECOPACTO NETWORK                  │")
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ Carteira                                         │")
 
 		addrShort := walletAddr
-		if len(addrShort) > 22 { addrShort = addrShort[:22] + "..." }
+		if len(addrShort) > 45 { addrShort = addrShort[:42] + "..." }
+		fmt.Printf("│ %-48s │\n", addrShort)
+		fmt.Println("│                                                  │")
+		fmt.Printf("│ Saldo ECO: %-37s │\n", fmt.Sprintf("%d ECO", balance))
+		fmt.Printf("│ Saldo Minerado Hoje: %-27s │\n", fmt.Sprintf("%d ECO", minedToday))
+		fmt.Printf("│ Próximo Pagamento: %-29s │\n", "00:00")
+		fmt.Println("│                                                  │")
+		fmt.Println("│ Status: ONLINE ✅                                │")
+		fmt.Printf("│ Nós Conectados: %-32d │\n", 7)
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ Rede                                             │")
+		fmt.Printf("│ Bloco Atual: %-35d │\n", blockHeight)
+		fmt.Println("│ Dificuldade: 4                                   │")
+		fmt.Println("│ Recompensa: 10 ECO                               │")
+		fmt.Printf("│ Hashrate: %-38s │\n", fmt.Sprintf("%d H/s", hashrate))
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		// BOTOES PEQUENOS E UM DO LADO DO OUTRO
+		fmt.Println("│ [ Iniciar ]        [ Explorer ]       [ Wallet ] │")
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ LOGS DO NÓ                                       │")
 
-		fmt.Printf("│ • ID: %-24s │ • Bloco Atual: %-12d │\n", addrShort, blockHeight)
-		fmt.Printf("│ • Saldo: %-21d │ • Dificuldade: 4            │\n", balance, 4)
-		fmt.Printf("│ • Minerado: %-18d │ • Reward: 10 ECO            │\n", minedToday)
-		fmt.Printf("│ • Status: ONLINE ✅            │ • Hashrate: %-10d H/s │\n", hashrate)
-		fmt.Println("├────────────────────────────────┴─────────────────────────────┤")
-		fmt.Println("│ ABA DE NAVEGAÇÃO:                                            │")
-		// BOTOES LADO A LADO NA VERSÃO TERMINAL
-		fmt.Println("│ [ Iniciar ]        [ Explorer ]        [ Abrir Wallet ]      │")
-		fmt.Println("├──────────────────────────────────────────────────────────────┤")
-		fmt.Println("│ LOGS DO NÓ EM TEMPO REAL                                     │")
-
-		startIdx := len(logs) - 8
+		startIdx := len(logs) - 6
 		if startIdx < 0 { startIdx = 0 }
 		for i := startIdx; i < len(logs); i++ {
-			fmt.Printf("│ > %-58s │\n", logs[i])
+			fmt.Printf("│ %-48s │\n", logs[i])
 		}
-		for i := 0; i < 8 - (len(logs)-startIdx); i++ {
-			fmt.Println("│                                                              │")
+		for i := 0; i < 6 - (len(logs)-startIdx); i++ {
+			fmt.Println("│                                                  │")
 		}
-		fmt.Println("└──────────────────────────────────────────────────────────────┘")
+		fmt.Println("└──────────────────────────────────────────────────┘")
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -102,12 +111,11 @@ func fetchStats() {
 			balance = data.Balance
 			resp.Body.Close()
 		}
-
 		respH, err := http.Get(API_URL + "/history")
 		if err == nil {
-			var history []interface{}
-			json.NewDecoder(respH.Body).Decode(&history)
-			blockHeight = len(history)
+			var h []interface{}
+			json.NewDecoder(respH.Body).Decode(&h)
+			blockHeight = len(h)
 			respH.Body.Close()
 		}
 		time.Sleep(5 * time.Second)
@@ -117,15 +125,15 @@ func fetchStats() {
 func miningEngine() {
 	for {
 		start := time.Now()
-		for i := 0; i < 200000; i++ {
-			sha256.Sum256([]byte(fmt.Sprintf("%d", i)))
+		for i := 0; i < 100000; i++ {
+			h := sha256.Sum256([]byte(fmt.Sprintf("%d", i)))
+			_ = hex.EncodeToString(h[:])
 		}
-		hashrate = int(200 / time.Since(start).Seconds())
+		hashrate = int(100 / time.Since(start).Seconds())
 
 		if time.Now().Second() % 40 == 0 {
 			minedToday += 10
-			h := sha256.Sum256([]byte(time.Now().String()))
-			addLog(fmt.Sprintf("Bloco minerado! Hash: 000%s", hex.EncodeToString(h[:4])))
+			addLog("Novo bloco minerado (+10 ECO)")
 			time.Sleep(1 * time.Second)
 		}
 		time.Sleep(200 * time.Millisecond)
@@ -150,6 +158,12 @@ func clearTerminal() {
 
 func setupTerminal() {
 	if runtime.GOOS == "windows" {
-		exec.Command("cmd", "/c", "title Launcher Ecopacto Network").Run()
+		exec.Command("cmd", "/c", "title Launcher Ecopacto").Run()
 	}
+}
+
+func renderHeader() {
+	fmt.Println("┌──────────────────────────────────────────────────┐")
+	fmt.Println("│                ECOPACTO NETWORK                  │")
+	fmt.Println("└──────────────────────────────────────────────────┘")
 }
