@@ -1,44 +1,53 @@
-### 🛡️ ECOPACTO NETWORK - CREDENCIAIS E CONFIGURAÇÃO ###
+### 🛡️ ECOPACTO NETWORK - MASTER CONFIG & BACKUP ###
 
-⚠️ ATENÇÃO: NUNCA SUBTA ESTE ARQUIVO COM CHAVES REAIS PARA O GITHUB PÚBLICO! ⚠️
-Se for salvar no GitHub para backup, mantenha apenas os XXXXXX (placeholders).
+⚠️ AVISO: Mantenha este arquivo em segredo absoluto. ⚠️
+Se for subir ao GitHub, use apenas a versão com XXXXXX e em repositório PRIVADO.
 
 ---
 
-#### 1. 🔑 CREDENCIAIS DA CARTEIRA (WALLET)
-- Endereço ECO:  ECO_xxxxxxxxxxxxxxxxxxxxxxxxxx
-- Chave Privada: PVT_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-- Senha/Seed:    [SUA_SENHA_AQUI]
+#### 1. 🔑 CARTEIRA MASTER (ADMIN / 200B ECO)
+Esta conta possui privilégios de saldo inicial de 200 Bilhões de ECO.
+- E-mail Master:   manoeeletrico2hotmail.com@gmail.com
+- Endereço ECO:    ECO_2b44246bf6a15b6361379bed
+- Chave Privada:   PVT_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx (Assinatura de Transações)
+- Senha/Seed:      [DEFINA SUA FRASE DE SEGURANÇA AQUI]
 
 ---
 
 #### 2. 🆔 IDENTIDADE DO NÓ (NODE IDENTITY)
-- Node ID:       NODE_xxxxxxxxxxxx
-- Public Key:    PUB_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-- Private Key:   PVT_NODE_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Gerado automaticamente pelo servidor na porta 30303.
+- Node ID:         NODE_xxxxxxxxxxxx
+- Public Key:      PUB_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- Private Key:     PVT_NODE_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ---
 
-#### 3. 🌐 ENDPOINTS E URL RPC
-A sua URL RPC é o endpoint da API que responde pelas transações e blocos:
-- RPC Local:      http://localhost:8080
-- RPC Produção:   https://ecopacto-api-production.up.railway.app
-- Rede P2P:       http://localhost:30303
-- Painel Admin:   http://localhost:30304
+#### 3. 🌐 CONEXÕES E URL RPC
+A URL RPC permite que a Wallet e o Minerador se comuniquem com a Blockchain.
+- RPC (Produção):   https://ecopacto-api-production.up.railway.app
+- RPC (Local):      http://localhost:8080
+- Porta P2P (Rede): 30303
+- Porta Admin:      30304 (X-Admin-Key: ECO_MASTER_888)
 
 ---
 
-#### 4. ⛏️ EXEMPLO DE CONFIGURAÇÃO PARA MINERAÇÃO (config.json)
+#### 4. ⛏️ CONFIGURAÇÃO DE MINERAÇÃO (config.json)
+Use este modelo para configurar seus mineradores:
 {
-  "miner_address": "ECO_xxxxxxxxxxxxxxxxxxxxxxxxxx",
-  "node_id": "NODE_xxxxxxxxxxxx",
-  "p2p_url": "http://localhost:30303",
+  "miner_address": "ECO_2b44246bf6a15b6361379bed",
+  "node_id": "NODE_SEU_ID",
   "rpc_url": "https://ecopacto-api-production.up.railway.app",
-  "threads": 4,
-  "auto_start": true
+  "p2p_port": 30303,
+  "threads": 4
 }
 
 ---
 
-#### 5. 🚀 COMANDO DE MINERAÇÃO (EXEMPLO CONCEITUAL)
-./ecopacto-miner --rpc-url https://ecopacto-api-production.up.railway.app --wallet ECO_xxxxxxxx --key PVT_xxxx --port 30303
+#### 5. 🚀 EXPLORADOR E ABERTURA DE NÓS
+Para verificar a saúde da rede e blocos minerados:
+- Explorer: https://ecopacto-api-production.up.railway.app/history
+- Tokenomics: https://ecopacto-api-production.up.railway.app/tokenomics
+
+---
+DICA: A Wallet oficial (web/index.html) agora está configurada como Master Wallet.
+Ao logar com o E-mail Master, o saldo de 200B ECO será carregado automaticamente.

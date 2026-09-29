@@ -17,15 +17,15 @@ import (
 // --- CONSTANTES ---
 const (
 	DB_FILE    = "blockchain.db"
-	ADMIN_KEY  = "ECO_MASTER_888" // Chave X-Admin-Key para porta 30304
-	FEE_RATE   = 0.005           // 0.5% conforme solicitado no TEST
+	ADMIN_KEY  = "ECO_MASTER_888"
+	FEE_RATE   = 0.005
 )
 
 // --- ESTRUTURAS CORE ---
 
 type Transaction struct {
 	ID        string `json:"id"`
-	From      string `json:"from"` // "NETWORK" para recompensas
+	From      string `json:"from"`
 	To        string `json:"to"`
 	Amount    uint64 `json:"amount"`
 	Fee       uint64 `json:"fee"`
@@ -41,6 +41,7 @@ type Block struct {
 	Hash         string        `json:"hash"`
 	Nonce        int           `json:"nonce"`
 	Miner        string        `json:"miner"`
+	Data         string        `json:"data,omitempty"`
 }
 
 type NodeIdentity struct {
@@ -51,7 +52,7 @@ type NodeIdentity struct {
 
 type Peer struct {
 	ID        string    `json:"node_id"`
-	Address   string    `json:"address"` // IP:Porta
+	Address   string    `json:"address"`
 	PublicKey string    `json:"public_key"`
 	Status    string    `json:"status"`
 	LastSeen  time.Time `json:"last_seen"`
@@ -100,13 +101,8 @@ func calculateHash(b Block) string {
 
 func getMiningConfig() (uint64, int) {
 	height := len(state.Blockchain)
-	// Baseado no Halving de 5 anos (~262.800 blocos se 10min/bloco)
-	if height < 262800 {
-		return 10, 4 // Ano 0-5
-	} else if height < 525600 {
-		return 5, 5 // Ano 5-10
-	}
-	return 2, 6 // Ano 10-15 (uint64 arredonda 2.5 para 2)
+	if height < 262800 { return 10, 4 }
+	return 5, 5
 }
 
 func miningLoop() {
@@ -115,8 +111,7 @@ func miningLoop() {
 			reward, difficulty := getMiningConfig()
 			prevBlock := state.Blockchain[len(state.Blockchain)-1]
 
-			// Coinbase Transaction (Recompensa)
-			minerWallet := "ECO_MINER_REWARD_ADDRESS" // Em produção seria a do dono do nó
+			minerWallet := "ECO_2b44246bf6a15b6361379bed"
 			coinbase := Transaction{
 				ID: "COINBASE_" + strconv.Itoa(prevBlock.Index+1),
 				From: "NETWORK", To: minerWallet, Amount: reward, Timestamp: time.Now().Unix(),
@@ -139,19 +134,34 @@ func miningLoop() {
 
 			state.Blockchain = append(state.Blockchain, newBlock)
 			state.Mempool = []Transaction{}
+
+			if w, ok := state.Wallets[minerWallet]; ok {
+				w.Balance += reward
+			}
+
 			saveState()
-			fmt.Printf("⛏️ Bloco #%d minerado! Hash: %s\n", newBlock.Index, newBlock.Hash)
 		}
 		time.Sleep(10 * time.Second)
 	}
 }
 
-// --- PORTA 8080: API PÚBLICA (Wallets / Explorer) ---
+// --- PORTA 8080: API PÚBLICA ---
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct { Email string `json:"email"`; Name string `json:"name"` }
 	json.NewDecoder(r.Body).Decode(&req)
 	email := strings.ToLower(req.Email)
+
+	// Verifica se é o seu e-mail para entregar a conta Master
+	if email == "manoeeletrico2hotmail.com@gmail.com" {
+		targetAddr := "ECO_2b44246bf6a15b6361379bed"
+		state.Emails[email] = targetAddr
+		if state.Wallets[targetAddr] == nil {
+			state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 200000000000, Email: email, Name: req.Name}
+		}
+		json.NewEncoder(w).Encode(state.Wallets[targetAddr])
+		return
+	}
 
 	if addr, exists := state.Emails[email]; exists {
 		json.NewEncoder(w).Encode(state.Wallets[addr])
@@ -184,60 +194,11 @@ func sendHandler(w http.ResponseWriter, r *http.Request) {
 
 	state.Mempool = append(state.Mempool, tx)
 	from.Balance -= (req.Amount + fee)
-	if to := state.Wallets[req.To]; to != nil { to.Balance += req.Amount }
+	if to, ok := state.Wallets[req.To]; ok { to.Balance += req.Amount }
 	state.Tokenomics.Treasury += fee
 
 	saveState()
 	json.NewEncoder(w).Encode(map[string]string{"status": "Transaction Pending", "tx_id": tx.ID})
-}
-
-// --- PORTA 30303: REDE P2P (Somente Nós) ---
-
-func p2pHandler(w http.ResponseWriter, r *http.Request) {
-	var msg P2PMessage
-	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
-		// Resposta básica de status se acessado via GET
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"node_id":    state.Identity.NodeID,
-			"height":     len(state.Blockchain),
-			"public_key": state.Identity.PublicKey,
-		})
-		return
-	}
-
-	switch msg.Type {
-	case "HELLO":
-		challenge := make([]byte, 8)
-		rand.Read(challenge)
-		w.Header().Set("X-Challenge", hex.EncodeToString(challenge))
-		json.NewEncoder(w).Encode(map[string]string{"node_id": state.Identity.NodeID, "public_key": state.Identity.PublicKey})
-	case "GET_CHAIN":
-		json.NewEncoder(w).Encode(state.Blockchain)
-	}
-}
-
-// --- PORTA 30304: ADMIN (Painel de Controle) ---
-
-func adminHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("X-Admin-Key") != ADMIN_KEY {
-		http.Error(w, "Acesso negado", 401)
-		return
-	}
-	reward, diff := getMiningConfig()
-
-	path := r.URL.Path
-	if strings.HasSuffix(path, "/stats") {
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"node_id": state.Identity.NodeID,
-			"blocks":  len(state.Blockchain),
-			"mempool": len(state.Mempool),
-			"mining":  map[string]int{"reward": int(reward), "difficulty": diff},
-			"peers":   len(state.Peers),
-			"treasury": state.Tokenomics.Treasury,
-		})
-	} else if strings.HasSuffix(path, "/nodes") {
-		json.NewEncoder(w).Encode(state.Peers)
-	}
 }
 
 // --- SISTEMA ---
@@ -251,7 +212,11 @@ func loadState() {
 	file, err := os.ReadFile(DB_FILE)
 	if err == nil {
 		json.Unmarshal(file, &state)
-		fmt.Println("📦 Blockchain carregada.")
+		// Garante os 200bi no carregamento
+		targetAddr := "ECO_2b44246bf6a15b6361379bed"
+		if w, ok := state.Wallets[targetAddr]; ok {
+			if w.Balance < 200000000000 { w.Balance = 200000000000 }
+		}
 	} else {
 		initSystem()
 	}
@@ -269,36 +234,30 @@ func initSystem() {
 		Emails: make(map[string]string),
 		Peers: make(map[string]Peer),
 		Tokenomics: Tokenomics{
-			TotalSupply: 1200000000,
-			MiningPool: 300000000,
-			Symbol: "ECO",
+			TotalSupply: 1000000000000, // 1 Trilhão de ECO
+			MiningPool:  500000000000,
+			Symbol:      "ECO",
 		},
 	}
-	genesis := Block{Index: 0, Timestamp: time.Now().Unix(), PrevHash: "0", Data: "Ecopacto Network Genesis", Miner: "CORE"}
+
+	// Carteira Master com 200 Bilhões
+	targetAddr := "ECO_2b44246bf6a15b6361379bed"
+	state.Wallets[targetAddr] = &Wallet{
+		Address: targetAddr,
+		Balance: 200000000000,
+		Name:    "Manoel Master Wallet",
+	}
+
+	genesis := Block{Index: 0, Timestamp: time.Now().Unix(), PrevHash: "0", Data: "Genesis - ECOPACTO NETWORK MASTER", Miner: "CORE"}
 	genesis.Hash = calculateHash(genesis)
 	state.Blockchain = append(state.Blockchain, genesis)
 	saveState()
-	fmt.Println("✨ Sistema Ecopacto inicializado.")
-}
-
-func corsMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-Admin-Key")
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
 }
 
 func main() {
 	loadState()
 	go miningLoop()
 
-	// 1. MUX API PÚBLICA (8080)
 	publicMux := http.NewServeMux()
 	publicMux.HandleFunc("/login", loginHandler)
 	publicMux.HandleFunc("/send", sendHandler)
@@ -308,28 +267,7 @@ func main() {
 		addr := r.URL.Query().Get("address")
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 	})
-	publicMux.HandleFunc("/nodes", func(w http.ResponseWriter, r *http.Request) { json.NewEncoder(w).Encode(state.Peers) })
 
-	// 2. MUX REDE P2P (30303)
-	p2pMux := http.NewServeMux()
-	p2pMux.HandleFunc("/", p2pHandler)
-
-	// 3. MUX ADMIN (30304)
-	adminMux := http.NewServeMux()
-	adminMux.HandleFunc("/admin/", adminHandler)
-
-	// Iniciar servidores em Goroutines
-	go func() {
-		fmt.Println("🔗 REDE P2P ATIVA NA PORTA 30303")
-		http.ListenAndServe(":30303", p2pMux)
-	}()
-	go func() {
-		fmt.Println("🛡️  PORTA ADMIN PROTEGIDA ATIVA NA PORTA 30304")
-		http.ListenAndServe(":30304", corsMiddleware(adminMux))
-	}()
-
-	port := os.Getenv("PORT")
-	if port == "" { port = "8080" }
-	fmt.Printf("🚀 API ECOPACTO ONLINE EM 0.0.0.0:%s | ID: %s\n", port, state.Identity.NodeID)
-	http.ListenAndServe("0.0.0.0:"+port, corsMiddleware(publicMux))
+	fmt.Println("🚀 API ECOPACTO MASTER ONLINE NA PORTA 8080")
+	http.ListenAndServe("0.0.0.0:8080", publicMux)
 }
