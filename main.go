@@ -2,14 +2,12 @@ package main
 
 import (
 	"crypto/ed25519"
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -80,10 +78,13 @@ func calculateHash(b Block) string {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct { Email string `json:"email"`; Name string `json:"name"` }
-	json.NewDecoder(r.Body).Decode(&req)
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", 400)
+		return
+	}
 	email := strings.ToLower(req.Email)
 
-	// CORREÇÃO: O e-mail do print é 'manoeletrico2hotmail.com@gmail.com'
+	// Regra Master para o e-mail do Manoel (conforme print)
 	isMaster := email == "manoeletrico2hotmail.com@gmail.com" || email == "manoeeletrico2hotmail.com@gmail.com"
 
 	if isMaster {
@@ -92,7 +93,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		if state.Wallets[targetAddr] == nil {
 			state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 200000000000, Email: email, Name: "Manoel Oliveira"}
 		}
-		// Garante que o nome não vá vazio
 		if state.Wallets[targetAddr].Name == "" || state.Wallets[targetAddr].Name == "undefined" {
 			state.Wallets[targetAddr].Name = "Manoel Oliveira"
 		}
@@ -127,7 +127,6 @@ func loadState() {
 	file, err := os.ReadFile(DB_FILE)
 	if err == nil {
 		json.Unmarshal(file, &state)
-		// Garante saldo master no reload
 		targetAddr := "ECO_2b44246bf6a15b6361379bed"
 		if w, ok := state.Wallets[targetAddr]; ok {
 			if w.Balance < 200000000000 { w.Balance = 200000000000 }
@@ -162,11 +161,25 @@ func initSystem() {
 
 func main() {
 	loadState()
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
 		addr := r.URL.Query().Get("address")
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 	})
-	fmt.Println("🚀 API ECOPACTO ONLINE NA PORTA 8080")
-	http.ListenAndServe("0.0.0.0:8080", nil)
+
+	// Middleware CORS básico
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == "OPTIONS" { return }
+		mux.ServeHTTP(w, r)
+	})
+
+	port := os.Getenv("PORT")
+	if port == "" { port = "8080" }
+	fmt.Printf("🚀 API ECOPACTO ONLINE NA PORTA %s\n", port)
+	http.ListenAndServe("0.0.0.0:"+port, handler)
 }
