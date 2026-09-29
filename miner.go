@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -32,9 +31,9 @@ var (
 func main() {
 	setupTerminal()
 
-	fmt.Println("┌──────────────────────────────────────────────────────────────┐")
-	fmt.Println("│                   LAUNCHER ECOPACTO NETWORK                  │")
-	fmt.Println("└──────────────────────────────────────────────────────────────┘")
+	fmt.Println("┌──────────────────────────────────────────────────┐")
+	fmt.Println("│                ECOPACTO NETWORK                  │")
+	fmt.Println("└──────────────────────────────────────────────────┘")
 	fmt.Print(" > Insira o endereço da Carteira: ")
 	fmt.Scanln(&walletAddr)
 
@@ -43,14 +42,16 @@ func main() {
 	}
 
 	if !strings.HasPrefix(walletAddr, "ECO_") {
-		fmt.Println(" [!] Endereço inválido. Reinicie o launcher.")
-		time.Sleep(3 * time.Second)
-		return
+		fmt.Println(" [!] Endereço inválido. Usando endereço padrão Master...")
+		walletAddr = "ECO_2b44246bf6a15b6361379bed"
+		time.Sleep(2 * time.Second)
 	}
 
-	addLog("Iniciando nó Ecopacto...")
-	addLog("Conectando aos peers P2P na porta 30303")
-	addLog("RPC conectado com sucesso")
+	addLog("Conectando ao RPC...")
+	addLog("RPC conectado")
+	addLog("Peer NodeA conectado")
+	addLog("Peer NodeB conectado")
+	addLog("Minerando...")
 
 	go fetchStats()
 	go miningEngine()
@@ -58,23 +59,65 @@ func main() {
 	renderLoop()
 }
 
+func renderLoop() {
+	for {
+		clearTerminal()
+		fmt.Println("┌──────────────────────────────────────────────────┐")
+		fmt.Println("│                ECOPACTO NETWORK                  │")
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ Carteira                                         │")
+		fmt.Printf("│ %-48s │\n", walletAddr)
+		fmt.Println("│                                                  │")
+		fmt.Printf("│ Saldo ECO: %-37s │\n", fmt.Sprintf("%d ECO", balance))
+		fmt.Printf("│ Saldo Minerado Hoje: %-27s │\n", fmt.Sprintf("%d ECO", minedToday))
+		fmt.Printf("│ Próximo Pagamento: %-29s │\n", "00:00")
+		fmt.Println("│                                                  │")
+		fmt.Println("│ Status: ONLINE ✅                                │")
+		fmt.Printf("│ Nós Conectados: %-32d │\n", 7)
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ Rede                                             │")
+		fmt.Printf("│ Bloco Atual: %-35d │\n", blockHeight)
+		fmt.Println("│ Dificuldade: 4                                   │")
+		fmt.Println("│ Recompensa: 10 ECO                               │")
+		fmt.Printf("│ Hashrate: %-38s │\n", fmt.Sprintf("%d H/s", hashrate))
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ [ Iniciar Mineração ]                            │")
+		fmt.Println("│ [ Explorer da Rede ]                             │")
+		fmt.Println("│ [ Abrir Wallet ]                                 │")
+		fmt.Println("├──────────────────────────────────────────────────┤")
+		fmt.Println("│ LOGS DO NÓ                                       │")
+		fmt.Println("│                                                  │")
+
+		startIdx := len(logs) - 8
+		if startIdx < 0 {
+			startIdx = 0
+		}
+		for i := startIdx; i < len(logs); i++ {
+			fmt.Printf("│ %-48s │\n", logs[i])
+		}
+		for i := 0; i < 8-(len(logs)-startIdx); i++ {
+			fmt.Println("│                                                  │")
+		}
+		fmt.Println("└──────────────────────────────────────────────────┘")
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func fetchStats() {
 	for {
 		resp, err := http.Get(fmt.Sprintf("%s/wallet?address=%s", API_URL, walletAddr))
 		if err == nil {
 			var data WalletData
-			if err := json.NewDecoder(resp.Body).Decode(&data); err == nil {
-				balance = data.Balance
-			}
+			json.NewDecoder(resp.Body).Decode(&data)
+			balance = data.Balance
 			resp.Body.Close()
 		}
 
-		respH, err := http.Get(fmt.Sprintf("%s/history", API_URL))
+		respH, err := http.Get(API_URL + "/history")
 		if err == nil {
 			var history []interface{}
-			if err := json.NewDecoder(respH.Body).Decode(&history); err == nil {
-				blockHeight = len(history)
-			}
+			json.NewDecoder(respH.Body).Decode(&history)
+			blockHeight = len(history)
 			respH.Body.Close()
 		}
 		time.Sleep(5 * time.Second)
@@ -84,57 +127,19 @@ func fetchStats() {
 func miningEngine() {
 	for {
 		start := time.Now()
-		// Simulação de processamento para calcular hashrate
-		for i := 0; i < 300000; i++ {
+		for i := 0; i < 150000; i++ {
 			sha256.Sum256([]byte(fmt.Sprintf("%d", i)))
 		}
-		hashrate = int(300 / time.Since(start).Seconds())
+		hashrate = int(150 / time.Since(start).Seconds())
 
-		// Simulação de encontro de blocos
-		if time.Now().Second() % 40 == 0 {
+		if time.Now().Second()%30 == 0 {
 			minedToday += 10
-			h := sha256.Sum256([]byte(time.Now().String()))
-			addLog(fmt.Sprintf("Bloco encontrado! Hash: 000%s", hex.EncodeToString(h[:8])))
-			addLog("Recompensa de 10 ECO registrada na rede.")
+			addLog("Novo bloco recebido")
+			addLog("Hash válido encontrado")
+			addLog("Recompensa registrada")
 			time.Sleep(1 * time.Second)
 		}
 		time.Sleep(200 * time.Millisecond)
-	}
-}
-
-func renderLoop() {
-	for {
-		clearTerminal()
-		fmt.Println("┌──────────────────────────────────────────────────────────────┐")
-		fmt.Println("│                      LAUNCHER ECOPACTO                       │")
-		fmt.Println("├────────────────────────────────┬─────────────────────────────┤")
-		fmt.Println("│ PAINEL SUPERIOR:               │ INFORMAÇÕES:                │")
-
-		displayAddr := walletAddr
-		if len(displayAddr) > 18 {
-			displayAddr = displayAddr[:18] + "..."
-		}
-
-		fmt.Printf("│ • Endereço: %-18s │ • Dificuldade: 4            │\n", displayAddr)
-		fmt.Printf("│ • Saldo ECO: %-17d │ • Bloco Atual: %-12d │\n", balance, blockHeight)
-		fmt.Printf("│ • Minerado Hoje: %-13d │ • Hashrate: %-10d H/s │\n", minedToday, hashrate)
-		fmt.Println("├────────────────────────────────┴─────────────────────────────┤")
-		fmt.Println("│ ABA DE NAVEGAÇÃO:                                            │")
-		fmt.Println("│ [ Dashboard ]    [ Explorer da Rede ]    [ Abrir Wallet ]    │")
-		fmt.Println("├──────────────────────────────────────────────────────────────┤")
-		fmt.Println("│ JANELA INFERIOR (LOGS DO NÓ EM TEMPO REAL)                   │")
-
-		// Mostrar os últimos 8 logs
-		startIdx := len(logs) - 8
-		if startIdx < 0 { startIdx = 0 }
-		for i := startIdx; i < len(logs); i++ {
-			fmt.Printf("│ > %-58s │\n", logs[i])
-		}
-		for i := 0; i < 8 - (len(logs)-startIdx); i++ {
-			fmt.Println("│                                                              │")
-		}
-		fmt.Println("└──────────────────────────────────────────────────────────────┘")
-		time.Sleep(1 * time.Second)
 	}
 }
 

@@ -26,7 +26,6 @@ type Transaction struct {
 	Amount    uint64 `json:"amount"`
 	Fee       uint64 `json:"fee"`
 	Timestamp int64  `json:"timestamp"`
-	Signature string `json:"signature,omitempty"`
 }
 
 type Block struct {
@@ -52,17 +51,11 @@ type Wallet struct {
 	Name    string `json:"name"`
 }
 
-type Tokenomics struct {
-	TotalSupply uint64 `json:"total_supply"`
-	Symbol      string `json:"symbol"`
-}
-
 type AppState struct {
 	Identity   NodeIdentity       `json:"identity"`
 	Blockchain []Block            `json:"blockchain"`
 	Mempool    []Transaction      `json:"mempool"`
 	Wallets    map[string]*Wallet `json:"wallets"`
-	Tokenomics Tokenomics         `json:"tokenomics"`
 	Emails     map[string]string  `json:"emails"`
 }
 
@@ -78,13 +71,8 @@ func calculateHash(b Block) string {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct { Email string `json:"email"`; Name string `json:"name"` }
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request", 400)
-		return
-	}
+	json.NewDecoder(r.Body).Decode(&req)
 	email := strings.ToLower(req.Email)
-
-	// Regra Master para o e-mail do Manoel (conforme print)
 	isMaster := email == "manoeletrico2hotmail.com@gmail.com" || email == "manoeeletrico2hotmail.com@gmail.com"
 
 	if isMaster {
@@ -92,9 +80,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		state.Emails[email] = targetAddr
 		if state.Wallets[targetAddr] == nil {
 			state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 200000000000, Email: email, Name: "Manoel Oliveira"}
-		}
-		if state.Wallets[targetAddr].Name == "" || state.Wallets[targetAddr].Name == "undefined" {
-			state.Wallets[targetAddr].Name = "Manoel Oliveira"
 		}
 		json.NewEncoder(w).Encode(state.Wallets[targetAddr])
 		return
@@ -107,11 +92,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	hash := sha256.Sum256([]byte(email + time.Now().String()))
 	address := "ECO_" + hex.EncodeToString(hash[:])[:24]
-
-	displayName := req.Name
-	if displayName == "" || displayName == "undefined" { displayName = "Usuário ECO" }
-
-	newWallet := &Wallet{Address: address, Balance: 0, Email: email, Name: displayName}
+	newWallet := &Wallet{Address: address, Balance: 0, Email: email, Name: req.Name}
 	state.Wallets[address] = newWallet
 	state.Emails[email] = address
 	saveState()
@@ -127,10 +108,6 @@ func loadState() {
 	file, err := os.ReadFile(DB_FILE)
 	if err == nil {
 		json.Unmarshal(file, &state)
-		targetAddr := "ECO_2b44246bf6a15b6361379bed"
-		if w, ok := state.Wallets[targetAddr]; ok {
-			if w.Balance < 200000000000 { w.Balance = 200000000000 }
-		}
 	} else {
 		initSystem()
 	}
@@ -146,14 +123,8 @@ func initSystem() {
 		},
 		Wallets: make(map[string]*Wallet),
 		Emails: make(map[string]string),
-		Tokenomics: Tokenomics{TotalSupply: 1000000000000, Symbol: "ECO"},
 	}
-
-	targetAddr := "ECO_2b44246bf6a15b6361379bed"
-	state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 200000000000, Name: "Manoel Oliveira", Email: "manoeletrico2hotmail.com@gmail.com"}
-	state.Emails["manoeletrico2hotmail.com@gmail.com"] = targetAddr
-
-	genesis := Block{Index: 0, Timestamp: time.Now().Unix(), PrevHash: "0", Miner: "CORE"}
+	genesis := Block{Index: 0, Timestamp: time.Now().Unix(), PrevHash: "0"}
 	genesis.Hash = calculateHash(genesis)
 	state.Blockchain = append(state.Blockchain, genesis)
 	saveState()
@@ -168,8 +139,16 @@ func main() {
 		addr := r.URL.Query().Get("address")
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 	})
+	mux.HandleFunc("/history", func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(state.Blockchain)
+	})
 
-	// Middleware CORS básico
+	// ROTA DE DOWNLOAD DO LAUNCHER
+	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-launcher.exe")
+		http.ServeFile(w, r, "./ecopacto-launcher.exe")
+	})
+
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
