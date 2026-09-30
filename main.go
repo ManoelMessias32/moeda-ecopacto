@@ -17,7 +17,6 @@ import (
 const (
 	DB_FILE    = "blockchain.db"
 	ADMIN_KEY  = "ECO_MASTER_888"
-	FEE_RATE   = 0.005
 )
 
 type AppState struct {
@@ -26,6 +25,22 @@ type AppState struct {
 	Mempool    []Transaction      `json:"mempool"`
 	Wallets    map[string]*Wallet `json:"wallets"`
 	Emails     map[string]string  `json:"emails"`
+	Tokenomics Tokenomics         `json:"tokenomics"`
+}
+
+type Tokenomics struct {
+	TotalSupply uint64 `json:"total_supply"`
+	MiningPool  uint64 `json:"mining_pool"` // Reserva para pagamentos
+	Burned      uint64 `json:"burned"`      // Moedas destruídas para valorização
+	Symbol      string `json:"symbol"`
+}
+
+type Wallet struct {
+	Address string `json:"address"`
+	Balance uint64 `json:"balance"`
+	Pending uint64 `json:"pending"` // Minerado aguardando 00:00
+	Email   string `json:"email"`
+	Name    string `json:"name"`
 }
 
 type Transaction struct {
@@ -40,14 +55,6 @@ type NodeIdentity struct {
 	NodeID string `json:"node_id"`; PublicKey string `json:"public_key"`; PrivateKey []byte `json:"-"`
 }
 
-type Wallet struct {
-	Address string `json:"address"`
-	Balance uint64 `json:"balance"`
-	Pending uint64 `json:"pending"` // Saldo minerado aguardando pagamento
-	Email   string `json:"email"`
-	Name    string `json:"name"`
-}
-
 var state AppState
 
 func calculateHash(b Block) string {
@@ -58,30 +65,51 @@ func calculateHash(b Block) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// TAREFA DE PAGAMENTO À MEIA-NOITE
+// SISTEMA DE PAGAMENTO À MEIA-NOITE
 func midnightPayoutTask() {
 	for {
 		now := time.Now()
-		// Calcula quanto tempo falta para a próxima meia-noite
 		nextMidnight := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, now.Location())
-		duration := nextMidnight.Sub(now)
+		time.Sleep(time.Until(nextMidnight))
 
-		fmt.Printf("⏰ Sistema de Pagamento: Próximo ciclo em %v\n", duration)
-		time.Sleep(duration)
-
-		// Executa o pagamento
-		fmt.Println("💰 [PAYOUT] Iniciando processamento de meia-noite...")
-		count := 0
+		fmt.Println("💰 [PAYOUT] Iniciando distribuição diária...")
 		for _, w := range state.Wallets {
 			if w.Pending > 0 {
-				w.Balance += w.Pending
-				w.Pending = 0
-				count++
+				if state.Tokenomics.MiningPool >= w.Pending {
+					w.Balance += w.Pending
+					state.Tokenomics.MiningPool -= w.Pending
+					w.Pending = 0
+				}
 			}
 		}
 		saveState()
-		fmt.Printf("✅ [PAYOUT] Pagamento concluído para %d carteiras.\n", count)
 	}
+}
+
+// ENVIO COM TAXA DE 5% (2% QUEIMA / 3% POOL)
+func sendHandler(w http.ResponseWriter, r *http.Request) {
+	var req struct { From, To string; Amount uint64 }
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil { return }
+
+	from := state.Wallets[req.From]
+	if from == nil || from.Balance < req.Amount {
+		http.Error(w, "Saldo insuficiente", 400)
+		return
+	}
+
+	fee := uint64(float64(req.Amount) * 0.05)
+	burn := uint64(float64(req.Amount) * 0.02)
+	pool := fee - burn
+
+	from.Balance -= (req.Amount + fee)
+	if to, ok := state.Wallets[req.To]; ok { to.Balance += req.Amount }
+
+	state.Tokenomics.Burned += burn
+	state.Tokenomics.TotalSupply -= burn
+	state.Tokenomics.MiningPool += pool
+
+	saveState()
+	json.NewEncoder(w).Encode(map[string]interface{}{"status": "Transação Concluída", "queimado": burn, "reabastecido_pool": pool})
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -134,6 +162,12 @@ func initSystem() {
 		},
 		Wallets: make(map[string]*Wallet),
 		Emails: make(map[string]string),
+		Tokenomics: Tokenomics{
+			TotalSupply: 1000000000000,
+			MiningPool:  300000000000,
+			Burned:      0,
+			Symbol:      "ECO",
+		},
 	}
 	genesis := Block{Index: 0, Timestamp: time.Now().Unix(), PrevHash: "0"}
 	genesis.Hash = calculateHash(genesis)
@@ -143,33 +177,25 @@ func initSystem() {
 
 func main() {
 	loadState()
-
-	// Inicia a tarefa de meia-noite em uma goroutine
 	go midnightPayoutTask()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/send", sendHandler)
 	mux.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
 		addr := r.URL.Query().Get("address")
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 	})
-
-	// Novo endpoint para o minerador reportar blocos
+	mux.HandleFunc("/tokenomics", func(w http.ResponseWriter, r *http.Request) { json.NewEncoder(w).Encode(state.Tokenomics) })
 	mux.HandleFunc("/mine/submit", func(w http.ResponseWriter, r *http.Request) {
 		addr := r.URL.Query().Get("address")
 		if wallet, ok := state.Wallets[addr]; ok {
 			wallet.Pending += 10
 			saveState()
-			fmt.Printf("⛏️ Bloco reportado por %s. Pendente: %d ECO\n", addr, wallet.Pending)
 			w.WriteHeader(200)
-		} else {
-			http.Error(w, "Carteira nao encontrada", 404)
 		}
 	})
-
-	mux.HandleFunc("/history", func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(state.Blockchain)
-	})
+	mux.HandleFunc("/history", func(w http.ResponseWriter, r *http.Request) { json.NewEncoder(w).Encode(state.Blockchain) })
 
 	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
 		exePath := "./ecopacto-launcher.exe"
@@ -195,6 +221,6 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" { port = "8080" }
-	fmt.Printf("🚀 API ECOPACTO ONLINE NA PORTA %s\n", port)
+	fmt.Printf("🚀 ECOPACTO ONLINE NA PORTA %s\n", port)
 	http.ListenAndServe("0.0.0.0:"+port, handler)
 }
