@@ -41,7 +41,11 @@ type NodeIdentity struct {
 }
 
 type Wallet struct {
-	Address string `json:"address"`; Balance uint64 `json:"balance"`; Email string `json:"email"`; Name string `json:"name"`
+	Address string `json:"address"`
+	Balance uint64 `json:"balance"`
+	Pending uint64 `json:"pending"` // Saldo minerado aguardando pagamento
+	Email   string `json:"email"`
+	Name    string `json:"name"`
 }
 
 var state AppState
@@ -52,6 +56,32 @@ func calculateHash(b Block) string {
 	h := sha256.New()
 	h.Write([]byte(record))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+// TAREFA DE PAGAMENTO À MEIA-NOITE
+func midnightPayoutTask() {
+	for {
+		now := time.Now()
+		// Calcula quanto tempo falta para a próxima meia-noite
+		nextMidnight := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, now.Location())
+		duration := nextMidnight.Sub(now)
+
+		fmt.Printf("⏰ Sistema de Pagamento: Próximo ciclo em %v\n", duration)
+		time.Sleep(duration)
+
+		// Executa o pagamento
+		fmt.Println("💰 [PAYOUT] Iniciando processamento de meia-noite...")
+		count := 0
+		for _, w := range state.Wallets {
+			if w.Pending > 0 {
+				w.Balance += w.Pending
+				w.Pending = 0
+				count++
+			}
+		}
+		saveState()
+		fmt.Printf("✅ [PAYOUT] Pagamento concluído para %d carteiras.\n", count)
+	}
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -114,50 +144,45 @@ func initSystem() {
 func main() {
 	loadState()
 
+	// Inicia a tarefa de meia-noite em uma goroutine
+	go midnightPayoutTask()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/wallet", func(w http.ResponseWriter, r *http.Request) {
 		addr := r.URL.Query().Get("address")
 		json.NewEncoder(w).Encode(state.Wallets[addr])
 	})
+
+	// Novo endpoint para o minerador reportar blocos
+	mux.HandleFunc("/mine/submit", func(w http.ResponseWriter, r *http.Request) {
+		addr := r.URL.Query().Get("address")
+		if wallet, ok := state.Wallets[addr]; ok {
+			wallet.Pending += 10
+			saveState()
+			fmt.Printf("⛏️ Bloco reportado por %s. Pendente: %d ECO\n", addr, wallet.Pending)
+			w.WriteHeader(200)
+		} else {
+			http.Error(w, "Carteira nao encontrada", 404)
+		}
+	})
+
 	mux.HandleFunc("/history", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(state.Blockchain)
 	})
 
-	// ROTA DE DOWNLOAD PROFISSIONAL
 	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
 		exePath := "./ecopacto-launcher.exe"
-
-		// 1. Verifica se o arquivo existe no servidor
-		info, err := os.Stat(exePath)
-		if err != nil {
-			http.Error(w, "ERRO: O arquivo ecopacto-launcher.exe nao foi encontrado no servidor. Certifique-se de que o push incluiu o binario.", 404)
-			return
-		}
-
-		// 2. Configura os Headers de Download
 		w.Header().Set("Content-Type", "application/zip")
 		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-network.zip")
-
-		// 3. Cria o ZIP em tempo real
 		zw := zip.NewWriter(w)
-		defer zw.Close()
-
-		// 4. Cria a pasta bin/ dentro do ZIP
-		f, err := zw.Create("bin/ecopacto-launcher.exe")
-		if err != nil {
-			return
-		}
-
-		// 5. Abre o executável real e copia os dados para o ZIP
+		f, _ := zw.Create("bin/ecopacto-launcher.exe")
 		file, err := os.Open(exePath)
-		if err != nil {
-			return
+		if err == nil {
+			io.Copy(f, file)
+			file.Close()
 		}
-		defer file.Close()
-
-		io.Copy(f, file)
-		fmt.Printf("📦 Download solicitado: entregando arquivo de %d MiB\n", info.Size()/(1024*1024))
+		zw.Close()
 	})
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
