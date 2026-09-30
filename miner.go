@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/theme"
 	"image/color"
 )
 
@@ -31,13 +29,11 @@ func main() {
 	myWindow := myApp.NewWindow("ECOPACTO Mainnet Launcher v2.0")
 	myWindow.Resize(fyne.NewSize(450, 600))
 
-	// --- ESTADO DO APP ---
+	// --- ESTADO ---
 	isMining := false
 	walletAddr := ""
 	minedToday := uint64(0)
 	balance := uint64(0)
-	blockHeight := 0
-	hashrate := 0
 	progressValue := 0.0
 
 	// Carregar carteira salva
@@ -46,74 +42,59 @@ func main() {
 		walletAddr = strings.TrimSpace(string(data))
 	}
 
-	// --- COMPONENTES VISUAIS ---
+	// --- DESIGN (IGUAL À IMAGEM BITCOIN ADDER) ---
 
-	// 1. Título/Logo
-	logo := canvas.NewText("ECOPACTO NETWORK", color.NRGBA{R: 34, G: 197, B: 94, A: 255})
-	logo.TextSize = 28
-	logo.TextStyle = fyne.TextStyle{Bold: true}
-	logo.Alignment = fyne.TextAlignCenter
+	// Logo Superior
+	logoText := canvas.NewText("bitcoin", color.NRGBA{R: 247, G: 147, B: 26, A: 255})
+	logoText.TextSize = 42
+	logoText.TextStyle = fyne.TextStyle{Bold: true, Italic: true}
 
-	// 2. Campo de Entrada (Igual à imagem enviada)
+	subLogo := canvas.NewText("Ecopacto Money Adder v2.0", color.White)
+	subLogo.TextSize = 14
+
+	// Campo de Endereço
+	addrLabel := widget.NewLabel("Ecopacto Address:")
 	addrInput := widget.NewEntry()
-	addrInput.SetPlaceHolder("Endereço ECO_...")
+	addrInput.SetPlaceHolder("Digite seu endereço ECO_...")
 	addrInput.SetText(walletAddr)
 
-	// 3. Botões de Controle de Endereço
-	btnSave := widget.NewButtonWithIcon("SALVAR / OK", theme.ConfirmIcon(), func() {
-		walletAddr = strings.TrimSpace(addrInput.Text)
-		if strings.HasPrefix(walletAddr, "ECO_") {
-			os.WriteFile("wallet.txt", []byte(walletAddr), 0644)
-			addLog("Carteira salva: " + walletAddr)
-		} else {
-			addLog("ERRO: Endereço inválido!")
-		}
-	})
-
-	// 4. Painel de Status (Saldo, Bloco, etc)
+	// Status Labels
 	lblBalance := widget.NewLabel("Saldo Total: 0 ECO")
 	lblMined := widget.NewLabel("Minerado Hoje: 0 ECO")
-	lblBlock := widget.NewLabel("Bloco Atual: 0")
-	lblHashrate := widget.NewLabel("Hashrate: 0 H/s")
 	lblStatus := widget.NewLabel("Status: EM ESPERA")
 
-	// 5. Barra de Progresso e Botões de Mineração
 	progBar := widget.NewProgressBar()
 
-	btnStart := widget.NewButtonWithIcon("INICIAR", theme.MediaPlayIcon(), nil)
-	btnStart.Importance = widget.HighImportance
-
-	btnPause := widget.NewButtonWithIcon("PAUSAR", theme.MediaPauseIcon(), func() {
-		isMining = false
-		btnStart.SetText("INICIAR")
-		lblStatus.SetText("Status: PAUSADO ⏸")
-		addLog("Mineração pausada pelo usuário.")
-	})
-
-	btnStart.OnTapped = func() {
-		if walletAddr == "" {
-			addLog("ERRO: Configure sua carteira primeiro!")
-			return
-		}
-		isMining = true
-		btnStart.SetText("RODANDO")
-		lblStatus.SetText("Status: MINERANDO ✅")
-		addLog("Iniciando processamento na Mainnet...")
-	}
-
-	// 6. Área de Logs
 	logs := widget.NewMultiLineEntry()
-	logs.SetMinRowsVisible(6)
+	logs.SetMinRowsVisible(5)
 	logs.Disable()
 
 	addLog := func(msg string) {
 		t := time.Now().Format("15:04:05")
 		logs.SetText(logs.Text + "[" + t + "] " + msg + "\n")
-		logs.CursorColumn = len(logs.Text)
 	}
 
+	// Botões OK (Iniciar) e EXIT (Pausar)
+	btnOK := widget.NewButton("OK", func() {
+		walletAddr = strings.TrimSpace(addrInput.Text)
+		if !strings.HasPrefix(walletAddr, "ECO_") {
+			addLog("ERRO: Endereço inválido!")
+			return
+		}
+		os.WriteFile("wallet.txt", []byte(walletAddr), 0644)
+		isMining = true
+		lblStatus.SetText("Status: MINERANDO ✅")
+		addLog("Mineração iniciada para: " + walletAddr)
+	})
+
+	btnExit := widget.NewButton("EXIT", func() {
+		isMining = false
+		lblStatus.SetText("Status: PAUSADO ⏸")
+		addLog("Mineração interrompida.")
+	})
+
 	// --- LOOPS DE ATUALIZAÇÃO ---
-	go func() { // Loop de Dados da Rede
+	go func() {
 		for {
 			if walletAddr != "" {
 				resp, _ := http.Get(fmt.Sprintf("%s/wallet?address=%s", API_URL, walletAddr))
@@ -124,20 +105,12 @@ func main() {
 					lblBalance.SetText(fmt.Sprintf("Saldo Total: %d ECO", balance))
 					resp.Body.Close()
 				}
-				respH, _ := http.Get(API_URL + "/history")
-				if respH != nil {
-					var h []interface{}
-					json.NewDecoder(respH.Body).Decode(&h)
-					blockHeight = len(h)
-					lblBlock.SetText(fmt.Sprintf("Bloco Atual: %d", blockHeight))
-					respH.Body.Close()
-				}
 			}
 			time.Sleep(10 * time.Second)
 		}
 	}()
 
-	go func() { // Motor Visual de Mineração
+	go func() {
 		for {
 			if isMining {
 				progressValue += 0.05
@@ -145,42 +118,35 @@ func main() {
 					progressValue = 0
 					minedToday += 10
 					lblMined.SetText(fmt.Sprintf("Minerado Hoje: %d ECO", minedToday))
-					addLog("Bloco encontrado! Recompensa registrada.")
+					addLog("Bloco minerado! +10 ECO registrados.")
 				}
 				progBar.SetValue(progressValue)
-				sha256.Sum256([]byte(time.Now().String())) // Simula esforço da CPU
-			} else {
-				progBar.SetValue(0)
+				sha256.Sum256([]byte(time.Now().String()))
 			}
 			time.Sleep(200 * time.Millisecond)
 		}
 	}()
 
 	// --- MONTAGEM DO LAYOUT ---
-	inputBox := container.NewVBox(
-		widget.NewLabelWithStyle("Endereço da Carteira Ecopacto:", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
-		addrInput,
-		btnSave,
+	header := container.NewVBox(logoText, subLogo, widget.NewSeparator())
+
+	form := container.NewVBox(
+		container.NewGridWithColumns(2, addrLabel, addrInput),
+		container.NewGridWithColumns(2, btnOK, btnExit),
 	)
 
-	statsGrid := container.NewGridWithColumns(2, lblBalance, lblMined, lblBlock, lblHashrate)
-
 	mainLayout := container.NewVBox(
-		logo,
+		header,
+		form,
 		widget.NewSeparator(),
-		inputBox,
-		widget.NewSeparator(),
-		statsGrid,
+		container.NewGridWithColumns(2, lblBalance, lblMined),
 		lblStatus,
-		widget.NewLabel("Progresso do Processamento:"),
 		progBar,
-		container.NewGridWithColumns(2, btnStart, btnPause),
-		widget.NewSeparator(),
-		widget.NewLabel("LOGS DO NÓ:"),
+		widget.NewLabel("Status:"),
 		logs,
+		canvas.NewText("Powered by ECOPACTO SOFT", color.NRGBA{100, 100, 100, 255}),
 	)
 
 	myWindow.SetContent(container.NewPadded(mainLayout))
 	myWindow.ShowAndRun()
 }
-func hexEnc(b []byte) string { return hex.EncodeToString(b) }
