@@ -124,29 +124,40 @@ func main() {
 		json.NewEncoder(w).Encode(state.Blockchain)
 	})
 
-	// DOWNLOAD DO PACOTE ZIP (BIN + LAUNCHER)
+	// ROTA DE DOWNLOAD PROFISSIONAL
 	mux.HandleFunc("/download-launcher", func(w http.ResponseWriter, r *http.Request) {
-		// NOME CORRIGIDO PARA O QUE ESTA NA SUA PASTA
 		exePath := "./ecopacto-launcher.exe"
 
-		if _, err := os.Stat(exePath); os.IsNotExist(err) {
-			http.Error(w, "ERRO: O arquivo ecopacto-launcher.exe nao foi encontrado no servidor.", 404)
+		// 1. Verifica se o arquivo existe no servidor
+		info, err := os.Stat(exePath)
+		if err != nil {
+			http.Error(w, "ERRO: O arquivo ecopacto-launcher.exe nao foi encontrado no servidor. Certifique-se de que o push incluiu o binario.", 404)
 			return
 		}
 
+		// 2. Configura os Headers de Download
 		w.Header().Set("Content-Type", "application/zip")
 		w.Header().Set("Content-Disposition", "attachment; filename=ecopacto-network.zip")
 
+		// 3. Cria o ZIP em tempo real
 		zw := zip.NewWriter(w)
+		defer zw.Close()
+
+		// 4. Cria a pasta bin/ dentro do ZIP
 		f, err := zw.Create("bin/ecopacto-launcher.exe")
-		if err == nil {
-			file, err := os.Open(exePath)
-			if err == nil {
-				io.Copy(f, file)
-				file.Close()
-			}
+		if err != nil {
+			return
 		}
-		zw.Close()
+
+		// 5. Abre o executável real e copia os dados para o ZIP
+		file, err := os.Open(exePath)
+		if err != nil {
+			return
+		}
+		defer file.Close()
+
+		io.Copy(f, file)
+		fmt.Printf("📦 Download solicitado: entregando arquivo de %d MiB\n", info.Size()/(1024*1024))
 	})
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -159,6 +170,6 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" { port = "8080" }
-	fmt.Printf("🚀 API MASTER ONLINE NA PORTA %s\n", port)
+	fmt.Printf("🚀 API ECOPACTO ONLINE NA PORTA %s\n", port)
 	http.ListenAndServe("0.0.0.0:"+port, handler)
 }
