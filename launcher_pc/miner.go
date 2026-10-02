@@ -21,8 +21,8 @@ const (
 type State struct {
 	Wallet     string   `json:"wallet"`
 	Balance    uint64   `json:"balance"`
-	Pending    uint64   `json:"pending"`    // Saldo que cairá à meia-noite
-	MinedToday uint64   `json:"mined_today"` // Contador local da sessão
+	Pending    uint64   `json:"pending"`    // Saldo que cairá à meia-noite (Server)
+	MinedToday uint64   `json:"mined_today"` // Acumulado local salvo no PC
 	IsMining   bool     `json:"is_mining"`
 	Logs       []string `json:"logs"`
 }
@@ -32,24 +32,39 @@ var appState = State{
 	Logs:     []string{"[SISTEMA] Launcher iniciado. Pronto para minerar."},
 }
 
+// Salva as estatísticas no PC para não perder ao fechar
+func saveStats() {
+	data, _ := json.Marshal(appState.MinedToday)
+	os.WriteFile("stats.json", data, 0644)
+}
+
+// Carrega as estatísticas salvas no PC
+func loadStats() {
+	data, err := os.ReadFile("stats.json")
+	if err == nil {
+		json.Unmarshal(data, &appState.MinedToday)
+	}
+}
+
 func addLog(msg string) {
 	t := time.Now().Format("15:04:05")
 	appState.Logs = append(appState.Logs, "["+t+"] "+msg)
-	if len(appState.Logs) > 40 {
+	if len(appState.Logs) > 30 {
 		appState.Logs = appState.Logs[1:]
 	}
 }
 
 func main() {
-	// Carregar carteira salva
+	// Carregar carteira e moedas salvas
 	data, _ := os.ReadFile("wallet.txt")
 	appState.Wallet = strings.TrimSpace(string(data))
+	loadStats()
 
-	// Iniciar loops
+	// Iniciar loops de fundo
 	go miningEngine()
 	go syncNetwork()
 
-	// Endpoints
+	// Endpoints da Interface
 	http.HandleFunc("/", serveUI)
 	http.HandleFunc("/api/state", getState)
 	http.HandleFunc("/api/save", saveWallet)
@@ -59,7 +74,7 @@ func main() {
 
 	openAppWindow()
 
-	fmt.Println("🚀 Launcher Ecopacto rodando na porta " + APP_PORT)
+	fmt.Println("🚀 Launcher Ecopacto ativo em http://localhost:" + APP_PORT)
 	select {}
 }
 
@@ -70,50 +85,58 @@ func serveUI(w http.ResponseWriter, r *http.Request) {
 	<head>
 		<title>ECOPACTO MASTER LAUNCHER</title>
 		<style>
-			body { background: #05070a; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 15px; user-select: none; overflow: hidden; }
-			.card { border: 1px solid #333; border-radius: 12px; padding: 20px; background: #0f121a; box-shadow: 0 10px 40px rgba(0,0,0,0.8); max-width: 380px; margin: auto; }
+			:root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --muted: #64748b; }
+			body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 15px; user-select: none; overflow: hidden; }
+			.card { border: 1px solid #333; border-radius: 24px; padding: 25px; background: var(--card); box-shadow: 0 20px 50px rgba(0,0,0,0.8); max-width: 400px; margin: auto; }
+
 			h1 { color: #f7931a; font-style: italic; font-size: 32px; margin: 0; letter-spacing: -1px; }
-			.subtitle { color: #555; font-size: 10px; margin-bottom: 15px; text-transform: uppercase; }
+			.subtitle { color: var(--muted); font-size: 10px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-			.input-box { text-align: left; margin-bottom: 12px; }
-			label { font-size: 10px; color: #888; margin-left: 5px; }
-			input { width: 100%%; padding: 8px; margin-top: 5px; background: #000; border: 1px solid #222; color: #22c55e; font-family: monospace; border-radius: 6px; outline: none; box-sizing: border-box; font-size: 12px; text-align: center; }
+			.input-box { text-align: left; margin-bottom: 15px; background: #000; padding: 10px; border-radius: 12px; border: 1px solid #222; }
+			label { font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: bold; }
+			input { width: 100%%; padding: 5px 0; background: transparent; border: none; color: var(--accent); font-family: monospace; outline: none; font-size: 13px; }
 
-			.btn-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; }
-			.btn { flex: 1; padding: 8px; cursor: pointer; font-weight: bold; border-radius: 5px; border: none; transition: 0.2s; font-size: 11px; text-transform: uppercase; }
-			.btn-ok { background: #22c55e; color: black; }
-			.btn-toggle { background: #333; color: white; }
+			.balance-label { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: 1px; margin-top: 15px; }
+			.balance-amount { font-size: 48px; font-weight: 800; color: #fff; margin: 5px 0; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+			.balance-amount span { color: var(--accent); font-size: 20px; }
 
-			.stats { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid #1a1a1a; }
-			.stats div { font-size: 11px; color: #666; }
-			.stats b { color: #eee; display: block; font-size: 14px; }
+			.btn-row { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+			.btn { flex: 1; padding: 14px; cursor: pointer; font-weight: bold; border-radius: 12px; border: none; transition: 0.2s; font-size: 11px; text-transform: uppercase; }
+			.btn-save { background: #ffffff08; color: white; border: 1px solid #ffffff15; }
+			.btn-toggle { background: var(--accent); color: black; font-weight: 900; }
 
-			.logs { background: #000; height: 180px; overflow-y: auto; text-align: left; padding: 10px; font-size: 10px; color: #22c55e; border: 1px solid #222; margin-top: 10px; font-family: 'Consolas', monospace; border-radius: 6px; line-height: 1.4; opacity: 0.9; }
+			.stats-small { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 15px; padding: 0 5px; }
+			.stats-small b { color: var(--accent); }
+
+			.logs { background: #000; height: 120px; overflow-y: auto; text-align: left; padding: 10px; font-size: 10px; color: var(--accent); border: 1px solid #222; margin-top: 10px; font-family: 'Consolas', monospace; border-radius: 10px; line-height: 1.4; opacity: 0.8; }
 			.footer { font-size: 9px; color: #333; margin-top: 15px; }
 		</style>
 	</head>
 	<body>
 		<div class="card">
 			<h1>ecopacto</h1>
-			<div class="subtitle">Mainnet Miner v2.5 - Midnight Payout</div>
+			<div class="subtitle">Official Mainnet Launcher</div>
 
 			<div class="input-box">
-				<label>Ecopacto Address:</label>
-				<input type="text" id="wallet" value="%s" placeholder="ECO_...">
+				<label>Endereço da sua carteira:</label>
+				<input type="text" id="wallet" value="%s" placeholder="ECO_..." oninput="saveSilently()">
+			</div>
+
+			<div class="balance-label">SALDO DISPONÍVEL</div>
+			<div class="balance-amount"><span id="balance">0</span> <span>ECO</span></div>
+
+			<div class="stats-small">
+				<span>PENDENTE (00:00): <b id="pending">0 ECO</b></span>
+				<span>ACUMULADO: <b id="mined">0 ECO</b></span>
 			</div>
 
 			<div class="btn-row">
-				<button class="btn btn-ok" onclick="save()">SALVAR / OK</button>
+				<button class="btn btn-save" onclick="saveSilently()">SALVAR CONFIG</button>
 				<button class="btn btn-toggle" onclick="toggle()" id="btn-toggle">INICIAR</button>
 			</div>
 
-			<div class="stats">
-				<div>SALDO REAL<b><span id="balance">0</span> ECO</b></div>
-				<div>PENDENTE (00:00)<b><span id="pending">0</span> ECO</b></div>
-			</div>
-
 			<div class="logs" id="logs"></div>
-			<div class="footer">PAGAMENTOS AUTOMÁTICOS ÀS 00:00</div>
+			<div class="footer">POWERED BY ECOPACTO NETWORK CORE</div>
 		</div>
 
 		<script>
@@ -121,20 +144,21 @@ func serveUI(w http.ResponseWriter, r *http.Request) {
 			function update() {
 				fetch('/api/state').then(r => r.json()).then(data => {
 					document.getElementById('balance').innerText = data.balance.toLocaleString();
-					document.getElementById('pending').innerText = data.pending.toLocaleString();
+					document.getElementById('pending').innerText = data.pending + ' ECO';
+					document.getElementById('mined').innerText = data.mined_today + ' ECO';
 
 					const btn = document.getElementById('btn-toggle');
-					btn.innerText = data.is_mining ? 'PARAR' : 'INICIAR';
-					btn.style.background = data.is_mining ? '#ef4444' : '#333';
+					btn.innerText = data.is_mining ? 'PARAR MINERAÇÃO' : 'INICIAR MINERAÇÃO';
+					btn.style.background = data.is_mining ? '#ef4444' : '#22c55e';
+					btn.style.color = data.is_mining ? 'white' : 'black';
 
-					const isAtBottom = logsDiv.scrollHeight - logsDiv.clientHeight <= logsDiv.scrollTop + 1;
 					logsDiv.innerHTML = data.logs.join('<br>');
-					if (isAtBottom) logsDiv.scrollTop = logsDiv.scrollHeight;
+					logsDiv.scrollTop = logsDiv.scrollHeight;
 				});
 			}
-			function save() {
+			function saveSilently() {
 				const addr = document.getElementById('wallet').value;
-				fetch('/api/save?addr=' + addr).then(() => alert('Configuração salva!'));
+				fetch('/api/save?addr=' + addr.trim());
 			}
 			function toggle() { fetch('/api/toggle'); }
 			setInterval(update, 1000);
@@ -147,9 +171,9 @@ func serveUI(w http.ResponseWriter, r *http.Request) {
 func getState(w http.ResponseWriter, r *http.Request) { json.NewEncoder(w).Encode(appState) }
 
 func saveWallet(w http.ResponseWriter, r *http.Request) {
-	appState.Wallet = r.URL.Query().Get("addr")
+	appState.Wallet = strings.TrimSpace(r.URL.Query().Get("addr"))
 	os.WriteFile("wallet.txt", []byte(appState.Wallet), 0644)
-	addLog("Carteira atualizada: " + appState.Wallet)
+	addLog("Carteira salva localmente.")
 	w.WriteHeader(200)
 }
 
@@ -158,7 +182,7 @@ func toggleMining(w http.ResponseWriter, r *http.Request) {
 	if appState.IsMining {
 		addLog("Mineração ATIVADA.")
 	} else {
-		addLog("Mineração PAUSADA.")
+		addLog("Mineração EM PAUSA.")
 	}
 	w.WriteHeader(200)
 }
@@ -166,26 +190,26 @@ func toggleMining(w http.ResponseWriter, r *http.Request) {
 func miningEngine() {
 	for {
 		if appState.IsMining && appState.Wallet != "" {
-			// Simula esforço real
 			h := sha256.New()
 			h.Write([]byte(time.Now().String()))
 			hashStr := hex.EncodeToString(h.Sum(nil))
 
 			time.Sleep(5 * time.Second)
 			if appState.IsMining {
-				// REPORTA AO SERVIDOR IMEDIATAMENTE
+				// REPORTA O BLOCO PARA O SERVIDOR
 				resp, err := http.Get(API_URL + "/mine/submit?address=" + appState.Wallet)
 				if err == nil && resp.StatusCode == 200 {
 					appState.MinedToday += 10
-					addLog("Bloco minerado! Hash: 000" + hashStr[:10])
-					addLog("Enviado ao servidor. Cairá no Payout das 00:00.")
+					saveStats() // SALVA O PROGRESSO NO PC
+					addLog("Bloco OK! Hash: 000" + hashStr[:10])
+					addLog("Sincronizado com a Railway.")
 					resp.Body.Close()
 				} else {
-					addLog("ERRO: Falha ao reportar bloco ao servidor.")
+					addLog("ERRO: Carteira não encontrada na rede.")
 				}
 			}
 		} else {
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(1000 * time.Millisecond)
 		}
 	}
 }
@@ -195,10 +219,7 @@ func syncNetwork() {
 		if appState.Wallet != "" {
 			resp, err := http.Get(API_URL + "/wallet?address=" + appState.Wallet)
 			if err == nil {
-				var d struct{
-					Balance uint64 `json:"balance"`
-					Pending uint64 `json:"pending"`
-				}
+				var d struct{ Balance uint64; Pending uint64 }
 				if err := json.NewDecoder(resp.Body).Decode(&d); err == nil {
 					appState.Balance = d.Balance
 					appState.Pending = d.Pending

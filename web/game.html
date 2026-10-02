@@ -3,214 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Recicly City | Operações Web3</title>
+    <title>EcoPacto | Pátio de Coleta</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #05070a; --panel: #0f121a; --panel-h: #1a1f2e;
-            --accent: #22c55e; --text: #ffffff; --muted: #64748b;
-            --border: #ffffff10; --orange: #f97316;
-            --rare: #3b82f6; --epic: #a855f7; --legendary: #f59e0b; --mythic: #ef4444;
+            --bg: #07080c;
+            --panel: #12141c;
+            --panel-h: #1a1f2e;
+            --accent: #22c55e;
+            --text: #ffffff;
+            --muted: #8b95a8;
+            --border: #ffffff14;
+            --orange: #f97316;
+            --rare: #3b82f6;
+            --epic: #a855f7;
+            --legendary: #f59e0b;
+            --mythic: #ef4444;
         }
 
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text);
-            margin: 0; padding: 4px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; gap: 4px;
-            overflow: hidden; transition: background-color 0.5s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow: hidden;
         }
 
-        /* HEADER COMPACTO (TEST LINHA 282) */
-        .top-header {
-            background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        .tabs {
+            display: flex;
+            gap: 4px;
+            height: 30px;
+            min-height: 30px;
         }
-        .logo { text-align: center; font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
-        .player-info {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            font-size: .75rem; color: #c9d1d9; flex-wrap: nowrap; white-space: nowrap;
-        }
-        .wallet-btn {
-            background: #f97316; color: white; border: none; border-radius: 5px;
-            padding: 2px 6px; font-size: .7rem; cursor: pointer; display: flex; align-items: center;
-        }
-
-        /* TABS GLOBAIS (38PX) */
-        .tabs { display: flex; gap: 2px; height: 38px; min-height: 38px; }
         .tab {
-            flex: 1; text-align: center; font-size: 0.8rem; font-weight: 700;
-            cursor: pointer; border-radius: 8px; background: var(--panel); color: var(--muted);
-            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            flex: 1;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--muted);
+            border-radius: 8px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            cursor: pointer;
         }
-        .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        .tab.active {
+            background: var(--accent);
+            color: #04120a;
+            border-color: var(--accent);
+        }
 
-        /* VIEW CONTAINER */
-        .page { display: none; flex-direction: column; flex: 1; overflow: hidden; gap: 10px; }
+        .page { display: none; flex-direction: column; flex: 1; min-height: 0; gap: 6px; }
         .page.active { display: flex; }
 
-        /* ESTEIRA AJUSTADA (40PX) */
-        .belt-area { padding: 8px; background: var(--panel); border-radius: 12px; border: 1px solid var(--border); }
+        .hud {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 6px 8px;
+            font-size: 0.68rem;
+        }
+        .hud-left { color: var(--muted); }
+        .hud-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        .pill {
+            background: #0b0d13;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 3px 6px;
+            white-space: nowrap;
+        }
+        .wallet-btn {
+            background: var(--orange);
+            color: #fff;
+            border: 0;
+            border-radius: 7px;
+            height: 22px;
+            padding: 0 7px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .belt-area {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+        }
+        .belt-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.62rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .special { color: var(--accent); font-weight: 800; letter-spacing: .04em; }
         .belt-container {
-            width: 100%; height: 40px; background: #000; border-radius: 8px; border: 1px dashed var(--border);
-            position: relative; overflow: hidden; display: flex; align-items: center;
+            height: 58px;
+            background: #0a0c11;
+            border: 1px dashed #ffffff18;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
         }
-        #item-active { position: absolute; font-size: 24px; left: -40px; z-index: 10; transition: left 0.1s linear; }
-        .drop-box { position: absolute; right: 8px; font-size: 24px; z-index: 5; transition: 0.2s; }
-        .drop-box.received { transform: scale(1.3); }
+        #item-active {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            left: -40px;
+            z-index: 3;
+        }
+        .drop-box {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 26px;
+        }
+        .drop-box.received { filter: brightness(1.4); }
 
-        /* BOTAO PROCESSO (32PX / .85REM) */
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            height: 28px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
         .btn-process {
-            width: 100%; background: var(--accent); color: #000; border: none; height: 32px;
-            border-radius: 8px; font-weight: 800; font-size: .85rem; cursor: pointer;
-            box-shadow: 0 3px 0 #166534; margin-top: 8px; display: flex; align-items: center; justify-content: center;
+            width: 100%;
+            background: var(--accent);
+            color: #04120a;
+            margin-top: 6px;
+        }
+        .btn-sell {
+            width: 100%;
+            background: #eab308;
+            color: #1a1400;
+            height: 26px;
+            font-size: 0.68rem;
         }
 
-        /* INVENTÁRIO MINI QUADROS (42PX / 1.5REM ICON) */
         .inventory-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px;
-            background: #00000020; border-radius: 8px; overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            flex: 1;
+            min-height: 0;
+            align-content: start;
         }
         .inv-slot {
-            background: #111827; border: 1px solid var(--border); border-radius: 6px;
-            padding: 2px; text-align: center; min-height: 42px; display: flex; flex-direction: column; justify-content: center;
+            background: #141824;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            min-height: 54px;
+            padding: 4px 2px 3px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1px;
         }
-        .inv-icon { font-size: 1.5rem; }
-        .inv-count { font-size: 0.8rem; font-weight: 800; color: #fff; }
-
-        /* LOJA COMPACTA */
-        .shop-tabs { display: flex; gap: 4px; padding: 6px; overflow-x: auto; border-bottom: 1px solid var(--border); }
-        .shop-tab { height: 24px; padding: 0 10px; font-size: .65rem; font-weight: 700; cursor: pointer; border-radius: 5px; background: var(--panel); border: 1px solid var(--border); display: flex; align-items: center; white-space: nowrap; color: var(--muted); }
-        .shop-tab.active { background: var(--panel-h); color: #fff; border-color: #fff; }
-
-        .shop-grid { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 6px; overflow-y: auto; flex: 1; }
-        .shop-item { background: #111827; padding: 8px; border-radius: 10px; border: 1px solid var(--border); min-height: 55px; display: flex; flex-direction: column; justify-content: space-between; }
-        .item-name { font-size: .85rem; font-weight: 700; color: #fff; margin: 0; }
-        .item-desc { font-size: .55rem; color: var(--muted); margin: 2px 0; }
-        .price-row { display: flex; gap: 4px; margin-top: 4px; }
-        .buy-btn { height: 22px; flex: 1; border: none; border-radius: 4px; font-size: .60rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .eco-btn { background: var(--accent); color: #000; }
-        .bnb-btn { background: var(--orange); color: #fff; }
-
-        /* LOGS (180PX) */
-        .terminal {
-            background: #000; margin: 5px; padding: 8px; border-radius: 10px;
-            font-family: monospace; font-size: 0.7rem; color: #64748b; height: 180px; overflow-y: auto;
-            border: 1px solid var(--border); line-height: 1.3;
+        .inv-icon { font-size: 1.05rem; line-height: 1; }
+        .inv-count { font-size: 0.72rem; font-weight: 800; }
+        .inv-name {
+            font-size: 0.48rem;
+            color: var(--muted);
+            letter-spacing: .02em;
+            text-transform: uppercase;
         }
 
-        /* PERFIL */
-        .profile-card { background: var(--panel); padding: 15px; border-radius: 15px; border: 1px solid var(--border); }
-        .profile-info { margin-bottom: 12px; font-size: 0.8rem; }
-        .profile-info div { margin-bottom: 6px; display: flex; justify-content: space-between; border-bottom: 1px solid #ffffff05; padding-bottom: 3px; }
-        .input-text { width: 100%; background: #000; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; margin: 8px 0; box-sizing: border-box; font-size: 0.75rem; }
+        .shop-tabs {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+        }
+        .shop-tab {
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--muted);
+            font-size: 0.62rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .shop-tab.active {
+            background: var(--panel-h);
+            color: #fff;
+            border-color: #ffffff44;
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .shop-item {
+            background: #141824;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px;
+            min-height: 78px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .item-name { margin: 0; font-size: 0.78rem; }
+        .item-desc { margin: 3px 0 0; font-size: 0.58rem; color: var(--muted); }
+        .price-row { display: flex; gap: 4px; margin-top: 6px; }
+        .buy-btn {
+            height: 22px;
+            flex: 1;
+            border: 0;
+            border-radius: 5px;
+            font-size: 0.58rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .eco-btn { background: var(--accent); color: #04120a; }
+        .bnb-btn { background: transparent; color: var(--orange); border: 1px solid #f9731644; flex: 0 0 64px; }
 
-        /* EFEITOS RARIDADE */
-        @keyframes rare-glow { from { background: #05070a; } to { background: #0a1b3a; } }
-        .rare-flash { animation: rare-glow 0.5s infinite alternate !important; }
-        @keyframes legendary-glow { from { background: #05070a; } to { background: #3d2a00; } }
-        .legendary-flash { animation: legendary-glow 0.5s infinite alternate !important; }
-        @keyframes mythic-glow { from { background: #05070a; } to { background: #450a0a; } }
-        .mythic-flash { animation: mythic-glow 0.3s infinite alternate !important; }
+        .profile-card, .rank-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .input-text {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
 
-        #lock-screen { position: fixed; inset: 0; background: #05070a; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .hidden { display: none; }
+        #lock-screen {
+            position: fixed; inset: 0; background: #05070a; z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .hidden { display: none !important; }
+
+        @media (max-width: 720px) {
+            .inventory-grid { grid-template-columns: repeat(4, 1fr); }
+            .shop-grid { grid-template-columns: 1fr; }
+            .hud { flex-wrap: wrap; }
+        }
     </style>
 </head>
 <body>
+<div id="lock-screen">
+    <div style="font-size:1.4rem;font-weight:800;">♻️ EcoPacto</div>
+    <p style="color:var(--muted);font-size:0.8rem;">Conecte sua carteira para abrir o pátio.</p>
+    <a href="index.html" class="btn btn-process" style="width:180px;text-decoration:none;display:flex;align-items:center;justify-content:center;">Conectar hub</a>
+</div>
 
-    <!-- HUB LOCK -->
-    <div id="lock-screen">
-        <div class="logo">♻️ RECICLY CITY</div>
-        <p style="color:var(--muted); font-size: 0.8rem; margin: 20px;">Conecte sua Ecopacto Wallet para gerenciar seu pátio.</p>
-        <a href="index.html" class="btn-process" style="text-decoration:none; width:200px; background:var(--accent); color:black; font-weight:800; border-radius:10px; padding:10px; display:inline-block;">🔓 CONECTAR HUB</a>
-    </div>
+<div class="tabs">
+    <button class="tab active" onclick="showPage('patio', this)">Pátio</button>
+    <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">Loja</button>
+    <button class="tab" onclick="showPage('profile', this)">Perfil</button>
+    <button class="tab" onclick="showPage('ranking', this)">Ranking</button>
+</div>
 
-    <!-- CABEÇALHO -->
-    <div class="top-header">
-        <div class="logo">♻️ RECICLY CITY</div>
-        <div class="player-info">
-            <span id="header-user">👤 Operador</span>
-            <span>💰 <strong id="header-eco">0</strong> ECO</span>
-            <span>⚡ <strong id="header-energy">100/100</strong></span>
-            <span id="energy-timer-header" style="color:var(--muted)">⏳ 03:00</span>
-            <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">🦊</button>
+<div id="patio" class="page active">
+    <div class="hud">
+        <div class="hud-left">Sede: <strong>Barraco de Triagem</strong></div>
+        <div class="hud-right">
+            <span class="pill">Nv. <strong id="header-level">1</strong></span>
+            <span class="pill">⚡ <strong id="header-energy">100/100</strong></span>
+            <span class="pill" id="energy-timer-header">03:00</span>
+            <span class="pill">ECO <strong id="header-eco">0</strong></span>
+            <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">Carteira</button>
         </div>
     </div>
 
-    <!-- TABS -->
-    <div class="tabs">
-        <button class="tab active" onclick="showPage('patio', this)">🏭 Pátio</button>
-        <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">🛒 Loja</button>
-        <button class="tab" onclick="showPage('profile', this)">👤 Perfil</button>
-        <button class="tab" onclick="showPage('ranking', this)">🏆 Ranking</button>
-    </div>
-
-    <!-- PATIO -->
-    <div id="patio" class="page active">
-        <div class="belt-area">
-            <div class="belt-container">
-                <div id="item-active"></div>
-                <div class="drop-box" id="box-main">📦</div>
-                <div id="belt-label" style="position:absolute; top:2px; left:5px; font-size:0.4rem; font-weight:800; color:var(--accent);">ESTEIRA LVL 1</div>
-            </div>
-            <button class="btn-process" id="btn-loop" onclick="toggleAuto()">▶ INICIAR PRODUÇÃO</button>
+    <div class="belt-area">
+        <div class="belt-head">
+            <span id="belt-label">Esteira lvl 1</span>
+            <span class="special" id="special-label">Aguardando lote</span>
         </div>
-
-        <div class="inventory-grid" id="inventory-grid"></div>
-
-        <button class="btn-process" style="background:var(--legendary); margin: 0 10px; width:auto;" onclick="sellAll()">💰 VENDER MATERIAIS</button>
-
-        <div class="terminal" id="logs"></div>
-    </div>
-
-    <!-- LOJA -->
-    <div id="shop" class="page">
-        <div class="shop-tabs">
-            <button class="shop-tab active" onclick="filterShop('energy', this)">⚡ Energia</button>
-            <button class="shop-tab" onclick="filterShop('staff', this)">👷 Equipe</button>
-            <button class="shop-tab" onclick="filterShop('robots', this)">🤖 Robôs</button>
-            <button class="shop-tab" onclick="filterShop('belts', this)">⚙️ Esteiras</button>
-            <button class="shop-tab" onclick="filterShop('boosters', this)">🚀 Boosters</button>
+        <div class="belt-container">
+            <div id="item-active"></div>
+            <div class="drop-box" id="box-main">📦</div>
         </div>
-        <div class="shop-grid" id="shop-grid"></div>
+        <button class="btn btn-process" id="btn-loop" onclick="toggleAuto()">▶ Processar próximo lote</button>
     </div>
 
-    <!-- PERFIL -->
-    <div id="profile" class="page">
-        <div class="profile-card">
-            <div class="profile-info" style="font-size:0.85rem; line-height:1.6;">
-                <div><span>Nome:</span> <strong id="prof-name">Operador</strong></div>
-                <div><span>ID Wallet:</span> <small id="prof-id" style="color:var(--rare)">-</small></div>
-                <div><span>Convidados:</span> <strong id="prof-invites">0</strong> amigos</div>
-                <div><span>Renda Passiva:</span> <strong id="prof-passive" style="color:var(--accent)">0.05 ECO/h</strong></div>
-            </div>
+    <div class="inventory-grid" id="inventory-grid"></div>
+    <button class="btn btn-sell" onclick="sellAll()">Vender materiais por ECO</button>
+</div>
 
-            <p style="font-size:0.7rem; color:var(--muted); margin-bottom:2px;">DEFINIR APELIDO OPERACIONAL:</p>
-            <input type="text" id="input-name" class="input-text" placeholder="Seu nome...">
-            <button class="btn-process" onclick="saveProfile()">💾 SALVAR PERFIL</button>
-
-            <div style="background:#000; padding:10px; border-radius:8px; margin-top:15px; font-size:0.65rem;">
-                <strong>Seu link de convite:</strong><br>
-                <span id="ref-link" style="color:var(--rare)">reciclycity.com/ref/loading...</span>
-            </div>
-            <button class="buy-btn bnb-btn" style="width:100%; margin-top:5px; height:28px;" onclick="copyRef()">📋 COPIAR LINK</button>
-        </div>
+<div id="shop" class="page">
+    <div class="shop-tabs">
+        <button class="shop-tab active" onclick="filterShop('energy', this)">Energia</button>
+        <button class="shop-tab" onclick="filterShop('staff', this)">Equipe</button>
+        <button class="shop-tab" onclick="filterShop('robots', this)">Robôs</button>
+        <button class="shop-tab" onclick="filterShop('belts', this)">Esteiras</button>
+        <button class="shop-tab" onclick="filterShop('boosters', this)">Boosters</button>
     </div>
+    <div class="shop-grid" id="shop-grid"></div>
+</div>
 
-    <!-- RANKING -->
-    <div id="ranking" class="page">
-        <div class="profile-card" style="text-align:center">
-            <h3>🏆 Ranking Global</h3>
-            <p style="color:var(--muted); font-size:0.8rem;">Sincronizando com a rede...</p>
-        </div>
+<div id="profile" class="page">
+    <div class="profile-card">
+        <div><span>Nome:</span> <strong id="prof-name">Operador</strong></div>
+        <div><span>ID:</span> <small id="prof-id">-</small></div>
+        <div><span>Convidados:</span> <strong id="prof-invites">0</strong></div>
+        <input type="text" id="input-name" class="input-text" placeholder="Apelido">
+        <button class="btn btn-process" onclick="saveProfile()">Salvar</button>
     </div>
+</div>
+
+<div id="ranking" class="page">
+    <div class="rank-card">Ranking ainda não sincronizado com a rede.</div>
+</div>
 
 <script>
     const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
-    if(wallet) document.getElementById('lock-screen').classList.add('hidden');
+    if (wallet) document.getElementById('lock-screen').classList.add('hidden');
 
     let state = {
-        eco: 0, energy: 100, level: 1, items: 0, invites: 0, username: "",
-        inventory: { plastic: 0, paper: 0, alum: 0, copper: 0, battery: 0, lithium: 0, keyboard: 0, mouse: 0, fone: 0, dvd: 0, parts: 0, phone: 0, printer: 0, camera: 0, board: 0, tv: 0, chip: 0 },
+        eco: 0, energy: 100, level: 1, invites: 0, username: "",
+        inventory: {},
         upgrades: { staff: 0, robots: 0, belt: 1 }
     };
 
@@ -223,10 +351,9 @@
         { id: 'copper', name: 'Cobre', icon: '🔌', chance: 5, speed: 3000, reward: 15, type: 'rare' },
         { id: 'battery', name: 'Bateria', icon: '🔋', chance: 2, speed: 3000, reward: 30, type: 'rare' },
         { id: 'lithium', name: 'Lítio', icon: '🔋', chance: 1, speed: 4000, reward: 100, type: 'rare' },
-        { id: 'keyboard', name: 'Teclado', icon: '⌨️', chance: 0.8, speed: 4000, reward: 150, type: 'epic' },
-        { id: 'mouse', name: 'Mouse', icon: '🖱️', chance: 0.7, speed: 4000, reward: 180, type: 'epic' },
+        { id: 'parts', name: 'Peças', icon: '💻', chance: 0.8, speed: 4000, reward: 150, type: 'epic' },
         { id: 'phone', name: 'Smartphone', icon: '📱', chance: 0.15, speed: 5000, reward: 1200, type: 'epic' },
-        { id: 'board', name: 'Placa-Mãe', icon: '🖥️', chance: 0.05, speed: 6000, reward: 2500, type: 'legendary' },
+        { id: 'board', name: 'Placa-mãe', icon: '🖥️', chance: 0.05, speed: 6000, reward: 2500, type: 'legendary' },
         { id: 'chip', name: 'Chip', icon: '⚡', chance: 0.01, speed: 1000, reward: 2500, type: 'mythic' }
     ];
 
@@ -234,124 +361,93 @@
         energy: [
             { name: '+50 Energia', eco: 100, bnb: 0.00002, id: 'e1', desc: 'Recarga imediata' },
             { name: '+100 Energia', eco: 180, bnb: 0.00004, id: 'e2', desc: 'Recarga média' },
-            { name: '+500 Energia', eco: 800, bnb: 0.00015, id: 'e3', desc: 'Recarga industrial' },
-            { name: 'Bateria Industrial', eco: 3000, bnb: 0.00050, id: 'ebat', desc: '+1000 Energia total' }
+            { name: '+500 Energia', eco: 800, bnb: 0.00015, id: 'e3', desc: 'Recarga industrial' }
         ],
         staff: [
-            { name: 'Catador Adicional', eco: 500, bnb: 0.00010, desc: '+1 mat/ciclo', id: 's1' },
-            { name: 'Catador Profissional', eco: 2500, bnb: 0.00050, desc: '+2 mat/ciclo', id: 's2' },
-            { name: 'Supervisor', eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3' },
-            { name: 'Gerente de Pátio', eco: 20000, bnb: 0.00400, desc: 'Eficiência +50%', id: 's4' }
+            { name: 'Catador', eco: 500, bnb: 0.00010, desc: '+1 mat/ciclo', id: 's1' },
+            { name: 'Supervisor', eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3' }
         ],
         robots: [
-            { name: 'Robô Básico', eco: 5000, bnb: 0.00100, desc: 'Automação leve', id: 'r1' },
-            { name: 'Robô Superior', eco: 15000, bnb: 0.00300, desc: 'Automação média', id: 'r2' },
-            { name: 'Robô Industrial', eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo', id: 'r3' },
-            { name: 'Robô IA', eco: 100000, bnb: 0.02000, desc: 'Automação total', id: 'r4' }
+            { name: 'Robô básico', eco: 5000, bnb: 0.00100, desc: 'Automação leve', id: 'r1' },
+            { name: 'Robô industrial', eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo', id: 'r3' }
         ],
         belts: [
-            { name: 'Esteira Nível 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2' },
-            { name: 'Esteira Nível 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3' },
-            { name: 'Esteira Industrial', eco: 20000, bnb: 0.00400, desc: 'Velocidade x2', id: 'b4' },
-            { name: 'Esteira Magnética', eco: 60000, bnb: 0.01200, desc: 'Sorte x2', id: 'b5' }
+            { name: 'Esteira 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2' },
+            { name: 'Esteira 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3' }
         ],
         boosters: [
-            { name: 'Produção 2x (30 min)', eco: 300, bnb: 0.00006, id: 'boost1' },
-            { name: 'Produção 3x (1h)', eco: 1500, bnb: 0.00030, id: 'boost2' },
-            { name: 'Sorte 2x (30 min)', eco: 500, bnb: 0.00010, id: 'boost3' },
-            { name: 'Sorte 5x (1h)', eco: 2500, bnb: 0.00050, id: 'boost4' },
-            { name: 'Energia Infinita (30 min)', eco: 5000, bnb: 0.00100, id: 'boost5' }
+            { name: 'Produção 2x 30min', eco: 300, bnb: 0.00006, id: 'boost1', desc: 'Boost curto' },
+            { name: 'Sorte 2x 30min', eco: 500, bnb: 0.00010, id: 'boost3', desc: 'Mais raros' }
         ]
     };
 
     function save() { localStorage.setItem("recicly_v_final", JSON.stringify(state)); }
     function load() {
         const saved = localStorage.getItem("recicly_v_final");
-        if(saved) Object.assign(state, JSON.parse(saved));
+        if (saved) Object.assign(state, JSON.parse(saved));
         updateUI();
     }
 
     function updateUI() {
-        document.getElementById('header-eco').innerText = Math.floor(state.eco).toLocaleString();
+        document.getElementById('header-eco').innerText = Math.floor(state.eco).toLocaleString('pt-BR');
         document.getElementById('header-energy').innerText = state.energy + "/100";
+        document.getElementById('header-level').innerText = state.level || 1;
         const name = state.username || (wallet ? wallet.name : "Operador");
-        document.getElementById('header-user').innerText = "👤 " + name;
         document.getElementById('prof-name').innerText = name;
-        document.getElementById('prof-id').innerText = wallet ? wallet.address : "Hub Offline";
+        document.getElementById('prof-id').innerText = wallet ? wallet.address : "Hub offline";
         document.getElementById('prof-invites').innerText = state.invites;
-        document.getElementById('ref-link').innerText = "reciclycity.com/ref/" + name.toLowerCase();
-
-        const grid = document.getElementById('inventory-grid');
-        grid.innerHTML = MATERIALS.map(m => `
+        document.getElementById('inventory-grid').innerHTML = MATERIALS.map(m => `
             <div class="inv-slot">
                 <div class="inv-icon">${m.icon}</div>
-                <div class="inv-count" id="count-${m.id}">${state.inventory[m.id] || 0}</div>
+                <div class="inv-count">${state.inventory[m.id] || 0}</div>
+                <div class="inv-name">${m.name}</div>
             </div>
         `).join('');
-
-        let passive = state.invites >= 50 ? 1.0 : (state.invites >= 25 ? 0.5 : (state.invites >= 10 ? 0.2 : (state.invites >= 5 ? 0.1 : 0.05)));
-        document.getElementById('prof-passive').innerText = passive.toFixed(2) + " ECO/h";
     }
 
     function showPage(id, btn) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(btn) btn.classList.add('active');
+        if (btn) btn.classList.add('active');
     }
 
     function toggleAuto() {
         auto = !auto;
-        document.getElementById('btn-loop').innerText = auto ? "⏸ PARAR PRODUÇÃO" : "▶ INICIAR PRODUÇÃO";
-        if(auto) runCycle();
+        document.getElementById('btn-loop').innerText = auto ? "⏸ Parar" : "▶ Processar próximo lote";
+        if (auto) runCycle();
     }
 
     function runCycle() {
-        if(!auto || state.energy <= 0) {
-            if(state.energy <= 0 && auto) toggleAuto();
-            document.body.className = "";
+        if (!auto || state.energy <= 0) {
+            if (state.energy <= 0 && auto) toggleAuto();
             return;
         }
-
         state.energy--;
         let r = Math.random() * 100, acc = 0, sel = MATERIALS[0];
-        for(let m of MATERIALS) { acc += m.chance; if(r <= acc) { sel = m; break; } }
+        for (const m of MATERIALS) { acc += m.chance; if (r <= acc) { sel = m; break; } }
 
         const item = document.getElementById('item-active');
-        item.innerText = sel.icon; item.style.left = "-40px";
-
-        if(sel.type === 'rare') document.body.className = "rare-flash";
-        else if(sel.type === 'legendary') document.body.className = "legendary-flash";
-        else if(sel.type === 'mythic') { document.body.className = "mythic-flash"; log("🚨 ALERTA MÁXIMO! CHIP DETECTADO!", "var(--mythic)"); }
-        else document.body.className = "";
+        const special = document.getElementById('special-label');
+        item.innerText = sel.icon;
+        item.style.left = "-40px";
+        special.innerText = (sel.type === 'common') ? "Lote em trânsito" : "Lote especial detectado";
 
         let start = null;
         function animate(t) {
-            if(!start) start = t;
-            let progress = (t - start) / sel.speed;
-            if(progress < 1) {
-                item.style.left = `calc(${progress * 100}% - 40px)`;
-                if(auto) requestAnimationFrame(animate);
+            if (!start) start = t;
+            const progress = (t - start) / sel.speed;
+            if (progress < 1) {
+                item.style.left = `calc(${progress * 100}% - 28px)`;
+                if (auto) requestAnimationFrame(animate);
             } else {
                 state.inventory[sel.id] = (state.inventory[sel.id] || 0) + 1;
                 const box = document.getElementById('box-main');
                 box.classList.add('received');
-
-                if(sel.type === 'mythic') {
-                    state.eco += 2500;
-                    log("⚡ CHIP PROCESSADO! +2500 ECO", "var(--accent)");
-                    setTimeout(() => {
-                        box.classList.remove('received');
-                        document.body.className = "";
-                        if(auto) runCycle();
-                    }, 2000);
-                } else {
-                    setTimeout(() => {
-                        box.classList.remove('received');
-                        document.body.className = "";
-                        if(auto) runCycle();
-                    }, 200);
-                }
+                setTimeout(() => {
+                    box.classList.remove('received');
+                    if (auto) runCycle();
+                }, sel.type === 'mythic' ? 900 : 160);
                 updateUI(); save();
             }
         }
@@ -360,85 +456,70 @@
 
     function sellAll() {
         let gain = 0;
-        MATERIALS.forEach(m => { gain += (state.inventory[m.id] || 0) * m.reward; state.inventory[m.id] = 0; });
+        MATERIALS.forEach(m => {
+            gain += (state.inventory[m.id] || 0) * m.reward;
+            state.inventory[m.id] = 0;
+        });
         state.eco += gain;
-        if(gain > 0) log(`💰 Venda realizada: +${gain} ECO`, "var(--accent)");
         updateUI(); save();
     }
 
     function filterShop(cat, btn) {
-        if(btn) {
+        if (btn) {
             document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
         }
-        const grid = document.getElementById('shop-grid');
-        grid.innerHTML = STORE[cat].map(i => `
+        document.getElementById('shop-grid').innerHTML = STORE[cat].map(i => `
             <div class="shop-item">
-                <div><h4 class="item-name">${i.name}</h4><p class="item-desc">${i.desc || ''}</p></div>
+                <div>
+                    <h4 class="item-name">${i.name}</h4>
+                    <p class="item-desc">${i.desc || ''}</p>
+                </div>
                 <div class="price-row">
-                    <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco}, 'eco')">💰 ${i.eco}</button>
-                    <button class="buy-btn bnb-btn" onclick="buyItem('${i.id}', ${i.bnb}, 'bnb')">🦊 ${i.bnb}</button>
+                    <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco}, 'eco')">ECO ${i.eco}</button>
+                    <button class="buy-btn bnb-btn" onclick="buyItem('${i.id}', ${i.bnb}, 'bnb')">BNB</button>
                 </div>
             </div>
         `).join('');
     }
 
     function buyItem(id, price, type) {
-        if(type === 'eco') {
-            if(state.eco < price) return alert("ECO insuficiente!");
+        if (type === 'eco') {
+            if (state.eco < price) return alert("ECO insuficiente");
             state.eco -= price;
-            log(`🛒 Compra: ${id}`, "var(--accent)");
         } else {
-            alert("Abre MetaMask para pagar " + price + " BNB");
+            alert("Pagamento BNB ainda é teste.");
         }
         updateUI(); save();
     }
 
-    function log(msg, color = "var(--muted)") {
-        const terminal = document.getElementById('logs');
-        terminal.innerHTML = `<div style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>` + terminal.innerHTML;
-    }
-
     async function connectMetaMask() {
-        if(window.ethereum) {
-            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            mmAccount = accounts[0];
-            document.getElementById('mm-btn').innerText = "🦊 " + mmAccount.slice(0,6) + "...";
-            log("MetaMask conectada!", "var(--orange)");
-        }
+        if (!window.ethereum) return;
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        mmAccount = accounts[0];
+        document.getElementById('mm-btn').innerText = mmAccount.slice(0, 6);
     }
 
     function saveProfile() {
         const name = document.getElementById('input-name').value.trim();
-        if(name.length < 3) return alert("Mínimo 3 letras.");
+        if (name.length < 3) return alert("Mínimo 3 letras.");
         state.username = name;
         updateUI(); save();
-        alert("Perfil atualizado!");
-    }
-
-    function copyRef() {
-        navigator.clipboard.writeText(document.getElementById('ref-link').innerText);
-        alert("Link copiado!");
     }
 
     load();
+    filterShop('energy', document.querySelector('.shop-tab'));
 
     setInterval(() => {
-        if(state.energy < 100) {
+        const el = document.getElementById('energy-timer-header');
+        if (state.energy < 100) {
             countdown--;
-            let m = Math.floor(countdown/60), s = countdown%60;
-            const timerStr = `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-            document.getElementById('energy-timer').innerText = timerStr;
-            document.getElementById('energy-timer-header').innerText = timerStr;
-            if(countdown <= 0) { state.energy++; countdown = 180; updateUI(); }
+            if (countdown <= 0) { state.energy++; countdown = 180; updateUI(); }
+            const m = Math.floor(countdown / 60), s = countdown % 60;
+            el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         } else {
-            document.getElementById('energy-timer').innerText = "✅ CHEIO";
-            document.getElementById('energy-timer-header').innerText = "✅ CHEIO";
+            el.innerText = "Cheio";
         }
-
-        let passivePerHour = state.invites >= 50 ? 1.0 : (state.invites >= 25 ? 0.5 : (state.invites >= 10 ? 0.2 : (state.invites >= 5 ? 0.1 : 0.05)));
-        state.eco += (passivePerHour / 3600);
-        updateUI();
     }, 1000);
 </script>
 </body>
