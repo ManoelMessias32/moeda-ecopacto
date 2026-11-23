@@ -122,7 +122,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		targetAddr := "ECO_2b44246bf6a15b6361379bed"
 		state.Emails[email] = targetAddr
 		if state.Wallets[targetAddr] == nil {
-			state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 200000000000, Email: email, Name: "Manoel Oliveira"}
+			state.Wallets[targetAddr] = &Wallet{Address: targetAddr, Balance: 50000000000, Email: email, Name: "Manoel Oliveira"} // 5% Equipe = 50 Bilhões
 		}
 		json.NewEncoder(w).Encode(state.Wallets[targetAddr])
 		return
@@ -163,8 +163,8 @@ func initSystem() {
 		Wallets: make(map[string]*Wallet),
 		Emails: make(map[string]string),
 		Tokenomics: Tokenomics{
-			TotalSupply: 1000000000000,
-			MiningPool:  300000000000,
+			TotalSupply: 2000000000000, // 2 Trilhões ECO
+			MiningPool:  400000000000, // 40% Reserva = 400 Bilhões
 			Burned:      0,
 			Symbol:      "ECO",
 		},
@@ -190,7 +190,7 @@ func main() {
 	mux.HandleFunc("/mine/submit", func(w http.ResponseWriter, r *http.Request) {
 		addr := r.URL.Query().Get("address")
 		if wallet, ok := state.Wallets[addr]; ok {
-			wallet.Pending += 10
+			wallet.Pending += 20 // 20 ECO por bloco
 			saveState()
 			w.WriteHeader(200)
 		}

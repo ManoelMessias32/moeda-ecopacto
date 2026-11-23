@@ -199,9 +199,9 @@ func miningEngine() {
 				// REPORTA O BLOCO PARA O SERVIDOR
 				resp, err := http.Get(API_URL + "/mine/submit?address=" + appState.Wallet)
 				if err == nil && resp.StatusCode == 200 {
-					appState.MinedToday += 10
+					appState.MinedToday += 20
 					saveStats() // SALVA O PROGRESSO NO PC
-					addLog("Bloco OK! Hash: 000" + hashStr[:10])
+					addLog("Bloco OK! +20 ECO | Hash: 000" + hashStr[:10])
 					addLog("Sincronizado com a Railway.")
 					resp.Body.Close()
 				} else {

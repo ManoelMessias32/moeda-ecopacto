@@ -69,8 +69,13 @@ fun EcopactoDashboard() {
             
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Total Supply: 12 Trilhões ECO")
-                    Text("Reserva Dev: 1 Trilhão ECO")
+                    Text("Total Supply: 2 Trilhões ECO")
+                    Text("Reserva (40%): 400 Bilhões ECO")
+                    Text("Jogo (20%): 200 Bilhões ECO")
+                    Text("Tap & Earn (15%): 150 Bilhões ECO")
+                    Text("Convites (10%): 100 Bilhões ECO")
+                    Text("Venda (10%): 100 Bilhões ECO")
+                    Text("Equipe (5%): 50 Bilhões ECO")
                     Text("Status da Rede: $supplyInfo")
                 }
             }

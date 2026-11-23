@@ -118,7 +118,7 @@ func main() {
 					progressValue = 0
 					minedToday += 10
 					lblMined.SetText(fmt.Sprintf("Minerado Hoje: %d ECO", minedToday))
-					addLog("Bloco minerado! +10 ECO registrados.")
+					addLog("Bloco minerado! +20 ECO registrados.")
 				}
 				progBar.SetValue(progressValue)
 				sha256.Sum256([]byte(time.Now().String()))

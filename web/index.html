@@ -7,68 +7,90 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; box-sizing: border-box; }
+        :root { --bg: #05070a; --card: #0f121a; --accent: #22c55e; --text: #ffffff; --muted: #64748b; --border: #ffffff10; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; }
 
         .wallet-card {
             background: var(--card);
             width: 100%;
             max-width: 360px;
-            padding: 30px;
+            padding: 28px;
             border-radius: 24px;
-            border: 1px solid #ffffff10;
+            border: 1px solid var(--border);
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             text-align: center;
             display: flex;
             flex-direction: column;
-            min-height: 420px;
-            justify-content: flex-start;
-            box-sizing: border-box;
         }
 
-        .network-title { font-size: 1rem; font-weight: 800; margin-top: 0; margin-bottom: 25px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+        .network-title { font-size: 0.85rem; font-weight: 800; margin-top: 0; margin-bottom: 22px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
         .network-title span { color: var(--accent); }
 
-        .user-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ffffff08;
-            text-align: center;
-        }
-        #disp-name { font-weight: 800; font-size: 1.2rem; color: #fff; display: block; }
-        #disp-email { font-size: 0.75rem; color: var(--muted); display: block; margin-top: 2px; word-break: break-all; }
+        .user-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #ffffff08; text-align: center; }
+        #disp-name { font-weight: 800; font-size: 1.1rem; color: #fff; display: block; }
+        #disp-email { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 2px; word-break: break-all; }
 
-        .balance-label { color: var(--muted); font-size: 0.65rem; font-weight: 800; letter-spacing: 1px; margin-top: 5px; }
-        .balance-amount { font-size: 3rem; font-weight: 800; color: #fff; margin: 10px 0; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+        .balance-label { color: var(--muted); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; margin-top: 4px; }
+        .balance-amount { font-size: 2.6rem; font-weight: 800; color: #fff; margin: 8px 0 4px; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
         .balance-amount span:first-child { color: var(--accent); }
-        .currency { font-size: 1.2rem; color: var(--muted); font-weight: 600; }
+        .currency { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
 
-        .nav-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; }
-        .nav-btn { flex: 1; min-width: 100px; padding: 14px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid #ffffff10; }
+        .pending-row { font-size: 0.7rem; color: var(--muted); margin-bottom: 16px; }
+        .pending-row span { color: #f59e0b; font-weight: 700; }
+
+        /* BOTÕES PRINCIPAIS */
+        .nav-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .nav-btn { flex: 1; min-width: 90px; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.82rem; }
+        .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid var(--border); }
+        .btn-receive:hover { background: #ffffff14; }
         .btn-send { background: var(--accent); color: #000; }
         .btn-send:hover { background: #1eb34b; transform: translateY(-1px); }
+        .btn-buy { background: #f59e0b; color: #000; font-weight: 800; }
+        .btn-buy:hover { background: #d97706; transform: translateY(-1px); }
 
-        .btn-launcher { background: #3b82f6; color: white; width: 100%; flex: none; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-launcher { background: #3b82f6; color: white; width: 100%; border: none; border-radius: 12px; padding: 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-launcher:hover { background: #2563eb; }
 
-        .view-panel { background: #00000060; padding: 15px; border-radius: 16px; margin-top: 10px; display: none; text-align: left; border: 1px solid #ffffff05; }
+        /* PAINEIS */
+        .view-panel { background: #00000060; padding: 14px; border-radius: 14px; margin-top: 8px; display: none; text-align: left; border: 1px solid #ffffff08; }
         .view-panel.active { display: block; }
+        .panel-label { font-size: 0.6rem; color: var(--muted); font-weight: 800; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
 
-        input { width: 100%; background: #000; border: 1px solid #ffffff10; padding: 12px; border-radius: 10px; color: white; margin: 6px 0; box-sizing: border-box; font-size: 0.85rem; outline: none; }
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 11px 12px; border-radius: 10px; color: white; margin: 5px 0; font-size: 0.82rem; outline: none; }
         input:focus { border-color: var(--accent); }
 
-        .address-box { background: #000; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.72rem; color: var(--accent); word-break: break-all; cursor: pointer; border: 1px dashed #22c55e50; text-align: center; margin-top: 5px; }
+        .address-box { background: #000; padding: 11px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; color: var(--accent); word-break: break-all; cursor: pointer; border: 1px dashed #22c55e50; text-align: center; margin-top: 4px; }
 
-        .node-status { margin-top: auto; padding-top: 15px; border-top: 1px solid #ffffff05; text-align: left; }
-        .node-status h4 { font-size: 0.6rem; color: var(--muted); margin: 0 0 8px 0; letter-spacing: 0.5px; }
-        .node-item { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 4px; color: #e2e8f0; }
+        /* PAINEL COMPRAR ECO */
+        .buy-networks { display: flex; gap: 6px; margin-bottom: 10px; }
+        .buy-net-btn { flex: 1; padding: 7px 4px; border-radius: 8px; border: 1px solid var(--border); background: #000; color: var(--muted); font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .buy-net-btn.active { border-color: var(--accent); color: var(--accent); }
+
+        .buy-pkg { display: flex; justify-content: space-between; align-items: center; padding: 9px 10px; border-radius: 9px; border: 1px solid var(--border); background: #000000aa; margin-bottom: 6px; }
+        .buy-pkg-name { font-size: 0.8rem; font-weight: 700; }
+        .buy-pkg-eco { font-size: 0.75rem; color: var(--accent); font-weight: 800; }
+        .buy-pkg-price { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+        .buy-pkg-btn { background: var(--accent); color: #000; border: none; border-radius: 7px; padding: 6px 12px; font-size: 0.65rem; font-weight: 800; cursor: pointer; }
+        .buy-pkg-btn:hover { background: #1eb34b; }
+
+        .buy-addr-box { background: #000; border: 1px dashed #f59e0b80; border-radius: 9px; padding: 10px; margin-top: 6px; }
+        .buy-addr-label { font-size: 0.58rem; color: #f59e0b; font-weight: 800; margin-bottom: 4px; display: block; }
+        .buy-addr-val { font-family: monospace; font-size: 0.65rem; color: #e2e8f0; word-break: break-all; cursor: pointer; }
+        .buy-warning { font-size: 0.6rem; color: #ef4444; margin-top: 8px; line-height: 1.4; }
+
+        /* STATUS */
+        .node-status { margin-top: auto; padding-top: 14px; border-top: 1px solid #ffffff05; text-align: left; }
+        .node-status h4 { font-size: 0.58rem; color: var(--muted); margin: 0 0 7px 0; letter-spacing: 0.5px; }
+        .node-item { display: flex; justify-content: space-between; font-size: 0.68rem; margin-bottom: 3px; color: #e2e8f0; }
         .status-online { color: var(--accent); font-weight: 600; }
 
-        #login-view { margin: auto 0; }
+        #login-view { margin: auto 0; padding: 20px 0; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 300px; text-align: center; border: 1px solid var(--border); }
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card); padding: 28px; border-radius: 20px; max-width: 300px; width: 90%; text-align: center; border: 1px solid var(--border); }
+        .modal-content h3 { margin: 0 0 10px; }
     </style>
 </head>
 <body>
@@ -76,15 +98,17 @@
     <div class="wallet-card">
         <div class="network-title">ECOPACTO <span>NETWORK</span></div>
 
+        <!-- LOGIN -->
         <div id="login-view">
-            <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 25px;">Acesse sua carteira master para gerenciar a rede.</p>
+            <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 25px;">Acesse sua carteira para gerenciar seus ECO.</p>
             <div id="g_id_onload" data-client_id="161074446700-bdhlr0fn1v9k6b1ojilof968amnsot6o.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black" data-text="signin_with" data-size="large"></div>
         </div>
 
+        <!-- WALLET -->
         <div id="wallet-view" style="display: none;">
             <div class="user-header">
-                <span id="disp-name">Manoel Oliveira</span>
+                <span id="disp-name">—</span>
                 <span id="disp-email">carregando...</span>
             </div>
 
@@ -93,42 +117,101 @@
                 <span id="disp-balance">0</span>
                 <span class="currency">ECO</span>
             </div>
+            <div class="pending-row">
+                Minerado hoje (pendente): <span id="disp-pending">0</span> ECO — pago à meia-noite
+            </div>
 
+            <!-- AÇÕES -->
             <div class="nav-actions">
-                <button class="nav-btn btn-receive" onclick="togglePanel('receive')">Receber</button>
-                <button class="nav-btn btn-send" onclick="togglePanel('send')">Enviar</button>
-                <button class="nav-btn btn-launcher" onclick="confirmDownload()">
-                    🚀 Baixar Launcher (PC)
-                </button>
+                <button class="nav-btn btn-receive" onclick="togglePanel('receive')">📥 Receber</button>
+                <button class="nav-btn btn-send"    onclick="togglePanel('send')">📤 Enviar</button>
+                <button class="nav-btn btn-buy"     onclick="togglePanel('buy')">💳 Comprar ECO</button>
             </div>
 
+            <button class="btn-launcher" onclick="confirmDownload()">🚀 Baixar Launcher (PC)</button>
+
+            <!-- PAINEL RECEBER -->
             <div id="panel-receive" class="view-panel">
-                <p style="font-size: 0.65rem; color: var(--muted); margin: 0 0 5px 0; font-weight: 700;">SEU ENDEREÇO PÚBLICO:</p>
+                <span class="panel-label">SEU ENDEREÇO PÚBLICO</span>
                 <div class="address-box" id="disp-addr" onclick="copyAddress()">ECO_...</div>
-                <small style="color:var(--muted); font-size:0.55rem; display:block; text-align:center; margin-top:6px;">Clique acima para copiar</small>
+                <small style="color:var(--muted); font-size:0.55rem; display:block; text-align:center; margin-top:5px;">Clique para copiar</small>
             </div>
 
+            <!-- PAINEL ENVIAR -->
             <div id="panel-send" class="view-panel">
-                <input type="text" id="send-to" placeholder="Endereço de destino (ECO_...)">
+                <span class="panel-label">ENVIAR ECO (taxa 5%: 2% queima · 3% pool)</span>
+                <input type="text"   id="send-to"     placeholder="Endereço de destino (ECO_...)">
                 <input type="number" id="send-amount" placeholder="Quantidade">
                 <button class="nav-btn btn-send" style="width:100%; margin-top:8px;" onclick="doTransfer()">Enviar ECO</button>
             </div>
 
+            <!-- PAINEL COMPRAR ECO -->
+            <div id="panel-buy" class="view-panel">
+                <span class="panel-label">COMPRAR ECO — BNB SMART CHAIN</span>
+
+                <!-- seletor de moeda -->
+                <div class="buy-networks">
+                    <button class="buy-net-btn active" onclick="selectNet(this,'bnb')">🟡 BNB</button>
+                    <button class="buy-net-btn"        onclick="selectNet(this,'usdt')">🟢 USDT</button>
+                    <button class="buy-net-btn"        onclick="selectNet(this,'usdc')">🔵 USDC</button>
+                </div>
+
+                <!-- pacotes -->
+                <div class="buy-pkg">
+                    <div>
+                        <div class="buy-pkg-name">Pacote Starter</div>
+                        <div class="buy-pkg-eco">5.000 ECO</div>
+                        <div class="buy-pkg-price" id="price-starter">≈ 3 USDC</div>
+                    </div>
+                    <button class="buy-pkg-btn" onclick="selectPkg(5000)">Gerar QR</button>
+                </div>
+                <div class="buy-pkg">
+                    <div>
+                        <div class="buy-pkg-name">Pacote Pro</div>
+                        <div class="buy-pkg-eco">25.000 ECO</div>
+                        <div class="buy-pkg-price" id="price-pro">≈ 15 USDC</div>
+                    </div>
+                    <button class="buy-pkg-btn" onclick="selectPkg(25000)">Gerar QR</button>
+                </div>
+                <div class="buy-pkg">
+                    <div>
+                        <div class="buy-pkg-name">Pacote Elite</div>
+                        <div class="buy-pkg-eco">100.000 ECO</div>
+                        <div class="buy-pkg-price" id="price-elite">≈ 60 USDC</div>
+                    </div>
+                    <button class="buy-pkg-btn" onclick="selectPkg(100000)">Gerar QR</button>
+                </div>
+
+                <!-- endereço de pagamento -->
+                <div class="buy-addr-box" id="buy-addr-box">
+                    <span class="buy-addr-label" id="buy-addr-label">🟡 ENDEREÇO BNB (BEP20)</span>
+                    <div class="buy-addr-val" id="buy-addr-val" onclick="copyBuyAddr()">0x35878269EF4051Df5f82593b4819E518bA8903A3</div>
+                </div>
+
+                <div class="buy-warning">
+                    ⚠️ Envie <strong>apenas pela BNB Smart Chain (BEP20)</strong>.<br>
+                    ❌ Não use Ethereum · Polygon · Arbitrum · TRON
+                </div>
+            </div>
+
+            <!-- STATUS DA REDE -->
             <div class="node-status">
                 <h4>STATUS DA REDE</h4>
                 <div class="node-item"><span>Nó Principal</span><span class="status-online">ONLINE</span></div>
                 <div class="node-item"><span>Explorador</span><span class="status-online">ATIVO</span></div>
+                <div class="node-item"><span>Recompensa/Bloco</span><span class="status-online">20 ECO</span></div>
             </div>
         </div>
     </div>
 
+    <!-- MODAL DOWNLOAD -->
     <div id="download-modal" class="modal">
         <div class="modal-content">
             <h3>🚀 Baixar Launcher</h3>
-            <p style="font-size: 0.8rem; color: var(--muted); margin: 15px 0;">O minerador será baixado em um pacote .zip profissional.</p>
+            <p style="font-size: 0.8rem; color: var(--muted); margin: 12px 0;">O minerador será baixado em um pacote .zip. Após instalar, inicie e informe seu endereço ECO para começar a ganhar <strong>20 ECO/bloco</strong>.</p>
             <div style="display: flex; gap: 10px;">
                 <button class="nav-btn btn-receive" onclick="closeModal()">Cancelar</button>
-                <button class="nav-btn btn-send" onclick="startDownload()">Baixar Agora</button>
+                <button class="nav-btn btn-send"    onclick="startDownload()">Baixar Agora</button>
             </div>
         </div>
     </div>
@@ -137,76 +220,116 @@
     const API_URL = "https://ecopacto-api-production.up.railway.app";
     let walletData = null;
 
+    const BUY_ADDRS = {
+        bnb:  { label: "🟡 ENDEREÇO BNB (BEP20)",  addr: "0x35878269EF4051Df5f82593b4819E518bA8903A3" },
+        usdt: { label: "🟢 ENDEREÇO USDT (BEP20)", addr: "0x55d398326f99059fF775485246999027B3197955" },
+        usdc: { label: "🔵 ENDEREÇO USDC (BEP20)", addr: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d" }
+    };
+    // preço em USDC por pacote; BNB ≈ USDC/350
+    const PKG_PRICES = {
+        5000:   { usdc: 3,  bnb: "0.0085" },
+        25000:  { usdc: 15, bnb: "0.043"  },
+        100000: { usdc: 60, bnb: "0.17"   }
+    };
+    let currentNet = "bnb";
+
+    // ---- LOGIN GOOGLE ----
     function handleCredentialResponse(response) {
         const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-
         fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: payload.email, name: payload.name || "Manoel Oliveira" })
+            body: JSON.stringify({ email: payload.email, name: payload.name || "Usuário" })
         })
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => {
             walletData = data;
-            if(!walletData.name || walletData.name === "undefined") walletData.name = "Manoel Oliveira";
-            if(!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
+            if (!walletData.name  || walletData.name  === "undefined") walletData.name  = payload.name || "Usuário";
+            if (!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
             setupWalletUI(walletData);
         })
-        .catch(err => alert("Erro ao conectar com o servidor."));
+        .catch(() => alert("Erro ao conectar com o servidor."));
     }
 
     function setupWalletUI(data) {
-        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('login-view').style.display  = 'none';
         document.getElementById('wallet-view').style.display = 'block';
-        document.getElementById('disp-name').innerText = data.name;
-        document.getElementById('disp-email').innerText = data.email;
-        document.getElementById('disp-balance').innerText = data.balance.toLocaleString();
-        document.getElementById('disp-addr').innerText = data.address;
+        document.getElementById('disp-name').innerText    = data.name;
+        document.getElementById('disp-email').innerText   = data.email;
+        document.getElementById('disp-balance').innerText = (data.balance || 0).toLocaleString('pt-BR');
+        document.getElementById('disp-pending').innerText = (data.pending || 0).toLocaleString('pt-BR');
+        document.getElementById('disp-addr').innerText    = data.address;
     }
 
+    // ---- PAINEIS ----
+    const panels = ['receive','send','buy'];
     function togglePanel(type) {
-        const pRec = document.getElementById('panel-receive');
-        const pSend = document.getElementById('panel-send');
-        pRec.classList.toggle('active', type === 'receive' && !pRec.classList.contains('active'));
-        pSend.classList.toggle('active', type === 'send' && !pSend.classList.contains('active'));
-        if(type === 'receive') pSend.classList.remove('active');
-        if(type === 'send') pRec.classList.remove('active');
+        panels.forEach(p => {
+            const el = document.getElementById('panel-' + p);
+            if (p === type) el.classList.toggle('active');
+            else el.classList.remove('active');
+        });
     }
 
-    function confirmDownload() { document.getElementById('download-modal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('download-modal').style.display = 'none'; }
-
-    function startDownload() {
-        closeModal();
-        // BAIXA O ZIP REAL DO SERVIDOR
-        window.location.href = `${API_URL}/download-launcher`;
+    // ---- COMPRAR ECO ----
+    function selectNet(btn, net) {
+        document.querySelectorAll('.buy-net-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentNet = net;
+        const info = BUY_ADDRS[net];
+        document.getElementById('buy-addr-label').innerText = info.label;
+        document.getElementById('buy-addr-val').innerText   = info.addr;
+        updatePrices();
     }
 
-    function copyAddress() {
-        if(walletData) {
-            navigator.clipboard.writeText(walletData.address);
-            alert("Endereço copiado!");
-        }
+    function updatePrices() {
+        const isUsdc = currentNet === 'usdc';
+        const isBnb  = currentNet === 'bnb';
+        document.getElementById('price-starter').innerText = isBnb  ? `≈ ${PKG_PRICES[5000].bnb} BNB`   : `≈ ${PKG_PRICES[5000].usdc} USDC`;
+        document.getElementById('price-pro').innerText     = isBnb  ? `≈ ${PKG_PRICES[25000].bnb} BNB`  : `≈ ${PKG_PRICES[25000].usdc} USDC`;
+        document.getElementById('price-elite').innerText   = isBnb  ? `≈ ${PKG_PRICES[100000].bnb} BNB` : `≈ ${PKG_PRICES[100000].usdc} USDC`;
     }
 
+    function selectPkg(eco) {
+        const info  = BUY_ADDRS[currentNet];
+        const price = currentNet === 'bnb'
+            ? PKG_PRICES[eco].bnb + " BNB"
+            : PKG_PRICES[eco].usdc + " USDC";
+        alert(`📋 Envie ${price} para:\n\n${info.addr}\n\n(BNB Smart Chain · BEP20)\n\nApós o pagamento, seu saldo será creditado.`);
+    }
+
+    function copyBuyAddr() {
+        const addr = document.getElementById('buy-addr-val').innerText;
+        navigator.clipboard.writeText(addr);
+        alert("Endereço copiado!");
+    }
+
+    // ---- ENVIAR ECO ----
     async function doTransfer() {
-        const to = document.getElementById('send-to').value;
+        const to     = document.getElementById('send-to').value.trim();
         const amount = parseInt(document.getElementById('send-amount').value);
-        if(!to || !amount) return alert("Preencha todos os campos.");
+        if (!to || !amount || amount <= 0) return alert("Preencha todos os campos.");
+        const fee = Math.floor(amount * 0.05);
+        if (!confirm(`Enviar ${amount.toLocaleString('pt-BR')} ECO?\nTaxa: ${fee} ECO (5%)\nTotal debitado: ${(amount+fee).toLocaleString('pt-BR')} ECO`)) return;
 
         const res = await fetch(`${API_URL}/send`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ from: walletData.address, to: to, amount: amount })
+            body: JSON.stringify({ from: walletData.address, to, amount })
         });
-
-        if (res.status === 200) {
-            alert("Sucesso! Transação enviada.");
-            location.reload();
-        } else {
-            alert("Erro na transação.");
-        }
+        if (res.status === 200) { alert("✅ Transação enviada!"); location.reload(); }
+        else alert("❌ Erro na transação. Verifique o saldo.");
     }
+
+    // ---- ENDEREÇO ----
+    function copyAddress() {
+        if (walletData) { navigator.clipboard.writeText(walletData.address); alert("Endereço copiado!"); }
+    }
+
+    // ---- DOWNLOAD ----
+    function confirmDownload() { document.getElementById('download-modal').style.display = 'flex'; }
+    function closeModal()      { document.getElementById('download-modal').style.display = 'none'; }
+    function startDownload()   { closeModal(); window.location.href = `${API_URL}/download-launcher`; }
 </script>
 </body>
 </html>

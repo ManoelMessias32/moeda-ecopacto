@@ -22,7 +22,7 @@
         }
 
         * { box-sizing: border-box; }
-        html, body { height: 100%; }
+        html { height: 100%; }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
@@ -32,14 +32,17 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            overflow: hidden;
+            min-height: 100%;
+            /* FIX: Não usar overflow:hidden no body — impedia scroll em mobile */
         }
 
+        /* ===== TABS PRINCIPAIS ===== */
         .tabs {
             display: flex;
             gap: 4px;
-            height: 30px;
-            min-height: 30px;
+            height: 32px;
+            min-height: 32px;
+            flex-shrink: 0;
         }
         .tab {
             flex: 1;
@@ -50,6 +53,7 @@
             font-size: 0.68rem;
             font-weight: 700;
             cursor: pointer;
+            transition: 0.15s;
         }
         .tab.active {
             background: var(--accent);
@@ -57,9 +61,10 @@
             border-color: var(--accent);
         }
 
-        .page { display: none; flex-direction: column; flex: 1; min-height: 0; gap: 6px; }
+        .page { display: none; flex-direction: column; gap: 6px; }
         .page.active { display: flex; }
 
+        /* ===== HUD ===== */
         .hud {
             display: flex;
             align-items: center;
@@ -68,17 +73,19 @@
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 6px 8px;
+            padding: 6px 10px;
             font-size: 0.68rem;
+            flex-shrink: 0;
         }
-        .hud-left { color: var(--muted); }
-        .hud-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        .hud-left { color: var(--muted); white-space: nowrap; }
+        .hud-right { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
         .pill {
             background: #0b0d13;
             border: 1px solid var(--border);
             border-radius: 7px;
             padding: 3px 6px;
             white-space: nowrap;
+            font-size: 0.65rem;
         }
         .wallet-btn {
             background: var(--orange);
@@ -86,17 +93,21 @@
             border: 0;
             border-radius: 7px;
             height: 22px;
-            padding: 0 7px;
+            padding: 0 8px;
             font-size: 0.62rem;
             font-weight: 700;
             cursor: pointer;
+            white-space: nowrap;
         }
+        .wallet-btn.connected { background: var(--accent); color: #04120a; }
 
+        /* ===== ESTEIRA ===== */
         .belt-area {
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 8px;
+            flex-shrink: 0;
         }
         .belt-head {
             display: flex;
@@ -107,7 +118,7 @@
         }
         .special { color: var(--accent); font-weight: 800; letter-spacing: .04em; }
         .belt-container {
-            height: 58px;
+            height: 60px;
             background: #0a0c11;
             border: 1px dashed #ffffff18;
             border-radius: 10px;
@@ -121,6 +132,7 @@
             font-size: 28px;
             left: -40px;
             z-index: 3;
+            pointer-events: none;
         }
         .drop-box {
             position: absolute;
@@ -128,68 +140,118 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 26px;
+            transition: filter 0.1s;
         }
-        .drop-box.received { filter: brightness(1.4); }
+        .drop-box.received { filter: brightness(1.8) drop-shadow(0 0 6px #22c55e); }
 
+        /* ===== BOTÕES ===== */
         .btn {
             border: 0;
             border-radius: 8px;
-            height: 28px;
+            height: 30px;
             font-size: 0.72rem;
             font-weight: 800;
             cursor: pointer;
+            transition: 0.15s;
         }
+        .btn:active { transform: scale(0.97); }
         .btn-process {
             width: 100%;
             background: var(--accent);
             color: #04120a;
             margin-top: 6px;
         }
+        .btn-process:hover { background: #1ab34a; }
+        .btn-stop {
+            background: #ef4444;
+            color: #fff;
+        }
         .btn-sell {
             width: 100%;
             background: #eab308;
             color: #1a1400;
-            height: 26px;
-            font-size: 0.68rem;
+            height: 30px;
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+        .btn-sell:hover { background: #ca9a08; }
+
+        /* ===== TOAST de notificação ===== */
+        #toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1a2a1a;
+            color: var(--accent);
+            border: 1px solid #22c55e44;
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
+        /* ===== INVENTÁRIO ===== */
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 4px;
-            flex: 1;
-            min-height: 0;
-            align-content: start;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
         }
         .inv-slot {
             background: #141824;
             border: 1px solid var(--border);
             border-radius: 8px;
-            min-height: 54px;
+            min-height: 58px;
             padding: 4px 2px 3px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 1px;
+            position: relative;
         }
-        .inv-icon { font-size: 1.05rem; line-height: 1; }
-        .inv-count { font-size: 0.72rem; font-weight: 800; }
+        .inv-slot.type-rare   { border-color: #3b82f640; }
+        .inv-slot.type-epic   { border-color: #a855f740; }
+        .inv-slot.type-legendary { border-color: #f59e0b50; }
+        .inv-slot.type-mythic { border-color: #ef444450; }
+        .inv-icon { font-size: 1.1rem; line-height: 1; }
+        .inv-count { font-size: 0.75rem; font-weight: 800; }
+        .inv-count.type-rare     { color: var(--rare); }
+        .inv-count.type-epic     { color: var(--epic); }
+        .inv-count.type-legendary{ color: var(--legendary); }
+        .inv-count.type-mythic   { color: var(--mythic); }
         .inv-name {
-            font-size: 0.48rem;
+            font-size: 0.46rem;
             color: var(--muted);
             letter-spacing: .02em;
             text-transform: uppercase;
         }
+        .inv-reward {
+            font-size: 0.46rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
 
+        /* ===== LOJA ===== */
         .shop-tabs {
             display: flex;
             gap: 4px;
             overflow-x: auto;
+            flex-shrink: 0;
+            padding-bottom: 2px;
         }
         .shop-tab {
-            height: 24px;
-            padding: 0 8px;
+            height: 26px;
+            padding: 0 10px;
             border-radius: 6px;
             border: 1px solid var(--border);
             background: var(--panel);
@@ -198,6 +260,7 @@
             font-weight: 700;
             white-space: nowrap;
             cursor: pointer;
+            transition: 0.15s;
         }
         .shop-tab.active {
             background: var(--panel-h);
@@ -208,319 +271,465 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            overflow-y: auto;
-            flex: 1;
         }
         .shop-item {
             background: #141824;
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 8px;
-            min-height: 78px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 6px;
         }
         .item-name { margin: 0; font-size: 0.78rem; }
-        .item-desc { margin: 3px 0 0; font-size: 0.58rem; color: var(--muted); }
-        .price-row { display: flex; gap: 4px; margin-top: 6px; }
+        .item-desc { margin: 0; font-size: 0.58rem; color: var(--muted); }
+        .price-row { display: flex; gap: 4px; }
         .buy-btn {
-            height: 22px;
+            height: 24px;
             flex: 1;
             border: 0;
             border-radius: 5px;
-            font-size: 0.58rem;
+            font-size: 0.6rem;
             font-weight: 800;
             cursor: pointer;
+            transition: 0.15s;
         }
         .eco-btn { background: var(--accent); color: #04120a; }
-        .bnb-btn { background: transparent; color: var(--orange); border: 1px solid #f9731644; flex: 0 0 64px; }
+        .eco-btn:hover { background: #1ab34a; }
+        .bnb-btn { background: transparent; color: var(--orange); border: 1px solid #f9731644; flex: 0 0 50px; }
+        .bnb-btn:hover { background: #f9731611; }
 
+        /* ===== PERFIL & RANKING ===== */
         .profile-card, .rank-card {
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
+            font-size: 0.82rem;
+            line-height: 1.8;
         }
         .input-text {
             width: 100%;
             background: #000;
             border: 1px solid var(--border);
             color: #fff;
-            padding: 8px;
-            border-radius: 6px;
-            margin: 8px 0;
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin: 8px 0 4px;
+            font-size: 0.82rem;
+            outline: none;
         }
+        .input-text:focus { border-color: var(--accent); }
 
+        /* ===== LOCK SCREEN ===== */
         #lock-screen {
-            position: fixed; inset: 0; background: #05070a; z-index: 2000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed; inset: 0; background: #05070a;
+            z-index: 2000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+            text-align: center; padding: 20px;
         }
+        .lock-title { font-size: 2rem; }
+        .lock-sub { color: var(--muted); font-size: 0.85rem; max-width: 260px; }
+
         .hidden { display: none !important; }
 
-        @media (max-width: 720px) {
+        @media (min-width: 480px) {
+            .inventory-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+        @media (max-width: 360px) {
             .inventory-grid { grid-template-columns: repeat(4, 1fr); }
             .shop-grid { grid-template-columns: 1fr; }
-            .hud { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
+
+<!-- ===== LOCK SCREEN ===== -->
 <div id="lock-screen">
-    <div style="font-size:1.4rem;font-weight:800;">♻️ EcoPacto</div>
-    <p style="color:var(--muted);font-size:0.8rem;">Conecte sua carteira para abrir o pátio.</p>
-    <a href="index.html" class="btn btn-process" style="width:180px;text-decoration:none;display:flex;align-items:center;justify-content:center;">Conectar hub</a>
+    <div class="lock-title">♻️</div>
+    <div style="font-size:1.3rem;font-weight:800;">EcoPacto</div>
+    <p class="lock-sub">Conecte sua carteira na Wallet para abrir o Pátio de Coleta.</p>
+    <a href="index.html" class="btn btn-process" style="width:200px;text-decoration:none;display:flex;align-items:center;justify-content:center;">🔗 Ir para a Wallet</a>
 </div>
 
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<!-- ===== TABS ===== -->
 <div class="tabs">
-    <button class="tab active" onclick="showPage('patio', this)">Pátio</button>
-    <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">Loja</button>
-    <button class="tab" onclick="showPage('profile', this)">Perfil</button>
-    <button class="tab" onclick="showPage('ranking', this)">Ranking</button>
+    <button class="tab active" onclick="showPage('patio', this)">🏭 Pátio</button>
+    <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">🛒 Loja</button>
+    <button class="tab" onclick="showPage('profile', this)">👤 Perfil</button>
+    <button class="tab" onclick="showPage('ranking', this)">🏆 Rank</button>
 </div>
 
+<!-- ===== PÁTIO ===== -->
 <div id="patio" class="page active">
     <div class="hud">
-        <div class="hud-left">Sede: <strong>Barraco de Triagem</strong></div>
+        <div class="hud-left">🏚 <strong id="hud-sede">Barraco de Triagem</strong></div>
         <div class="hud-right">
             <span class="pill">Nv. <strong id="header-level">1</strong></span>
-            <span class="pill">⚡ <strong id="header-energy">100/100</strong></span>
-            <span class="pill" id="energy-timer-header">03:00</span>
+            <span class="pill">⚡ <strong id="header-energy">100</strong>/100</span>
+            <span class="pill" id="energy-timer-header">Cheio</span>
             <span class="pill">ECO <strong id="header-eco">0</strong></span>
-            <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">Carteira</button>
+            <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">🦊 Carteira</button>
         </div>
     </div>
 
     <div class="belt-area">
         <div class="belt-head">
-            <span id="belt-label">Esteira lvl 1</span>
+            <span id="belt-label">Esteira Nível 1</span>
             <span class="special" id="special-label">Aguardando lote</span>
         </div>
         <div class="belt-container">
             <div id="item-active"></div>
             <div class="drop-box" id="box-main">📦</div>
         </div>
-        <button class="btn btn-process" id="btn-loop" onclick="toggleAuto()">▶ Processar próximo lote</button>
+        <button class="btn btn-process" id="btn-loop" onclick="toggleAuto()">▶ Processar Lote</button>
     </div>
 
     <div class="inventory-grid" id="inventory-grid"></div>
-    <button class="btn btn-sell" onclick="sellAll()">Vender materiais por ECO</button>
+    <button class="btn btn-sell" onclick="sellAll()">💰 Vender tudo por ECO</button>
 </div>
 
+<!-- ===== LOJA ===== -->
 <div id="shop" class="page">
     <div class="shop-tabs">
-        <button class="shop-tab active" onclick="filterShop('energy', this)">Energia</button>
-        <button class="shop-tab" onclick="filterShop('staff', this)">Equipe</button>
-        <button class="shop-tab" onclick="filterShop('robots', this)">Robôs</button>
-        <button class="shop-tab" onclick="filterShop('belts', this)">Esteiras</button>
-        <button class="shop-tab" onclick="filterShop('boosters', this)">Boosters</button>
+        <button class="shop-tab active" onclick="filterShop('energy', this)">⚡ Energia</button>
+        <button class="shop-tab" onclick="filterShop('staff', this)">👷 Equipe</button>
+        <button class="shop-tab" onclick="filterShop('robots', this)">🤖 Robôs</button>
+        <button class="shop-tab" onclick="filterShop('belts', this)">⚙️ Esteiras</button>
+        <button class="shop-tab" onclick="filterShop('boosters', this)">🚀 Boosts</button>
     </div>
     <div class="shop-grid" id="shop-grid"></div>
 </div>
 
+<!-- ===== PERFIL ===== -->
 <div id="profile" class="page">
     <div class="profile-card">
-        <div><span>Nome:</span> <strong id="prof-name">Operador</strong></div>
-        <div><span>ID:</span> <small id="prof-id">-</small></div>
-        <div><span>Convidados:</span> <strong id="prof-invites">0</strong></div>
-        <input type="text" id="input-name" class="input-text" placeholder="Apelido">
-        <button class="btn btn-process" onclick="saveProfile()">Salvar</button>
+        <div>🧑 Nome: <strong id="prof-name">Operador</strong></div>
+        <div>🆔 ID: <small id="prof-id" style="word-break:break-all;color:var(--muted);">offline</small></div>
+        <div>📊 Nível: <strong id="prof-level">1</strong></div>
+        <div>💰 ECO Total: <strong id="prof-eco">0</strong></div>
+        <div>🎁 Convites: <strong id="prof-invites">0</strong></div>
+        <input type="text" id="input-name" class="input-text" placeholder="Escolha seu apelido (mín. 3 letras)">
+        <button class="btn btn-process" onclick="saveProfile()">Salvar Perfil</button>
     </div>
 </div>
 
+<!-- ===== RANKING ===== -->
 <div id="ranking" class="page">
-    <div class="rank-card">Ranking ainda não sincronizado com a rede.</div>
+    <div class="rank-card">
+        🏆 <strong>Ranking Global</strong><br>
+        <span style="color:var(--muted);font-size:0.78rem;">Sincronização com a rede em breve. Seus dados locais serão enviados automaticamente quando a rede estiver disponível.</span>
+        <div style="margin-top:12px;">
+            <div style="font-size:0.72rem;color:var(--muted);">Sua posição atual (local):</div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--accent);margin-top:4px;">#— ECO: <span id="rank-eco">0</span></div>
+        </div>
+    </div>
 </div>
 
 <script>
-    const wallet = JSON.parse(localStorage.getItem('eco_wallet'));
-    if (wallet) document.getElementById('lock-screen').classList.add('hidden');
+// ===== ESTADO =====
+const SAVE_KEY = "ecopacto_game_v2";
 
-    let state = {
-        eco: 0, energy: 100, level: 1, invites: 0, username: "",
-        inventory: {},
-        upgrades: { staff: 0, robots: 0, belt: 1 }
-    };
+// FIX: Lock screen verifica tanto eco_wallet (login da wallet) quanto qualquer dado local salvo
+const walletRaw = localStorage.getItem('eco_wallet');
+const wallet = walletRaw ? JSON.parse(walletRaw) : null;
+const hasLocalGame = localStorage.getItem(SAVE_KEY);
 
-    let auto = false, countdown = 180, mmAccount = null;
+if (wallet || hasLocalGame) {
+    document.getElementById('lock-screen').classList.add('hidden');
+}
 
-    const MATERIALS = [
-        { id: 'plastic', name: 'Plástico', icon: '🧴', chance: 60, speed: 1500, reward: 1, type: 'common' },
-        { id: 'paper', name: 'Papelão', icon: '📦', chance: 20, speed: 1500, reward: 2, type: 'common' },
-        { id: 'alum', name: 'Alumínio', icon: '🥫', chance: 12, speed: 1500, reward: 5, type: 'common' },
-        { id: 'copper', name: 'Cobre', icon: '🔌', chance: 5, speed: 3000, reward: 15, type: 'rare' },
-        { id: 'battery', name: 'Bateria', icon: '🔋', chance: 2, speed: 3000, reward: 30, type: 'rare' },
-        { id: 'lithium', name: 'Lítio', icon: '🔋', chance: 1, speed: 4000, reward: 100, type: 'rare' },
-        { id: 'parts', name: 'Peças', icon: '💻', chance: 0.8, speed: 4000, reward: 150, type: 'epic' },
-        { id: 'phone', name: 'Smartphone', icon: '📱', chance: 0.15, speed: 5000, reward: 1200, type: 'epic' },
-        { id: 'board', name: 'Placa-mãe', icon: '🖥️', chance: 0.05, speed: 6000, reward: 2500, type: 'legendary' },
-        { id: 'chip', name: 'Chip', icon: '⚡', chance: 0.01, speed: 1000, reward: 2500, type: 'mythic' }
-    ];
+let state = {
+    eco: 0,
+    energy: 100,
+    level: 1,
+    invites: 0,
+    username: "",
+    inventory: {},
+    upgrades: { staff: 0, robots: 0, belt: 1 },
+    beltLevel: 1
+};
 
-    const STORE = {
-        energy: [
-            { name: '+50 Energia', eco: 100, bnb: 0.00002, id: 'e1', desc: 'Recarga imediata' },
-            { name: '+100 Energia', eco: 180, bnb: 0.00004, id: 'e2', desc: 'Recarga média' },
-            { name: '+500 Energia', eco: 800, bnb: 0.00015, id: 'e3', desc: 'Recarga industrial' }
-        ],
-        staff: [
-            { name: 'Catador', eco: 500, bnb: 0.00010, desc: '+1 mat/ciclo', id: 's1' },
-            { name: 'Supervisor', eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3' }
-        ],
-        robots: [
-            { name: 'Robô básico', eco: 5000, bnb: 0.00100, desc: 'Automação leve', id: 'r1' },
-            { name: 'Robô industrial', eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo', id: 'r3' }
-        ],
-        belts: [
-            { name: 'Esteira 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2' },
-            { name: 'Esteira 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3' }
-        ],
-        boosters: [
-            { name: 'Produção 2x 30min', eco: 300, bnb: 0.00006, id: 'boost1', desc: 'Boost curto' },
-            { name: 'Sorte 2x 30min', eco: 500, bnb: 0.00010, id: 'boost3', desc: 'Mais raros' }
-        ]
-    };
+// ===== MATERIAIS =====
+const MATERIALS = [
+    { id: 'plastic',  name: 'Plástico',    icon: '🧴', chance: 60,   speed: 1400, reward: 1,    type: 'common'    },
+    { id: 'paper',    name: 'Papelão',     icon: '📦', chance: 20,   speed: 1400, reward: 2,    type: 'common'    },
+    { id: 'alum',     name: 'Alumínio',    icon: '🥫', chance: 12,   speed: 1400, reward: 5,    type: 'common'    },
+    { id: 'copper',   name: 'Cobre',       icon: '🔌', chance: 5,    speed: 2800, reward: 15,   type: 'rare'      },
+    { id: 'battery',  name: 'Bateria',     icon: '🔋', chance: 2,    speed: 2800, reward: 30,   type: 'rare'      },
+    { id: 'lithium',  name: 'Lítio',       icon: '💎', chance: 0.7,  speed: 3500, reward: 100,  type: 'rare'      },
+    { id: 'parts',    name: 'Peças',       icon: '💻', chance: 0.2,  speed: 3500, reward: 150,  type: 'epic'      },
+    { id: 'phone',    name: 'Smartphone',  icon: '📱', chance: 0.08, speed: 4500, reward: 1200, type: 'epic'      },
+    { id: 'board',    name: 'Placa-mãe',   icon: '🖥️', chance: 0.02, speed: 5500, reward: 2500, type: 'legendary' },
+    { id: 'chip',     name: 'Chip Raro',   icon: '⚡', chance: 0.01, speed: 900,  reward: 5000, type: 'mythic'    }
+];
 
-    function save() { localStorage.setItem("recicly_v_final", JSON.stringify(state)); }
-    function load() {
-        const saved = localStorage.getItem("recicly_v_final");
-        if (saved) Object.assign(state, JSON.parse(saved));
-        updateUI();
+// ===== LOJA =====
+const STORE = {
+    energy: [
+        { name: '+50 Energia',  eco: 100,   bnb: 0.00002, id: 'e1', desc: 'Recarga imediata',   effect: () => { state.energy = Math.min(100, state.energy + 50); } },
+        { name: '+100 Energia', eco: 180,   bnb: 0.00004, id: 'e2', desc: 'Recarga média',       effect: () => { state.energy = 100; } },
+        { name: '+500 Energia', eco: 800,   bnb: 0.00015, id: 'e3', desc: '5x mais ciclos!',    effect: () => { state.energy = 100; } } // energia máx pode ser ampliada futuramente
+    ],
+    staff: [
+        { name: 'Catador',     eco: 500,   bnb: 0.00010, desc: '+1 mat/ciclo',    id: 's1', effect: () => { state.upgrades.staff++; } },
+        { name: 'Supervisor',  eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3', effect: () => { state.upgrades.staff += 2; } }
+    ],
+    robots: [
+        { name: 'Robô Básico',      eco: 5000,  bnb: 0.00100, desc: 'Automação leve',   id: 'r1', effect: () => { state.upgrades.robots++; } },
+        { name: 'Robô Industrial',  eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo',    id: 'r3', effect: () => { state.upgrades.robots += 3; } }
+    ],
+    belts: [
+        { name: 'Esteira 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2', effect: () => { state.beltLevel = 2; updateBeltLabel(); } },
+        { name: 'Esteira 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3', effect: () => { state.beltLevel = 3; updateBeltLabel(); } }
+    ],
+    boosters: [
+        { name: 'Produção 2× 30min', eco: 300, bnb: 0.00006, id: 'boost1', desc: 'Dobra a produção',  effect: () => toast('⚡ Boost de produção ativado por 30 min!') },
+        { name: 'Sorte 2× 30min',    eco: 500, bnb: 0.00010, id: 'boost3', desc: 'Itens raros +2×',   effect: () => toast('🍀 Boost de sorte ativado por 30 min!') }
+    ]
+};
+
+// ===== SAVE / LOAD =====
+function save()  { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+function load() {
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved) {
+        try { Object.assign(state, JSON.parse(saved)); }
+        catch(e) { console.warn("Save corrompido, resetando.", e); }
     }
+    updateUI();
+    updateBeltLabel();
+}
 
-    function updateUI() {
-        document.getElementById('header-eco').innerText = Math.floor(state.eco).toLocaleString('pt-BR');
-        document.getElementById('header-energy').innerText = state.energy + "/100";
-        document.getElementById('header-level').innerText = state.level || 1;
-        const name = state.username || (wallet ? wallet.name : "Operador");
-        document.getElementById('prof-name').innerText = name;
-        document.getElementById('prof-id').innerText = wallet ? wallet.address : "Hub offline";
-        document.getElementById('prof-invites').innerText = state.invites;
-        document.getElementById('inventory-grid').innerHTML = MATERIALS.map(m => `
-            <div class="inv-slot">
-                <div class="inv-icon">${m.icon}</div>
-                <div class="inv-count">${state.inventory[m.id] || 0}</div>
-                <div class="inv-name">${m.name}</div>
-            </div>
-        `).join('');
+// ===== UI =====
+function updateUI() {
+    document.getElementById('header-eco').innerText    = fmt(state.eco);
+    document.getElementById('header-energy').innerText = state.energy;
+    document.getElementById('header-level').innerText  = state.level;
+    document.getElementById('prof-name').innerText     = state.username || (wallet ? wallet.name : "Operador");
+    document.getElementById('prof-id').innerText       = wallet ? wallet.address : "Hub offline";
+    document.getElementById('prof-level').innerText    = state.level;
+    document.getElementById('prof-eco').innerText      = fmt(state.eco);
+    document.getElementById('prof-invites').innerText  = state.invites;
+    document.getElementById('rank-eco').innerText      = fmt(state.eco);
+
+    // Inventário com cores de raridade
+    document.getElementById('inventory-grid').innerHTML = MATERIALS.map(m => {
+        const qty = state.inventory[m.id] || 0;
+        return `
+        <div class="inv-slot type-${m.type}" title="${m.name} — ${m.reward} ECO cada">
+            <div class="inv-icon">${m.icon}</div>
+            <div class="inv-count type-${m.type}">${qty}</div>
+            <div class="inv-name">${m.name}</div>
+            <div class="inv-reward">${m.reward} ECO</div>
+        </div>`;
+    }).join('');
+}
+
+function updateBeltLabel() {
+    document.getElementById('belt-label').innerText = `Esteira Nível ${state.beltLevel}`;
+}
+
+function fmt(n) { return Math.floor(n).toLocaleString('pt-BR'); }
+
+function toast(msg, duration = 2500) {
+    const el = document.getElementById('toast');
+    el.innerText = msg;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), duration);
+}
+
+// ===== NAVEGAÇÃO =====
+function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t  => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (btn) btn.classList.add('active');
+}
+
+// ===== ESTEIRA / CICLO =====
+let auto = false;
+let animFrameId = null;
+
+function toggleAuto() {
+    auto = !auto;
+    const btn = document.getElementById('btn-loop');
+    if (auto) {
+        btn.innerText = "⏸ Parar";
+        btn.classList.add('btn-stop');
+        btn.classList.remove('btn-process');
+        runCycle();
+    } else {
+        btn.innerText = "▶ Processar Lote";
+        btn.classList.remove('btn-stop');
+        btn.classList.add('btn-process');
+        // FIX: cancela animação pendente ao parar
+        if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
     }
+}
 
-    function showPage(id, btn) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if (btn) btn.classList.add('active');
+function runCycle() {
+    if (!auto) return;
+    if (state.energy <= 0) {
+        toggleAuto();
+        toast("⚡ Energia esgotada! Recarregue na Loja.");
+        return;
     }
+    state.energy--;
+    updateUI(); save();
 
-    function toggleAuto() {
-        auto = !auto;
-        document.getElementById('btn-loop').innerText = auto ? "⏸ Parar" : "▶ Processar próximo lote";
-        if (auto) runCycle();
-    }
+    // Sortear material (rolagem acumulada)
+    let r = Math.random() * 100, acc = 0, sel = MATERIALS[0];
+    for (const m of MATERIALS) { acc += m.chance; if (r <= acc) { sel = m; break; } }
 
-    function runCycle() {
-        if (!auto || state.energy <= 0) {
-            if (state.energy <= 0 && auto) toggleAuto();
-            return;
-        }
-        state.energy--;
-        let r = Math.random() * 100, acc = 0, sel = MATERIALS[0];
-        for (const m of MATERIALS) { acc += m.chance; if (r <= acc) { sel = m; break; } }
+    const item    = document.getElementById('item-active');
+    const special = document.getElementById('special-label');
+    item.innerText  = sel.icon;
+    item.style.left = "-40px";
+    item.style.display = "block";
 
-        const item = document.getElementById('item-active');
-        const special = document.getElementById('special-label');
-        item.innerText = sel.icon;
-        item.style.left = "-40px";
-        special.innerText = (sel.type === 'common') ? "Lote em trânsito" : "Lote especial detectado";
+    const typeLabels = { common: "Lote comum em trânsito", rare: "⭐ Lote raro!", epic: "💜 Lote épico!", legendary: "🌟 Lote lendário!!", mythic: "🔴 ITEM MÍTICO!!!" };
+    special.innerText = typeLabels[sel.type] || "Lote em trânsito";
 
-        let start = null;
-        function animate(t) {
-            if (!start) start = t;
-            const progress = (t - start) / sel.speed;
-            if (progress < 1) {
-                item.style.left = `calc(${progress * 100}% - 28px)`;
-                if (auto) requestAnimationFrame(animate);
-            } else {
-                state.inventory[sel.id] = (state.inventory[sel.id] || 0) + 1;
-                const box = document.getElementById('box-main');
-                box.classList.add('received');
-                setTimeout(() => {
-                    box.classList.remove('received');
-                    if (auto) runCycle();
-                }, sel.type === 'mythic' ? 900 : 160);
-                updateUI(); save();
-            }
-        }
-        requestAnimationFrame(animate);
-    }
+    // Ajuste de velocidade pela esteira
+    const speedMult = state.beltLevel === 3 ? 0.5 : state.beltLevel === 2 ? 0.8 : 1;
+    const duration  = sel.speed * speedMult;
 
-    function sellAll() {
-        let gain = 0;
-        MATERIALS.forEach(m => {
-            gain += (state.inventory[m.id] || 0) * m.reward;
-            state.inventory[m.id] = 0;
-        });
-        state.eco += gain;
-        updateUI(); save();
-    }
-
-    function filterShop(cat, btn) {
-        if (btn) {
-            document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-        }
-        document.getElementById('shop-grid').innerHTML = STORE[cat].map(i => `
-            <div class="shop-item">
-                <div>
-                    <h4 class="item-name">${i.name}</h4>
-                    <p class="item-desc">${i.desc || ''}</p>
-                </div>
-                <div class="price-row">
-                    <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco}, 'eco')">ECO ${i.eco}</button>
-                    <button class="buy-btn bnb-btn" onclick="buyItem('${i.id}', ${i.bnb}, 'bnb')">BNB</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function buyItem(id, price, type) {
-        if (type === 'eco') {
-            if (state.eco < price) return alert("ECO insuficiente");
-            state.eco -= price;
+    let start = null;
+    function animate(t) {
+        if (!auto) { item.style.display = "none"; return; } // FIX: para animação imediatamente
+        if (!start) start = t;
+        const progress = (t - start) / duration;
+        if (progress < 1) {
+            item.style.left = `calc(${progress * 100}% - 28px)`;
+            animFrameId = requestAnimationFrame(animate);
         } else {
-            alert("Pagamento BNB ainda é teste.");
-        }
-        updateUI(); save();
-    }
+            item.style.display = "none";
+            state.inventory[sel.id] = (state.inventory[sel.id] || 0) + 1;
 
-    async function connectMetaMask() {
-        if (!window.ethereum) return;
+            const box = document.getElementById('box-main');
+            box.classList.add('received');
+            setTimeout(() => box.classList.remove('received'), 250);
+
+            if (sel.type !== 'common') toast(`${item.innerText} ${sel.name} coletado! (+${sel.reward} ECO ao vender)`);
+
+            updateUI(); save();
+            // FIX: delay antes do próximo ciclo para evitar loop travado
+            if (auto) setTimeout(runCycle, 100);
+        }
+    }
+    animFrameId = requestAnimationFrame(animate);
+}
+
+// ===== VENDER =====
+function sellAll() {
+    let gain = 0, total = 0;
+    MATERIALS.forEach(m => {
+        const qty = state.inventory[m.id] || 0;
+        gain += qty * m.reward;
+        total += qty;
+        state.inventory[m.id] = 0;
+    });
+    if (total === 0) { toast("🗑️ Inventário vazio!"); return; }
+    state.eco += gain;
+    updateUI(); save();
+    toast(`✅ Vendido! +${fmt(gain)} ECO (${total} itens)`);
+}
+
+// ===== LOJA =====
+function filterShop(cat, btn) {
+    if (btn) {
+        document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    document.getElementById('shop-grid').innerHTML = STORE[cat].map(i => `
+        <div class="shop-item">
+            <div>
+                <h4 class="item-name">${i.name}</h4>
+                <p class="item-desc">${i.desc || ''}</p>
+            </div>
+            <div class="price-row">
+                <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco}, '${cat}', 'eco')">
+                    ${fmt(i.eco)} ECO
+                </button>
+                <button class="buy-btn bnb-btn" onclick="buyItem('${i.id}', ${i.bnb}, '${cat}', 'bnb')">
+                    BNB
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function buyItem(id, price, cat, type) {
+    if (type === 'bnb') {
+        toast("🔗 Pagamento BNB: use a Wallet para comprar ECO e troque aqui.");
+        return;
+    }
+    if (state.eco < price) { toast("❌ ECO insuficiente!"); return; }
+    // Encontrar o item e aplicar efeito
+    const item = Object.values(STORE).flat().find(i => i.id === id);
+    if (!item) return;
+    state.eco -= price;
+    if (item.effect) item.effect();
+    updateUI(); save();
+    toast(`✅ ${item.name} comprado!`);
+}
+
+// ===== METAMASK =====
+async function connectMetaMask() {
+    if (!window.ethereum) {
+        toast("🦊 MetaMask não encontrada. Use o app mobile ou extensão.");
+        return;
+    }
+    try {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        mmAccount = accounts[0];
-        document.getElementById('mm-btn').innerText = mmAccount.slice(0, 6);
+        const acc = accounts[0];
+        const btn = document.getElementById('mm-btn');
+        btn.innerText = acc.slice(0, 6) + "…" + acc.slice(-4);
+        btn.classList.add('connected');
+        toast("✅ Carteira conectada: " + acc.slice(0, 6) + "…");
+    } catch(e) {
+        toast("❌ Conexão recusada.");
     }
+}
 
-    function saveProfile() {
-        const name = document.getElementById('input-name').value.trim();
-        if (name.length < 3) return alert("Mínimo 3 letras.");
-        state.username = name;
-        updateUI(); save();
-    }
+// ===== PERFIL =====
+function saveProfile() {
+    const name = document.getElementById('input-name').value.trim();
+    if (name.length < 3) { toast("❌ Mínimo 3 letras no apelido."); return; }
+    state.username = name;
+    updateUI(); save();
+    toast("✅ Perfil salvo!");
+}
 
-    load();
-    filterShop('energy', document.querySelector('.shop-tab'));
-
-    setInterval(() => {
-        const el = document.getElementById('energy-timer-header');
-        if (state.energy < 100) {
-            countdown--;
-            if (countdown <= 0) { state.energy++; countdown = 180; updateUI(); }
-            const m = Math.floor(countdown / 60), s = countdown % 60;
-            el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        } else {
-            el.innerText = "Cheio";
+// ===== ENERGIA PASSIVA (1 por 3min) =====
+let energyCountdown = 180;
+setInterval(() => {
+    const el = document.getElementById('energy-timer-header');
+    if (state.energy < 100) {
+        energyCountdown--;
+        if (energyCountdown <= 0) {
+            state.energy = Math.min(100, state.energy + 1); // FIX: nunca ultrapassa 100
+            energyCountdown = 180;
+            updateUI(); save();
         }
-    }, 1000);
+        const m = Math.floor(energyCountdown / 60), s = energyCountdown % 60;
+        el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    } else {
+        el.innerText = "⚡ Cheio";
+        energyCountdown = 180;
+    }
+}, 1000);
+
+// ===== INICIALIZAR =====
+load();
+// FIX: usar querySelector específico da loja, não da aba principal
+filterShop('energy', document.querySelector('.shop-tab'));
 </script>
 </body>
 </html>
