@@ -49,8 +49,11 @@
         .btn-buy { background: #f59e0b; color: #000; font-weight: 800; }
         .btn-buy:hover { background: #d97706; transform: translateY(-1px); }
 
-        .btn-launcher { background: #3b82f6; color: white; width: 100%; border: none; border-radius: 12px; padding: 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-launcher { background: #3b82f6; color: white; border: none; border-radius: 12px; padding: 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
         .btn-launcher:hover { background: #2563eb; }
+        .btn-game { background: #a855f7; color: white; border: none; border-radius: 12px; padding: 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
+        .btn-game:hover { background: #9333ea; }
+        .action-row { display: flex; gap: 8px; margin-top: 8px; }
 
         /* PAINEIS */
         .view-panel { background: #00000060; padding: 14px; border-radius: 14px; margin-top: 8px; display: none; text-align: left; border: 1px solid #ffffff08; }
@@ -128,7 +131,10 @@
                 <button class="nav-btn btn-buy"     onclick="togglePanel('buy')">💳 Comprar ECO</button>
             </div>
 
-            <button class="btn-launcher" onclick="confirmDownload()">🚀 Baixar Launcher (PC)</button>
+            <div class="action-row">
+                <button class="btn-launcher" onclick="confirmDownload()">🚀 Launcher PC</button>
+                <button class="btn-game" id="btn-open-game" onclick="openGame()">🎮 Jogar Agora</button>
+            </div>
 
             <!-- PAINEL RECEBER -->
             <div id="panel-receive" class="view-panel">
@@ -246,6 +252,8 @@
             walletData = data;
             if (!walletData.name  || walletData.name  === "undefined") walletData.name  = payload.name || "Usuário";
             if (!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
+            // SALVA no localStorage para o jogo reconhecer o login
+            localStorage.setItem('eco_wallet', JSON.stringify(walletData));
             setupWalletUI(walletData);
         })
         .catch(() => alert("Erro ao conectar com o servidor."));
@@ -325,6 +333,9 @@
     function copyAddress() {
         if (walletData) { navigator.clipboard.writeText(walletData.address); alert("Endereço copiado!"); }
     }
+
+    // ---- JOGO ----
+    function openGame() { window.location.href = 'game.html'; }
 
     // ---- DOWNLOAD ----
     function confirmDownload() { document.getElementById('download-modal').style.display = 'flex'; }

@@ -28,20 +28,29 @@
             background: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 8px;
+            padding: 12px 10px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
             min-height: 100%;
-            /* FIX: Não usar overflow:hidden no body — impedia scroll em mobile */
+            align-items: center;
+        }
+
+        /* Container central para manter tudo compacto e proporcional na tela */
+        .app-container {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         /* ===== TABS PRINCIPAIS ===== */
         .tabs {
             display: flex;
-            gap: 4px;
-            height: 32px;
-            min-height: 32px;
+            gap: 6px;
+            height: 38px;
+            min-height: 38px;
             flex-shrink: 0;
         }
         .tab {
@@ -49,8 +58,8 @@
             border: 1px solid var(--border);
             background: var(--panel);
             color: var(--muted);
-            border-radius: 8px;
-            font-size: 0.68rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
             font-weight: 700;
             cursor: pointer;
             transition: 0.15s;
@@ -61,7 +70,7 @@
             border-color: var(--accent);
         }
 
-        .page { display: none; flex-direction: column; gap: 6px; }
+        .page { display: none; flex-direction: column; gap: 10px; }
         .page.active { display: flex; }
 
         /* ===== HUD ===== */
@@ -69,56 +78,44 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
+            gap: 8px;
             background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 6px 10px;
-            font-size: 0.68rem;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
             flex-shrink: 0;
         }
-        .hud-left { color: var(--muted); white-space: nowrap; }
-        .hud-right { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        .hud-left { color: var(--muted); white-space: nowrap; font-size: 0.8rem; }
+        .hud-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
         .pill {
             background: #0b0d13;
             border: 1px solid var(--border);
-            border-radius: 7px;
-            padding: 3px 6px;
+            border-radius: 8px;
+            padding: 4px 8px;
             white-space: nowrap;
-            font-size: 0.65rem;
+            font-size: 0.78rem;
+            font-weight: 600;
         }
-        .wallet-btn {
-            background: var(--orange);
-            color: #fff;
-            border: 0;
-            border-radius: 7px;
-            height: 22px;
-            padding: 0 8px;
-            font-size: 0.62rem;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .wallet-btn.connected { background: var(--accent); color: #04120a; }
 
         /* ===== ESTEIRA ===== */
         .belt-area {
             background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 8px;
+            border-radius: 14px;
+            padding: 10px;
             flex-shrink: 0;
         }
         .belt-head {
             display: flex;
             justify-content: space-between;
-            font-size: 0.62rem;
+            font-size: 0.75rem;
             color: var(--muted);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         .special { color: var(--accent); font-weight: 800; letter-spacing: .04em; }
         .belt-container {
-            height: 60px;
+            height: 64px;
             background: #0a0c11;
             border: 1px dashed #ffffff18;
             border-radius: 10px;
@@ -129,17 +126,17 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 28px;
+            font-size: 32px;
             left: -40px;
             z-index: 3;
             pointer-events: none;
         }
         .drop-box {
             position: absolute;
-            right: 10px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 26px;
+            font-size: 28px;
             transition: filter 0.1s;
         }
         .drop-box.received { filter: brightness(1.8) drop-shadow(0 0 6px #22c55e); }
@@ -147,9 +144,9 @@
         /* ===== BOTÕES ===== */
         .btn {
             border: 0;
-            border-radius: 8px;
-            height: 30px;
-            font-size: 0.72rem;
+            border-radius: 10px;
+            height: 38px;
+            font-size: 0.85rem;
             font-weight: 800;
             cursor: pointer;
             transition: 0.15s;
@@ -159,7 +156,7 @@
             width: 100%;
             background: var(--accent);
             color: #04120a;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .btn-process:hover { background: #1ab34a; }
         .btn-stop {
@@ -170,13 +167,13 @@
             width: 100%;
             background: #eab308;
             color: #1a1400;
-            height: 30px;
-            font-size: 0.7rem;
+            height: 38px;
+            font-size: 0.85rem;
             margin-top: 4px;
         }
         .btn-sell:hover { background: #ca9a08; }
 
-        /* ===== TOAST de notificação ===== */
+        /* ===== TOAST ===== */
         #toast {
             position: fixed;
             bottom: 70px;
@@ -186,8 +183,8 @@
             color: var(--accent);
             border: 1px solid #22c55e44;
             border-radius: 10px;
-            padding: 8px 18px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            font-size: 0.85rem;
             font-weight: 700;
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
@@ -204,39 +201,40 @@
         .inventory-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            gap: 6px;
         }
         .inv-slot {
             background: #141824;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            min-height: 58px;
-            padding: 4px 2px 3px;
+            border-radius: 10px;
+            min-height: 64px;
+            padding: 6px 3px 5px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 1px;
+            gap: 2px;
             position: relative;
         }
         .inv-slot.type-rare   { border-color: #3b82f640; }
         .inv-slot.type-epic   { border-color: #a855f740; }
         .inv-slot.type-legendary { border-color: #f59e0b50; }
         .inv-slot.type-mythic { border-color: #ef444450; }
-        .inv-icon { font-size: 1.1rem; line-height: 1; }
-        .inv-count { font-size: 0.75rem; font-weight: 800; }
+        .inv-icon { font-size: 1.3rem; line-height: 1; }
+        .inv-count { font-size: 0.85rem; font-weight: 800; }
         .inv-count.type-rare     { color: var(--rare); }
         .inv-count.type-epic     { color: var(--epic); }
         .inv-count.type-legendary{ color: var(--legendary); }
         .inv-count.type-mythic   { color: var(--mythic); }
         .inv-name {
-            font-size: 0.46rem;
+            font-size: 0.58rem;
             color: var(--muted);
             letter-spacing: .02em;
             text-transform: uppercase;
+            font-weight: 600;
         }
         .inv-reward {
-            font-size: 0.46rem;
+            font-size: 0.58rem;
             color: var(--accent);
             font-weight: 700;
         }
@@ -244,19 +242,19 @@
         /* ===== LOJA ===== */
         .shop-tabs {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             overflow-x: auto;
             flex-shrink: 0;
-            padding-bottom: 2px;
+            padding-bottom: 4px;
         }
         .shop-tab {
-            height: 26px;
-            padding: 0 10px;
-            border-radius: 6px;
+            height: 32px;
+            padding: 0 12px;
+            border-radius: 8px;
             border: 1px solid var(--border);
             background: var(--panel);
             color: var(--muted);
-            font-size: 0.62rem;
+            font-size: 0.78rem;
             font-weight: 700;
             white-space: nowrap;
             cursor: pointer;
@@ -267,57 +265,59 @@
             color: #fff;
             border-color: #ffffff44;
         }
+        /* Grid da Loja reduzida e proporcional */
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 8px;
         }
         .shop-item {
             background: #141824;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 6px;
+            gap: 8px;
         }
-        .item-name { margin: 0; font-size: 0.78rem; }
-        .item-desc { margin: 0; font-size: 0.58rem; color: var(--muted); }
-        .price-row { display: flex; gap: 4px; }
+        .item-name { margin: 0; font-size: 0.95rem; font-weight: 700; color: #fff; }
+        .item-desc { margin: 0; font-size: 0.72rem; color: var(--muted); line-height: 1.3; }
+        .price-row { display: flex; width: 100%; margin-top: 4px; }
         .buy-btn {
-            height: 24px;
-            flex: 1;
+            height: 34px;
+            width: 100%;
             border: 0;
-            border-radius: 5px;
-            font-size: 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 800;
             cursor: pointer;
             transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .eco-btn { background: var(--accent); color: #04120a; }
         .eco-btn:hover { background: #1ab34a; }
-        .bnb-btn { background: transparent; color: var(--orange); border: 1px solid #f9731644; flex: 0 0 50px; }
-        .bnb-btn:hover { background: #f9731611; }
 
         /* ===== PERFIL & RANKING ===== */
         .profile-card, .rank-card {
             background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 0.82rem;
-            line-height: 1.8;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 2;
         }
         .input-text {
             width: 100%;
             background: #000;
             border: 1px solid var(--border);
             color: #fff;
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-radius: 8px;
-            margin: 8px 0 4px;
-            font-size: 0.82rem;
+            margin: 10px 0 6px;
+            font-size: 0.9rem;
             outline: none;
         }
         .input-text:focus { border-color: var(--accent); }
@@ -326,18 +326,15 @@
         #lock-screen {
             position: fixed; inset: 0; background: #05070a;
             z-index: 2000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 10px;
+            align-items: center; justify-content: center; gap: 12px;
             text-align: center; padding: 20px;
         }
-        .lock-title { font-size: 2rem; }
-        .lock-sub { color: var(--muted); font-size: 0.85rem; max-width: 260px; }
+        .lock-title { font-size: 2.4rem; }
+        .lock-sub { color: var(--muted); font-size: 0.9rem; max-width: 280px; }
 
         .hidden { display: none !important; }
 
-        @media (min-width: 480px) {
-            .inventory-grid { grid-template-columns: repeat(5, 1fr); }
-        }
-        @media (max-width: 360px) {
+        @media (max-width: 400px) {
             .inventory-grid { grid-template-columns: repeat(4, 1fr); }
             .shop-grid { grid-template-columns: 1fr; }
         }
@@ -345,102 +342,114 @@
 </head>
 <body>
 
-<!-- ===== LOCK SCREEN ===== -->
-<div id="lock-screen">
-    <div class="lock-title">♻️</div>
-    <div style="font-size:1.3rem;font-weight:800;">EcoPacto</div>
-    <p class="lock-sub">Conecte sua carteira na Wallet para abrir o Pátio de Coleta.</p>
-    <a href="index.html" class="btn btn-process" style="width:200px;text-decoration:none;display:flex;align-items:center;justify-content:center;">🔗 Ir para a Wallet</a>
-</div>
+<div class="app-container">
 
-<!-- ===== TOAST ===== -->
-<div id="toast"></div>
+    <!-- ===== LOCK SCREEN ===== -->
+    <div id="lock-screen">
+        <div class="lock-title">♻️</div>
+        <div style="font-size:1.4rem;font-weight:800;">EcoPacto</div>
+        <p class="lock-sub">Faça login na Wallet para sincronizar seu saldo, ou entre direto no modo livre.</p>
+        <button onclick="playDirect()" class="btn btn-process" style="width:220px;height:42px;font-size:0.95rem;margin-bottom:8px;">▶ Entrar no Jogo</button>
+        <a href="index.html" style="color:var(--muted);font-size:0.8rem;text-decoration:none;display:flex;align-items:center;gap:4px;">🔗 Ir para a Carteira (Wallet)</a>
+    </div>
 
-<!-- ===== TABS ===== -->
-<div class="tabs">
-    <button class="tab active" onclick="showPage('patio', this)">🏭 Pátio</button>
-    <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">🛒 Loja</button>
-    <button class="tab" onclick="showPage('profile', this)">👤 Perfil</button>
-    <button class="tab" onclick="showPage('ranking', this)">🏆 Rank</button>
-</div>
+    <!-- ===== TOAST ===== -->
+    <div id="toast"></div>
 
-<!-- ===== PÁTIO ===== -->
-<div id="patio" class="page active">
-    <div class="hud">
-        <div class="hud-left">🏚 <strong id="hud-sede">Barraco de Triagem</strong></div>
-        <div class="hud-right">
-            <span class="pill">Nv. <strong id="header-level">1</strong></span>
-            <span class="pill">⚡ <strong id="header-energy">100</strong>/100</span>
-            <span class="pill" id="energy-timer-header">Cheio</span>
-            <span class="pill">ECO <strong id="header-eco">0</strong></span>
-            <button class="wallet-btn" onclick="connectMetaMask()" id="mm-btn">🦊 Carteira</button>
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <button class="tab active" onclick="showPage('patio', this)">🏭 Pátio</button>
+        <button class="tab" onclick="showPage('shop', this); filterShop('energy', document.querySelector('.shop-tab'))">🛒 Loja</button>
+        <button class="tab" onclick="showPage('profile', this)">👤 Perfil</button>
+        <button class="tab" onclick="showPage('ranking', this)">🏆 Rank</button>
+    </div>
+
+    <!-- ===== PÁTIO ===== -->
+    <div id="patio" class="page active">
+        <div class="hud">
+            <div class="hud-left">🏚 <strong id="hud-sede">Barraco de Triagem</strong></div>
+            <div class="hud-right">
+                <span class="pill">Nv. <strong id="header-level">1</strong></span>
+                <span class="pill">⚡ <strong id="header-energy">100</strong>/100</span>
+                <span class="pill" id="energy-timer-header">Cheio</span>
+                <span class="pill">ECO <strong id="header-eco">0</strong></span>
+            </div>
+        </div>
+
+        <div class="belt-area">
+            <div class="belt-head">
+                <span id="belt-label">Esteira Nível 1</span>
+                <span class="special" id="special-label">Aguardando lote</span>
+            </div>
+            <div class="belt-container">
+                <div id="item-active"></div>
+                <div class="drop-box" id="box-main">📦</div>
+            </div>
+            <button class="btn btn-process" id="btn-loop" onclick="toggleAuto()">▶ Processar Lote</button>
+        </div>
+
+        <div class="inventory-grid" id="inventory-grid"></div>
+        <button class="btn btn-sell" onclick="sellAll()">💰 Vender tudo por ECO</button>
+    </div>
+
+    <!-- ===== LOJA ===== -->
+    <div id="shop" class="page">
+        <div class="shop-tabs">
+            <button class="shop-tab active" onclick="filterShop('energy', this)">⚡ Energia</button>
+            <button class="shop-tab" onclick="filterShop('staff', this)">👷 Equipe</button>
+            <button class="shop-tab" onclick="filterShop('robots', this)">🤖 Robôs</button>
+            <button class="shop-tab" onclick="filterShop('belts', this)">⚙️ Esteiras</button>
+            <button class="shop-tab" onclick="filterShop('boosters', this)">🚀 Boosts</button>
+        </div>
+        <div class="shop-grid" id="shop-grid"></div>
+    </div>
+
+    <!-- ===== PERFIL ===== -->
+    <div id="profile" class="page">
+        <div class="profile-card">
+            <div>🧑 Nome: <strong id="prof-name">Operador</strong></div>
+            <div>🆔 ID: <small id="prof-id" style="word-break:break-all;color:var(--muted);">offline</small></div>
+            <div>📊 Nível: <strong id="prof-level">1</strong></div>
+            <div>💰 ECO Total: <strong id="prof-eco">0</strong></div>
+            <div>🎁 Convites: <strong id="prof-invites">0</strong></div>
+            <input type="text" id="input-name" class="input-text" placeholder="Escolha seu apelido (mín. 3 letras)">
+            <button class="btn btn-process" onclick="saveProfile()" style="margin-bottom:10px;">Salvar Perfil</button>
+            <a href="index.html" class="btn" style="background:#ffffff10;color:var(--text);border:1px solid var(--border);text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">💳 Abrir Carteira (Wallet)</a>
         </div>
     </div>
 
-    <div class="belt-area">
-        <div class="belt-head">
-            <span id="belt-label">Esteira Nível 1</span>
-            <span class="special" id="special-label">Aguardando lote</span>
-        </div>
-        <div class="belt-container">
-            <div id="item-active"></div>
-            <div class="drop-box" id="box-main">📦</div>
-        </div>
-        <button class="btn btn-process" id="btn-loop" onclick="toggleAuto()">▶ Processar Lote</button>
-    </div>
-
-    <div class="inventory-grid" id="inventory-grid"></div>
-    <button class="btn btn-sell" onclick="sellAll()">💰 Vender tudo por ECO</button>
-</div>
-
-<!-- ===== LOJA ===== -->
-<div id="shop" class="page">
-    <div class="shop-tabs">
-        <button class="shop-tab active" onclick="filterShop('energy', this)">⚡ Energia</button>
-        <button class="shop-tab" onclick="filterShop('staff', this)">👷 Equipe</button>
-        <button class="shop-tab" onclick="filterShop('robots', this)">🤖 Robôs</button>
-        <button class="shop-tab" onclick="filterShop('belts', this)">⚙️ Esteiras</button>
-        <button class="shop-tab" onclick="filterShop('boosters', this)">🚀 Boosts</button>
-    </div>
-    <div class="shop-grid" id="shop-grid"></div>
-</div>
-
-<!-- ===== PERFIL ===== -->
-<div id="profile" class="page">
-    <div class="profile-card">
-        <div>🧑 Nome: <strong id="prof-name">Operador</strong></div>
-        <div>🆔 ID: <small id="prof-id" style="word-break:break-all;color:var(--muted);">offline</small></div>
-        <div>📊 Nível: <strong id="prof-level">1</strong></div>
-        <div>💰 ECO Total: <strong id="prof-eco">0</strong></div>
-        <div>🎁 Convites: <strong id="prof-invites">0</strong></div>
-        <input type="text" id="input-name" class="input-text" placeholder="Escolha seu apelido (mín. 3 letras)">
-        <button class="btn btn-process" onclick="saveProfile()">Salvar Perfil</button>
-    </div>
-</div>
-
-<!-- ===== RANKING ===== -->
-<div id="ranking" class="page">
-    <div class="rank-card">
-        🏆 <strong>Ranking Global</strong><br>
-        <span style="color:var(--muted);font-size:0.78rem;">Sincronização com a rede em breve. Seus dados locais serão enviados automaticamente quando a rede estiver disponível.</span>
-        <div style="margin-top:12px;">
-            <div style="font-size:0.72rem;color:var(--muted);">Sua posição atual (local):</div>
-            <div style="font-size:1.1rem;font-weight:800;color:var(--accent);margin-top:4px;">#— ECO: <span id="rank-eco">0</span></div>
+    <!-- ===== RANKING ===== -->
+    <div id="ranking" class="page">
+        <div class="rank-card">
+            🏆 <strong>Ranking Global</strong><br>
+            <span style="color:var(--muted);font-size:0.82rem;">Sincronização com a rede em breve. Seus dados locais serão enviados automaticamente quando a rede estiver disponível.</span>
+            <div style="margin-top:12px;">
+                <div style="font-size:0.75rem;color:var(--muted);">Sua pontuação atual:</div>
+                <div style="font-size:1.2rem;font-weight:800;color:var(--accent);margin-top:4px;">#— ECO: <span id="rank-eco">0</span></div>
+            </div>
         </div>
     </div>
+
 </div>
 
 <script>
 // ===== ESTADO =====
 const SAVE_KEY = "ecopacto_game_v2";
 
-// FIX: Lock screen verifica tanto eco_wallet (login da wallet) quanto qualquer dado local salvo
 const walletRaw = localStorage.getItem('eco_wallet');
 const wallet = walletRaw ? JSON.parse(walletRaw) : null;
 const hasLocalGame = localStorage.getItem(SAVE_KEY);
 
-if (wallet || hasLocalGame) {
+// Se veio logado da Wallet (localStorage tem eco_wallet), esconde a lock screen automaticamente
+if (wallet) {
     document.getElementById('lock-screen').classList.add('hidden');
+} else if (hasLocalGame) {
+    document.getElementById('lock-screen').classList.add('hidden');
+}
+
+function playDirect() {
+    document.getElementById('lock-screen').classList.add('hidden');
+    save();
 }
 
 let state = {
@@ -468,28 +477,28 @@ const MATERIALS = [
     { id: 'chip',     name: 'Chip Raro',   icon: '⚡', chance: 0.01, speed: 900,  reward: 5000, type: 'mythic'    }
 ];
 
-// ===== LOJA =====
+// ===== LOJA (100% ECO) =====
 const STORE = {
     energy: [
-        { name: '+50 Energia',  eco: 100,   bnb: 0.00002, id: 'e1', desc: 'Recarga imediata',   effect: () => { state.energy = Math.min(100, state.energy + 50); } },
-        { name: '+100 Energia', eco: 180,   bnb: 0.00004, id: 'e2', desc: 'Recarga média',       effect: () => { state.energy = 100; } },
-        { name: '+500 Energia', eco: 800,   bnb: 0.00015, id: 'e3', desc: '5x mais ciclos!',    effect: () => { state.energy = 100; } } // energia máx pode ser ampliada futuramente
+        { name: '+50 Energia',  eco: 100,   id: 'e1', desc: 'Recarga imediata',   effect: () => { state.energy = Math.min(100, state.energy + 50); } },
+        { name: '+100 Energia', eco: 180,   id: 'e2', desc: 'Recarga média',       effect: () => { state.energy = 100; } },
+        { name: '+500 Energia', eco: 800,   id: 'e3', desc: 'Recarga industrial',  effect: () => { state.energy = 100; } }
     ],
     staff: [
-        { name: 'Catador',     eco: 500,   bnb: 0.00010, desc: '+1 mat/ciclo',    id: 's1', effect: () => { state.upgrades.staff++; } },
-        { name: 'Supervisor',  eco: 10000, bnb: 0.00200, desc: 'Eficiência +20%', id: 's3', effect: () => { state.upgrades.staff += 2; } }
+        { name: 'Catador',     eco: 500,   desc: '+1 mat/ciclo',    id: 's1', effect: () => { state.upgrades.staff++; } },
+        { name: 'Supervisor',  eco: 10000, desc: 'Eficiência +20%', id: 's3', effect: () => { state.upgrades.staff += 2; } }
     ],
     robots: [
-        { name: 'Robô Básico',      eco: 5000,  bnb: 0.00100, desc: 'Automação leve',   id: 'r1', effect: () => { state.upgrades.robots++; } },
-        { name: 'Robô Industrial',  eco: 50000, bnb: 0.01000, desc: '+50 mat/ciclo',    id: 'r3', effect: () => { state.upgrades.robots += 3; } }
+        { name: 'Robô Básico',      eco: 5000,  desc: 'Automação leve',   id: 'r1', effect: () => { state.upgrades.robots++; } },
+        { name: 'Robô Industrial',  eco: 50000, desc: '+50 mat/ciclo',    id: 'r3', effect: () => { state.upgrades.robots += 3; } }
     ],
     belts: [
-        { name: 'Esteira 2', eco: 1000, bnb: 0.00020, desc: 'Velocidade +20%', id: 'b2', effect: () => { state.beltLevel = 2; updateBeltLabel(); } },
-        { name: 'Esteira 3', eco: 5000, bnb: 0.00100, desc: 'Velocidade +50%', id: 'b3', effect: () => { state.beltLevel = 3; updateBeltLabel(); } }
+        { name: 'Esteira 2', eco: 1000, desc: 'Velocidade +20%', id: 'b2', effect: () => { state.beltLevel = 2; updateBeltLabel(); } },
+        { name: 'Esteira 3', eco: 5000, desc: 'Velocidade +50%', id: 'b3', effect: () => { state.beltLevel = 3; updateBeltLabel(); } }
     ],
     boosters: [
-        { name: 'Produção 2× 30min', eco: 300, bnb: 0.00006, id: 'boost1', desc: 'Dobra a produção',  effect: () => toast('⚡ Boost de produção ativado por 30 min!') },
-        { name: 'Sorte 2× 30min',    eco: 500, bnb: 0.00010, id: 'boost3', desc: 'Itens raros +2×',   effect: () => toast('🍀 Boost de sorte ativado por 30 min!') }
+        { name: 'Produção 2× 30min', eco: 300, id: 'boost1', desc: 'Dobra a produção',  effect: () => toast('⚡ Boost de produção ativado!') },
+        { name: 'Sorte 2× 30min',    eco: 500, id: 'boost3', desc: 'Itens raros +2×',   effect: () => toast('🍀 Boost de sorte ativado!') }
     ]
 };
 
@@ -517,7 +526,7 @@ function updateUI() {
     document.getElementById('prof-invites').innerText  = state.invites;
     document.getElementById('rank-eco').innerText      = fmt(state.eco);
 
-    // Inventário com cores de raridade
+    // Inventário
     document.getElementById('inventory-grid').innerHTML = MATERIALS.map(m => {
         const qty = state.inventory[m.id] || 0;
         return `
@@ -568,7 +577,6 @@ function toggleAuto() {
         btn.innerText = "▶ Processar Lote";
         btn.classList.remove('btn-stop');
         btn.classList.add('btn-process');
-        // FIX: cancela animação pendente ao parar
         if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
     }
 }
@@ -583,7 +591,6 @@ function runCycle() {
     state.energy--;
     updateUI(); save();
 
-    // Sortear material (rolagem acumulada)
     let r = Math.random() * 100, acc = 0, sel = MATERIALS[0];
     for (const m of MATERIALS) { acc += m.chance; if (r <= acc) { sel = m; break; } }
 
@@ -596,13 +603,12 @@ function runCycle() {
     const typeLabels = { common: "Lote comum em trânsito", rare: "⭐ Lote raro!", epic: "💜 Lote épico!", legendary: "🌟 Lote lendário!!", mythic: "🔴 ITEM MÍTICO!!!" };
     special.innerText = typeLabels[sel.type] || "Lote em trânsito";
 
-    // Ajuste de velocidade pela esteira
     const speedMult = state.beltLevel === 3 ? 0.5 : state.beltLevel === 2 ? 0.8 : 1;
     const duration  = sel.speed * speedMult;
 
     let start = null;
     function animate(t) {
-        if (!auto) { item.style.display = "none"; return; } // FIX: para animação imediatamente
+        if (!auto) { item.style.display = "none"; return; }
         if (!start) start = t;
         const progress = (t - start) / duration;
         if (progress < 1) {
@@ -619,7 +625,6 @@ function runCycle() {
             if (sel.type !== 'common') toast(`${item.innerText} ${sel.name} coletado! (+${sel.reward} ECO ao vender)`);
 
             updateUI(); save();
-            // FIX: delay antes do próximo ciclo para evitar loop travado
             if (auto) setTimeout(runCycle, 100);
         }
     }
@@ -641,7 +646,7 @@ function sellAll() {
     toast(`✅ Vendido! +${fmt(gain)} ECO (${total} itens)`);
 }
 
-// ===== LOJA =====
+// ===== LOJA (APENAS ECO) =====
 function filterShop(cat, btn) {
     if (btn) {
         document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
@@ -654,48 +659,22 @@ function filterShop(cat, btn) {
                 <p class="item-desc">${i.desc || ''}</p>
             </div>
             <div class="price-row">
-                <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco}, '${cat}', 'eco')">
+                <button class="buy-btn eco-btn" onclick="buyItem('${i.id}', ${i.eco})">
                     ${fmt(i.eco)} ECO
-                </button>
-                <button class="buy-btn bnb-btn" onclick="buyItem('${i.id}', ${i.bnb}, '${cat}', 'bnb')">
-                    BNB
                 </button>
             </div>
         </div>
     `).join('');
 }
 
-function buyItem(id, price, cat, type) {
-    if (type === 'bnb') {
-        toast("🔗 Pagamento BNB: use a Wallet para comprar ECO e troque aqui.");
-        return;
-    }
+function buyItem(id, price) {
     if (state.eco < price) { toast("❌ ECO insuficiente!"); return; }
-    // Encontrar o item e aplicar efeito
     const item = Object.values(STORE).flat().find(i => i.id === id);
     if (!item) return;
     state.eco -= price;
     if (item.effect) item.effect();
     updateUI(); save();
     toast(`✅ ${item.name} comprado!`);
-}
-
-// ===== METAMASK =====
-async function connectMetaMask() {
-    if (!window.ethereum) {
-        toast("🦊 MetaMask não encontrada. Use o app mobile ou extensão.");
-        return;
-    }
-    try {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const acc = accounts[0];
-        const btn = document.getElementById('mm-btn');
-        btn.innerText = acc.slice(0, 6) + "…" + acc.slice(-4);
-        btn.classList.add('connected');
-        toast("✅ Carteira conectada: " + acc.slice(0, 6) + "…");
-    } catch(e) {
-        toast("❌ Conexão recusada.");
-    }
 }
 
 // ===== PERFIL =====
@@ -707,14 +686,14 @@ function saveProfile() {
     toast("✅ Perfil salvo!");
 }
 
-// ===== ENERGIA PASSIVA (1 por 3min) =====
+// ===== ENERGIA PASSIVA =====
 let energyCountdown = 180;
 setInterval(() => {
     const el = document.getElementById('energy-timer-header');
     if (state.energy < 100) {
         energyCountdown--;
         if (energyCountdown <= 0) {
-            state.energy = Math.min(100, state.energy + 1); // FIX: nunca ultrapassa 100
+            state.energy = Math.min(100, state.energy + 1);
             energyCountdown = 180;
             updateUI(); save();
         }
@@ -728,7 +707,6 @@ setInterval(() => {
 
 // ===== INICIALIZAR =====
 load();
-// FIX: usar querySelector específico da loja, não da aba principal
 filterShop('energy', document.querySelector('.shop-tab'));
 </script>
 </body>
