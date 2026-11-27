@@ -294,23 +294,63 @@
 
     // ---- LOGIN GOOGLE ----
     function handleCredentialResponse(response) {
-        const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-        fetch(`${API_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: payload.email, name: payload.name || "Usuário" })
-        })
-        .then(r => r.json())
-        .then(data => {
-            walletData = data;
-            if (!walletData.name  || walletData.name  === "undefined") walletData.name  = payload.name || "Usuário";
-            if (!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
-            // SALVA no localStorage para o jogo reconhecer o login
-            localStorage.setItem('eco_wallet', JSON.stringify(walletData));
-            setupWalletUI(walletData);
-        })
-        .catch(() => alert("Erro ao conectar com o servidor."));
+        try {
+            const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+            fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: payload.email, name: payload.name || "Usuário" })
+            })
+            .then(r => {
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.json();
+            })
+            .then(data => {
+                walletData = data;
+                if (!walletData.name  || walletData.name  === "undefined") walletData.name  = payload.name || "Usuário";
+                if (!walletData.email || walletData.email === "undefined") walletData.email = payload.email;
+                // SALVA no localStorage para a carteira e o jogo reconhecerem o login
+                localStorage.setItem('eco_wallet', JSON.stringify(walletData));
+                setupWalletUI(walletData);
+            })
+            .catch(err => {
+                console.error("Erro na chamada de login:", err);
+                alert("Erro ao conectar com o servidor: " + err.message);
+            });
+        } catch (e) {
+            console.error("Erro ao decodificar token do Google:", e);
+            alert("Erro no login do Google.");
+        }
     }
+
+    // ---- AUTO-RESTAURA SESSÃO SALVA ----
+    window.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('eco_wallet');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                if (data && data.address) {
+                    walletData = data;
+                    setupWalletUI(walletData);
+                    // Sincroniza com a Railway em segundo plano
+                    if (walletData.email) {
+                        fetch(`${API_URL}/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: walletData.email, name: walletData.name || "Usuário" })
+                        })
+                        .then(r => r.json())
+                        .then(newData => {
+                            walletData = newData;
+                            localStorage.setItem('eco_wallet', JSON.stringify(walletData));
+                            setupWalletUI(walletData);
+                        })
+                        .catch(e => console.warn("Servidor ocupado para sync em segundo plano:", e));
+                    }
+                }
+            } catch (e) {}
+        }
+    });
 
     // ---- FORMATAÇÃO DE NÚMEROS (QUEBRAR ZEROS) ----
     function formatEcoAmount(amount) {
