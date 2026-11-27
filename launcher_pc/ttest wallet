@@ -35,3 +35,39 @@ Não envie pela rede:
 ❌ Polygon
 ❌ Arbitrum
 ❌ TRON
+
+atualizaçao wallet
+
+1. Formatação de Saldo (Quebrar Zeros):
+   - Em vez de números longos (ex: 50.000.000.000 ECO ou 60.000.000 ECO), exibe de forma resumida:
+     • 50 bi ECO (Bilhões)
+     • 60 mi ECO (Milhões)
+     • 50 mil ECO (Milhares)
+   - Exibe o valor completo entre parênteses logo abaixo (ex: 50.000.000.000 ECO).
+
+2. Valor de Mercado (Abaixo do Saldo):
+   - Exibe: 📈 Valor de Mercado: $0,00 USD
+   - Conforme a moeda adquirir fundo de reserva e liquidez, os zeros vão diminuindo e o valor de mercado é atualizado.
+
+3. Botão de Troca / Swap:
+   - Adicionado botão "🔄 Troca / Swap" na barra de ações principais da carteira.
+   - Permite visualizar pacotes de troca e suporte ao Fundo de Liquidez BEP20.
+
+4. Endereços do Fundo de Reserva (Rede BNB Smart Chain / BEP20):
+   🟡 BNB:  0x35878269EF4051Df5f82593b4819E518bA8903A3
+   🟢 USDT: 0x55d398326f99059fF775485246999027B3197955
+   🔵 USDC: 0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d
+
+5. Rodapé da Carteira (Status e Fundo):
+   - Nó Principal: ONLINE
+   - Explorador: ATIVO
+   - Recompensa/Bloco: 20 ECO
+   - Rede do Fundo: BNB SMART CHAIN (BEP20)
+   - Fundo Arrecadado: $0,00 USD (Em expansão)
+
+6. Aviso de Troca e Apoio ao Projeto (Refinado Estilo Bitcoin):
+   🌱 APOIO AO ECOSSISTEMA ECOPACTO:
+   - Sem Data Fixa de Encerramento: A oferta de pacotes de apoio e troca do token ECO é mantida continuamente sem prazo limite.
+   - Fundo 100% para Manutenção & Servidores: Todo o valor arrecadado é destinado exclusivamente à manutenção de hospedagens, infraestrutura da rede, segurança e desenvolvimento de novas funções do App e dos Jogos.
+   - Valor Definido pelo Mercado (Estilo Bitcoin): A moeda ECO não possui valor garantido por entidade central. O preço inicial é $0,00 USD e o valor oficial será formado livremente e organicamente pela oferta e demanda dos mineradores, jogadores e negociantes P2P.
+   ⚠️ ATENÇÃO À REDE: Aceitamos exclusivamente depósitos via BNB Smart Chain (BEP20). Não envie por Ethereum, Polygon, Arbitrum ou TRON (fundos serão perdidos).

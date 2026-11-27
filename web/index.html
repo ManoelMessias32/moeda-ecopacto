@@ -32,20 +32,24 @@
         #disp-email { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 2px; word-break: break-all; }
 
         .balance-label { color: var(--muted); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; margin-top: 4px; }
-        .balance-amount { font-size: 2.6rem; font-weight: 800; color: #fff; margin: 8px 0 4px; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+        .balance-amount { font-size: 2.6rem; font-weight: 800; color: #fff; margin: 6px 0 2px; display: flex; align-items: baseline; justify-content: center; gap: 8px; }
         .balance-amount span:first-child { color: var(--accent); }
+        .balance-full { font-size: 0.68rem; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+        .market-value { font-size: 0.75rem; color: #38bdf8; font-weight: 700; margin-bottom: 12px; background: #0284c715; padding: 4px 10px; border-radius: 20px; display: inline-block; border: 1px solid #0284c730; }
         .currency { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
 
         .pending-row { font-size: 0.7rem; color: var(--muted); margin-bottom: 16px; }
         .pending-row span { color: #f59e0b; font-weight: 700; }
 
         /* BOTÕES PRINCIPAIS */
-        .nav-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-        .nav-btn { flex: 1; min-width: 90px; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.82rem; }
+        .nav-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .nav-btn { width: 100%; padding: 11px 6px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.8rem; text-align: center; }
         .btn-receive { background: #ffffff08; color: var(--text); border: 1px solid var(--border); }
         .btn-receive:hover { background: #ffffff14; }
         .btn-send { background: var(--accent); color: #000; }
         .btn-send:hover { background: #1eb34b; transform: translateY(-1px); }
+        .btn-swap { background: #06b6d4; color: #000; font-weight: 800; }
+        .btn-swap:hover { background: #0891b2; transform: translateY(-1px); }
         .btn-buy { background: #f59e0b; color: #000; font-weight: 800; }
         .btn-buy:hover { background: #d97706; transform: translateY(-1px); }
 
@@ -65,7 +69,7 @@
 
         .address-box { background: #000; padding: 11px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; color: var(--accent); word-break: break-all; cursor: pointer; border: 1px dashed #22c55e50; text-align: center; margin-top: 4px; }
 
-        /* PAINEL COMPRAR ECO */
+        /* PAINEL SWAP / COMPRAR ECO */
         .buy-networks { display: flex; gap: 6px; margin-bottom: 10px; }
         .buy-net-btn { flex: 1; padding: 7px 4px; border-radius: 8px; border: 1px solid var(--border); background: #000; color: var(--muted); font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .buy-net-btn.active { border-color: var(--accent); color: var(--accent); }
@@ -80,7 +84,13 @@
         .buy-addr-box { background: #000; border: 1px dashed #f59e0b80; border-radius: 9px; padding: 10px; margin-top: 6px; }
         .buy-addr-label { font-size: 0.58rem; color: #f59e0b; font-weight: 800; margin-bottom: 4px; display: block; }
         .buy-addr-val { font-family: monospace; font-size: 0.65rem; color: #e2e8f0; word-break: break-all; cursor: pointer; }
-        .buy-warning { font-size: 0.6rem; color: #ef4444; margin-top: 8px; line-height: 1.4; }
+
+        /* AVISO REFINADO DE COMPRA E TROCA */
+        .swap-notice-box { background: #090d16; border: 1px solid #1e293b; border-radius: 12px; padding: 12px; margin-top: 10px; font-size: 0.65rem; line-height: 1.4; color: #cbd5e1; text-align: left; }
+        .swap-notice-title { font-weight: 800; color: #06b6d4; font-size: 0.68rem; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+        .swap-notice-list { margin: 0; padding-left: 14px; }
+        .swap-notice-list li { margin-bottom: 5px; }
+        .buy-warning-alert { background: #450a0a; border: 1px solid #ef444450; border-radius: 8px; padding: 8px; margin-top: 8px; font-size: 0.62rem; color: #fca5a5; line-height: 1.35; }
 
         /* STATUS */
         .node-status { margin-top: auto; padding-top: 14px; border-top: 1px solid #ffffff05; text-align: left; }
@@ -120,6 +130,9 @@
                 <span id="disp-balance">0</span>
                 <span class="currency">ECO</span>
             </div>
+            <div class="balance-full" id="disp-balance-full">(0 ECO)</div>
+            <div class="market-value">📈 Valor de Mercado: <span id="disp-market-value">$0,00 USD</span></div>
+
             <div class="pending-row">
                 Minerado hoje (pendente): <span id="disp-pending">0</span> ECO — pago à meia-noite
             </div>
@@ -128,6 +141,7 @@
             <div class="nav-actions">
                 <button class="nav-btn btn-receive" onclick="togglePanel('receive')">📥 Receber</button>
                 <button class="nav-btn btn-send"    onclick="togglePanel('send')">📤 Enviar</button>
+                <button class="nav-btn btn-swap"    onclick="togglePanel('swap')">🔄 Troca / Swap</button>
                 <button class="nav-btn btn-buy"     onclick="togglePanel('buy')">💳 Comprar ECO</button>
             </div>
 
@@ -151,9 +165,41 @@
                 <button class="nav-btn btn-send" style="width:100%; margin-top:8px;" onclick="doTransfer()">Enviar ECO</button>
             </div>
 
+            <!-- PAINEL TROCA / SWAP -->
+            <div id="panel-swap" class="view-panel">
+                <span class="panel-label">🔄 TROCA & SWAP DE TOKENS ECO</span>
+                <p style="font-size:0.7rem; color:var(--muted); margin-top:0;">Solicite trocas de ECO ou apoie o ecossistema com pacotes de desenvolvimento.</p>
+
+                <div class="buy-pkg">
+                    <div>
+                        <div class="buy-pkg-name">Troca Simples</div>
+                        <div class="buy-pkg-eco">5.000 ECO</div>
+                        <div class="buy-pkg-price">Recebe ≈ 3 USDC</div>
+                    </div>
+                    <button class="buy-pkg-btn" style="background:#06b6d4;" onclick="alert('Solicitação de troca enviada ao pool. A cotação oficial será ativada livremente pelo mercado.')">Trocar ECO</button>
+                </div>
+                <div class="buy-pkg">
+                    <div>
+                        <div class="buy-pkg-name">Troca Avançada</div>
+                        <div class="buy-pkg-eco">25.000 ECO</div>
+                        <div class="buy-pkg-price">Recebe ≈ 15 USDC</div>
+                    </div>
+                    <button class="buy-pkg-btn" style="background:#06b6d4;" onclick="alert('Solicitação de troca enviada ao pool. A cotação oficial será ativada livremente pelo mercado.')">Trocar ECO</button>
+                </div>
+
+                <div class="swap-notice-box">
+                    <div class="swap-notice-title">🌱 APOIO AO ECOSSISTEMA ECOPACTO</div>
+                    <ul class="swap-notice-list">
+                        <li><strong>Sem Data Fixa de Encerramento:</strong> Os pacotes de troca e apoio ao projeto são mantidos continuamente, sem data limite.</li>
+                        <li><strong>Fundo de Manutenção & Servidores:</strong> 100% dos recursos arrecadados são destinados exclusivamente à manutenção dos servidores, infraestrutura, segurança da rede e novos recursos.</li>
+                        <li><strong>Valor Definido pelo Mercado (Estilo BTC):</strong> A moeda ECO não tem preço fixo por entidade central. O valor inicial exibido é <strong>$0,00 USD</strong> e a cotação oficial é formada organicamente pela oferta e demanda dos mineradores, jogadores e negociantes P2P.</li>
+                    </ul>
+                </div>
+            </div>
+
             <!-- PAINEL COMPRAR ECO -->
             <div id="panel-buy" class="view-panel">
-                <span class="panel-label">COMPRAR ECO — BNB SMART CHAIN</span>
+                <span class="panel-label">COMPRAR ECO — APOIO AO PROJETO (BEP20)</span>
 
                 <!-- seletor de moeda -->
                 <div class="buy-networks">
@@ -194,18 +240,25 @@
                     <div class="buy-addr-val" id="buy-addr-val" onclick="copyBuyAddr()">0x35878269EF4051Df5f82593b4819E518bA8903A3</div>
                 </div>
 
-                <div class="buy-warning">
-                    ⚠️ Envie <strong>apenas pela BNB Smart Chain (BEP20)</strong>.<br>
-                    ❌ Não use Ethereum · Polygon · Arbitrum · TRON
+                <div class="swap-notice-box" style="margin-top:8px;">
+                    <div class="swap-notice-title">🛠️ FINALIDADE DO FUNDO DE MANUTENÇÃO</div>
+                    <p style="margin:0; font-size:0.63rem; line-height:1.4;">Todo valor obtido com a venda dos pacotes de apoio é reinvestido 100% na manutenção da infraestrutura, hospedagem de servidores e melhorias contínuas do App e dos jogos. O valor de mercado da moeda ECO é descentralizado e criado organicamente pelo próprio mercado (estilo Bitcoin).</p>
+                </div>
+
+                <div class="buy-warning-alert">
+                    ⚠️ <strong>ATENÇÃO À REDE:</strong> Envie pagamentos <strong>EXCLUSIVAMENTE pela BNB Smart Chain (BEP20)</strong>.<br>
+                    ❌ Não use Ethereum, Polygon, Arbitrum ou TRON (fundos serão perdidos).
                 </div>
             </div>
 
-            <!-- STATUS DA REDE -->
+            <!-- STATUS DA REDE E FUNDO -->
             <div class="node-status">
-                <h4>STATUS DA REDE</h4>
+                <h4>STATUS DA REDE E INFRAESTRUTURA</h4>
                 <div class="node-item"><span>Nó Principal</span><span class="status-online">ONLINE</span></div>
                 <div class="node-item"><span>Explorador</span><span class="status-online">ATIVO</span></div>
                 <div class="node-item"><span>Recompensa/Bloco</span><span class="status-online">20 ECO</span></div>
+                <div class="node-item"><span>Rede do Fundo</span><span class="status-online">BNB SMART CHAIN (BEP20)</span></div>
+                <div class="node-item"><span>Fundo Manutenção</span><span style="color:#38bdf8; font-weight:700;">Ativo (Servidores & Dev)</span></div>
             </div>
         </div>
     </div>
@@ -259,21 +312,43 @@
         .catch(() => alert("Erro ao conectar com o servidor."));
     }
 
+    // ---- FORMATAÇÃO DE NÚMEROS (QUEBRAR ZEROS) ----
+    function formatEcoAmount(amount) {
+        if (!amount || isNaN(amount)) return "0";
+        if (amount >= 1e9) {
+            const val = (amount / 1e9).toFixed(amount % 1e9 === 0 ? 0 : 2);
+            return val.replace('.', ',') + " bi";
+        }
+        if (amount >= 1e6) {
+            const val = (amount / 1e6).toFixed(amount % 1e6 === 0 ? 0 : 2);
+            return val.replace('.', ',') + " mi";
+        }
+        if (amount >= 1e3) {
+            const val = (amount / 1e3).toFixed(amount % 1e3 === 0 ? 0 : 1);
+            return val.replace('.', ',') + " mil";
+        }
+        return amount.toLocaleString('pt-BR');
+    }
+
     function setupWalletUI(data) {
         document.getElementById('login-view').style.display  = 'none';
         document.getElementById('wallet-view').style.display = 'block';
         document.getElementById('disp-name').innerText    = data.name;
         document.getElementById('disp-email').innerText   = data.email;
-        document.getElementById('disp-balance').innerText = (data.balance || 0).toLocaleString('pt-BR');
-        document.getElementById('disp-pending').innerText = (data.pending || 0).toLocaleString('pt-BR');
+
+        const rawBal = data.balance || 0;
+        document.getElementById('disp-balance').innerText = formatEcoAmount(rawBal);
+        document.getElementById('disp-balance-full').innerText = `(${rawBal.toLocaleString('pt-BR')} ECO)`;
+        document.getElementById('disp-pending').innerText = formatEcoAmount(data.pending || 0);
         document.getElementById('disp-addr').innerText    = data.address;
     }
 
     // ---- PAINEIS ----
-    const panels = ['receive','send','buy'];
+    const panels = ['receive','send','swap','buy'];
     function togglePanel(type) {
         panels.forEach(p => {
             const el = document.getElementById('panel-' + p);
+            if (!el) return;
             if (p === type) el.classList.toggle('active');
             else el.classList.remove('active');
         });
